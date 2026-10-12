@@ -14,7 +14,7 @@
 
 - Checkout hospedado/sandbox é integração de alto risco. Validar assinatura no raw payload, identidade do PSP, `event_id`, ID da tentativa/captura, valor e moeda, deduplicação durável e estados fora de ordem.
 - URL de retorno não confirma pagamento. Reembolso precisa de operação estável, confirmação reconciliada; pagamento válido sem reserva entra em revisão/compensação.
-- Candidato Stripe Checkout **não é fornecedor escolhido nem homologado**. A janela 40/30/5 deve ser testada com relógio real e atrasos entre criação de reserva e da sessão.
+- **Stripe é o fornecedor escolhido**; Stripe Checkout hospedado é o caminho do MVP em modo de teste, **ainda não homologado**. A janela 40/30/5 deve ser comprovada em Stripe test mode, incluindo sessão com mínimo 30m, atrasos de criação e resultados financeiros tardios.
 
 ## TB-04 Mídia pública ↔ objeto comercial privado
 

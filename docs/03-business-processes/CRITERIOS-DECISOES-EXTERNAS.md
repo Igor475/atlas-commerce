@@ -1,18 +1,18 @@
 # Critérios de decisão — PSP, alçadas financeiras e licenças digitais
 
-> **ID:** AC-MODEL-DEC-003 | **Versão:** 0.1 | **Estado:** proposta para aprovação da Fase 03 | **Data:** 12/10/2026.  
-> Este documento **não fecha automaticamente** DA-006, DA-009, DS-003/004 nem a validação jurídica de produtos digitais.
+> **ID:** AC-MODEL-DEC-003 | **Versão:** 0.2 | **Estado:** Stripe selecionado, integração não homologada | **Data:** 12/10/2026.  
+> Este documento registra a **seleção do Stripe para DA-006**, mas **não comprova DS-004**, validação do sandbox, alçadas financeiras nem licenciamento jurídico de produtos digitais.
 
-## A. DA-006 / DS-004 — Provedor de pagamentos (pendência 3.1)
+## A. DA-006 / DS-004 — Stripe escolhido; integração pendente de validação
 
-**Candidato ao spike:** Stripe Checkout em modo teste/sandbox, somente para meios compatíveis com liquidação e expiração da reserva do MVP. Documentação oficial de `expires_at` informa intervalo entre **30 minutos e 24 horas** após a criação da sessão. Isso sugere viabilidade para sessão de 30 minutos, mas **não prova** compatibilidade no ambiente do projeto, nem com todos os métodos de pagamento.
+**Fornecedor decidido:** **Stripe**, com **Stripe Checkout hospedado (`payment` / compras únicas)** como escolha arquitetural inicial para o MVP demonstrativo. Inicialmente, usar **modo de teste** e restringir meios aos **comprovadamente compatíveis**, com cartão como candidato prioritário; Pix/boleto/assíncronos não entram automaticamente. A documentação oficial define `expires_at` de **30 minutos a 24 horas** após criar a sessão. A seleção do fornecedor é definitiva para este planejamento; capacidades reais, configuração e comportamento da integração **ainda exigem validação**. A conta Stripe, seu país e os meios habilitados serão conferidos no sandbox.
 
-**Política de negócio mantida:** reserva `40m` a partir do relógio do banco; sessão externa com prazo máximo `30m` desde sua criação; limite de expiração externo **pelo menos 5m antes** de `reservation.expires_at`. A simples configuração de 30m é insuficiente se a sessão for criada **mais de 5m depois** do pedido. É obrigatório computar os dois prazos absolutos e rejeitar sessão incompatível sem expor URL de pagamento.
+**Política de negócio mantida:** reserva `40m` a partir do relógio do banco; sessão externa com prazo máximo `30m` desde sua criação; limite externo de expiração **pelo menos 5m antes** de `reservation.expires_at`. Como a Stripe impõe duração **mínima de 30m**, a sessão deve ser criada **no máximo 5m após a criação da reserva** (na prática, antes disso para comportar latência e relógios). Comparar prazos absolutos e rejeitar qualquer sessão incompatível **sem expor o link**. Se uma sessão incompatível já existir externamente, registrar a tentativa, solicitar expiração quando ainda estiver `open` e reconciliar seu estado; jamais presumir ausência de cobrança por resposta ambígua.
 
 | Prova exigida para fechar a DA | Aceite objetivo | Situação |
 |---|---|---|
-| Expiração absoluta | `psp_expires_at <= reservation_expires_at - 5 min` e `psp_expires_at <= session_created_at + 30 min` em teste com atraso artificial de criação | PENDENTE |
-| Capacidade do provedor | `expires_at` configurável em sandbox e identificadores persistidos | PENDENTE |
+| Expiração absoluta | `stripe_expires_at <= reservation_expires_at - 5 min`; `1800s <= stripe_expires_at - stripe_created_at <= 1800s` sob política MVP (sessão exatamente 30 min); testar atrasos de 0/4/5/6 min, limites e timeout | PENDENTE |
+| Capacidade Stripe | Sessão hospedada em `mode=payment`, `expires_at` verificado na resposta, `cs_`, `pi_`, valor/moeda BRL centavos e IDs próprios persistidos | PENDENTE |
 | Métodos aceitos | Permitir somente métodos de confirmação compatível (ex.: cartão em test mode); Pix/boleto e pagamentos assincrônicos não habilitados até política própria | PENDENTE |
 | Autenticidade e idempotência | Assinatura no payload original, valor/moeda/IDs, replay, retries idempotentes, eventos fora de ordem | PENDENTE |
 | Refund | Idempotência estável com consulta de estado após timeout; não presumir sucesso com `HTTP 2xx` | PENDENTE |
@@ -20,7 +20,7 @@
 
 **Alternativa permitida:** provedor fake determinístico local para testes de concorrência, sem apresentar como substituto de homologação de PSP real.
 
-**Critério de bloqueio:** enquanto a seleção não estiver validada, APIs e diagramas podem ser modelados, mas a integração concreta de produção e parâmetros de TTL não podem ser tratados como aprovados.
+**Critério de bloqueio:** Stripe está selecionado, mas sem evidência em modo de teste **não** considerar autorizada a integração produtiva nem validada a política 40/30/5. Os fluxos podem ser documentados; Código de integração só segue os gates aprovados em [Fase 03](../04-architecture/07-validacao-stripe.md).
 
 Fontes públicas: [Checkout Session `expires_at`](https://docs.stripe.com/api/checkout/sessions/create), [Refunds](https://docs.stripe.com/api/refunds/create), [Idempotência](https://docs.stripe.com/api/idempotent_requests), [Webhooks](https://docs.stripe.com/webhooks).
 
@@ -59,7 +59,7 @@ Invariantes: `captured - succeeded_refunds - reserved_pending_refunds >= amount_
 
 ## D. Checklist de saída para Fase 03
 
-- [x] Definir candidato de PSP para spike sem declarar homologação.
+- [x] Selecionar fornecedor Stripe e Checkout hospedado como direção do MVP demonstrativo, sem alegar homologação.
 - [x] Propor regras-base de segregação financeira e acesso digital de demonstração.
 - [x] Atualizar SQ-05 e BPMNs com autoridades, compensações e estados distintos.
 - [ ] Testar integração de PSP e política 40/30/5 em sandbox; registrar evidências.

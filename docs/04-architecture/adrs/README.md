@@ -7,10 +7,11 @@
 | [ADR-001](ADR-001-monolito-modular.md) | Monólito modular, API central e separação de domínios | Proposta fundamentada no escopo |
 | [ADR-002](ADR-002-integridade-outbox.md) | PostgreSQL e outbox/inbox para efeitos recuperáveis | Proposta; provar sob carga |
 | [ADR-003](ADR-003-autenticacao-sessoes.md) | Sessão revogável, MFA/backoffice, proteções de browser | Aberta (DS-001/002/003) |
-| [ADR-004](ADR-004-psp-sandbox.md) | Checkout hospedado em sandbox; Stripe apenas candidato | Aberta (DA-006/DS-004) |
+| [ADR-004](ADR-004-psp-sandbox.md) | **Stripe selecionado**, Checkout hospedado em modo teste; política 40/30/5 | **Fornecedor decidido**, homologação pendente (DS-004) |
 | [ADR-005](ADR-005-midia-e-storage.md) | Mídia privada segregada, entitlement por recurso | Aberta em provedor (DS-005/006) |
 | [ADR-006](ADR-006-acesso-dados.md) | Banco transacional e estratégia ORM/query | Aberta (DDL/adapter) |
 | [ADR-007](ADR-007-worker-e-jobs.md) | Jobs duráveis com worker condicional | Aberta (infra/operação) |
+| [ADR-008](ADR-008-controles-operacionais.md) | Controles de operação e segurança de infraestrutura | Proposta (DS-007/008/009) |
 
 ## Formato de aprovação
 

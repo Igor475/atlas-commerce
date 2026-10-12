@@ -30,3 +30,7 @@
 - Deploy: TLS, secrets segregados, produção sem debug/cors amplo, migrações com plano de rollback/roll-forward; política de release e observabilidade.
 
 **Bloqueios de release real:** escolha/contrato PSP, autorizações de conteúdo, fiscal/jurídico quando aplicável, retenção/LGPD, testes de segurança e restore. O projeto permanece uma demonstração/sandbox.
+
+## Decisão operacional relacionada
+
+[ADR-008 — Controles operacionais](adrs/ADR-008-controles-operacionais.md) documenta o baseline proposto de ambientes, backups, monitoramento, retenção e segurança do deploy; permanece **proposta** até avaliação do ambiente real.

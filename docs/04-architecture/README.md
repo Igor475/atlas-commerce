@@ -31,7 +31,7 @@ Se houver conflito, abrir ADR/decisão, **corrigir em todas as fontes** e não i
 | DFD | [DFD-01 Identidade](security/DFD-01-identidade.md) · [DFD-02 Checkout](security/DFD-02-checkout-pagamento.md) · [DFD-03 Conteúdo digital](security/DFD-03-entitlements.md) | Fontes DOT + SVG + PNG individuais |
 | Sequências | [Checkout/compensação](sequences/SEQ-01-pagamento-compensacao.md) · [Refund](sequences/SEQ-02-reembolso.md) | Mermaid textual e guardas; não substituem SQ-01–05 |
 | Decisões | [Índice ADR](adrs/README.md) | Registro de alternativas e bloqueios |
-| Plano de verificação | [Rastreabilidade e gates](06-rastreabilidade-e-gates.md) | Critérios para avançar à implementação Codex |
+| Plano de verificação | [Rastreabilidade e gates](06-rastreabilidade-e-gates.md) · [validação Stripe](07-validacao-stripe.md) · [status de decisões](STATUS-DECISOES-FASE-03.md) | Critérios para avançar à implementação Codex |
 
 Cada `.dot` é uma **fonte editável**, com SVG e PNG derivados do mesmo arquivo usando Graphviz. As imagens são representações arquiteturais com **semântica C4 adaptada** (não uma certificação de conformidade visual C4). Os arquivos `.mmd` são fontes textuais para o renderizador Mermaid, sem imagem exportada neste pacote.
 
@@ -41,13 +41,14 @@ Cada `.dot` é uma **fonte editável**, com SVG e PNG derivados do mesmo arquivo
 
 **Propostas de design, não contratos implementados:** `apps/storefront`, `apps/admin`, `apps/api`; possível processo de worker; PostgreSQL como fonte de verdade; outbox relacional para efeitos recuperáveis; Redis/fila somente quando houver justificativa de processamento; object storage S3-compatible opcional por integração; observabilidade sem PII.
 
-**Decisões abertas:** DA-006/DS-004 (PSP, sessão 40/30/5 e métodos); DA-009/DS-003 (aprovações e alçadas); DS-001/002 (sessão/MFA); DS-005/006 (storage e uploads); DS-007/008 (retenção/ambiente); DS-009 (perfil ASVS); ORM e deploy exatos.
+**Fornecedor definido:** **Stripe**; Checkout hospedado para o MVP demonstrativo, ainda sem testes de integração. **Decisões abertas:** DS-004 (homologar janela Stripe 40/30/5, métodos, webhooks e refund); DA-009/DS-003 (aprovações e alçadas); DS-001/002 (sessão/MFA); DS-005/006 (storage e uploads); DS-007/008 (retenção/ambiente); DS-009 (perfil ASVS); ORM e deploy exatos.
 
 ## Critério de saída — Fase 03
 
 - [x] **Proposta documental inicial** de C4, módulos, transações, DFDs, ameaças, autorização e ADRs elaborada.
 - [ ] Revisar desenho e ADRs com o projeto, registrar aprovações e atualizar divergências encontradas.
-- [ ] Testar em sandbox se o PSP admite a política de expiração **absoluta**: reserva 40 min; sessão externa até 30 min; término >=5 min antes da reserva; sem permitir métodos incompatíveis.
+- [x] Selecionar o provedor Stripe como decisão de projeto; sem declarar homologação.
+- [ ] Testar em Stripe test mode se o Checkout hospedado admite a política de expiração **absoluta**: reserva 40 min; sessão 30 min (mínimo Stripe); término >=5 min antes da reserva; sem permitir métodos incompatíveis. Consultar [plano de validação Stripe](07-validacao-stripe.md).
 - [ ] Validar matriz de papéis/ações, recuperação de sessão, MFA e alçadas; definir responsáveis.
 - [ ] Formalizar autorização de uso dos ativos digitais, termos, retenção, limites operacionais e ambiente de deploy.
 - [ ] Revisar em modelador os BPMNs legados da Fase 02 e manter fontes/imagens sincronizadas se mudarem.

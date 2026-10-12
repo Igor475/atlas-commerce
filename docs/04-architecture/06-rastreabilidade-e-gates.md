@@ -6,12 +6,12 @@
 |---|---|---|
 | RN-024–031, RN-071–076, RN-088–094 | Inventory, T-01/02, C4-03, DFD-02, ADR-002 | CA-001, CA-011–014, CA-022, CA-024; PostgreSQL real |
 | RN-032–040, SEC-017–019 | Orders/Pricing, T-01, DFD-02 | CA-002/004/007 e SA-005, request fingerprint |
-| RN-041–048, RN-077–084, SEC-020–024 | Payments, T-02/03, DFD-02, ADR-004 | SA-007/008, CA-003/005/015–019; PSP fake e sandbox |
+| RN-041–048, RN-077–084, SEC-020–024 | Payments/Stripe, T-02/03, DFD-02, ADR-004 | SA-007/008, CA-003/005/015–019; Stripe test mode, PSP fake e [plano de prova](07-validacao-stripe.md) |
 | RN-049–054, RN-079, RN-087, RN-091, SEC-025–027 | Library, DFD-03, ADR-005 | SA-009, CA-006/017/023/024; autorização por recurso |
 | RN-009–014, RN-064–069, SEC-001–011 | Identity/Admin, DFD-01, authorization matrix, ADR-003 | SA-001–004, sessões revogadas, MFA e recuperação |
 | RN-058–063, RN-085–087 | Support/Refund, SEQ-02 e autorização | CA-008/018–021/025; segregação, CDC aplicável |
 | RN-070, SEC-016/024/030/034 | Outbox, Integration, ADR-002/007 | CA-010, replay, restart, timeout e dedup |
-| RNF-004/005/010/011, SEC-028–038 | Observabilidade e dados, ADR-006/008 | SA-011/012, restore e logs redigidos |
+| RNF-004/005/010/011, SEC-028–038 | Observabilidade e dados, [ADR-006](adrs/ADR-006-acesso-dados.md)/[ADR-008](adrs/ADR-008-controles-operacionais.md) | SA-011/012, restore e logs redigidos |
 
 ## Gates antes de autorizar cada prompt de implementação ao Codex
 
