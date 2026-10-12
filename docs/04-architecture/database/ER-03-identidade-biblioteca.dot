@@ -1,0 +1,29 @@
+digraph ER03 {
+ graph [label="Atlas Commerce • ER-03 — Identidade, licenças, acessos e auditoria (modelo conceitual)",labelloc=t,rankdir=TB,fontsize=19,fontname="DejaVu Sans",bgcolor="white",pad=.35,ranksep=1,nodesep=.48,splines=polyline];
+ node [shape=record,style="rounded,filled",fillcolor="#edf3fc",color="#657c98",fontname="DejaVu Sans",fontsize=10,margin=".18,.12"];
+ edge [color="#647f9c",arrowsize=.7,fontname="DejaVu Sans",fontsize=9];
+ subgraph cluster_identity {label="Identity · sessão e credenciais";style=rounded;color="#b6cee9";
+  acc [label="{Account|account_id • account_state|email verified}"];
+  session [label="{Session|session_hash • account_id|staff/shopper • expires/revoked}"];
+  mfa [label="{MfaFactor|factor_id • account_id|status • encrypted/verified}"];
+  recovery [label="{RecoveryChallenge|challenge_hash • purpose|expires • consumed_at}"];
+ }
+ subgraph cluster_library {label="Library · direitos por licença e item";style=rounded;color="#b2d5c1";
+  source [label="{OrderLine/KitSnapshot|order_line • component_id|paid / physical allocation guard}",fillcolor="#eaf6ee"];
+  entitlement [label="{Entitlement|account • order_component|license_version • state}",fillcolor="#eaf6ee"];
+  license [label="{LicensedAsset|asset_id • edition|license/rights evidence}",fillcolor="#eaf6ee"];
+  access [label="{DigitalAccessAudit|entitlement_id • action|decision • time}",fillcolor="#eaf6ee"];
+ }
+ subgraph cluster_ops {label="Audit / Data privacy";style=rounded;color="#d5c3a3";
+  audit [label="{AuditEntry|actor/svc • resource|reason • redaction}",fillcolor="#fff7e9"];
+ }
+ acc -> session [label="1:N"];
+ acc -> mfa [label="1:N"];
+ acc -> recovery [label="1:N"];
+ source -> entitlement [label="origem"];
+ acc -> entitlement [label="titular"];
+ entitlement -> license [label="requer licença"];
+ entitlement -> access [label="auditoria de entrega"];
+ session -> audit [label="ações"];
+ entitlement -> audit [label="decisões"];
+}

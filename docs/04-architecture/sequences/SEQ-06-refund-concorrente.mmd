@@ -1,0 +1,31 @@
+sequenceDiagram
+    autonumber
+    actor A as Solicitante A autorizado
+    actor B as Solicitante B autorizado
+    participant Refund as Payments / Refund
+    participant DB as PostgreSQL
+    participant Stripe as Stripe Test Mode
+    par Solicitação A
+        A->>Refund: Refund de R$20 com intenção A
+        Refund->>DB: TX A: lock captura + reservar saldo
+        DB-->>Refund: A aprovada: refund_id + chave + outbox
+    and Solicitação B concorrente
+        B->>Refund: Refund de R$20 com intenção B
+        Refund->>DB: TX B: aguardar lock e reavaliar saldo
+        DB-->>Refund: B negada: saldo restante insuficiente
+    end
+    Refund->>Stripe: Enviar SOMENTE A fora da transação
+    alt Stripe comprova SUCCEEDED
+        Stripe-->>Refund: Evidência de sucesso
+        Refund->>DB: A: converter pending -> succeeded uma vez
+    else Timeout ou estado inconclusivo
+        Stripe-->>Refund: Timeout/indefinido
+        Refund->>DB: A: RECONCILIATION_REQUIRED, mantém saldo reservado
+        Refund->>Stripe: Consultar operação A com mesmo ID/chave
+        alt Stripe confirma sucesso
+            Refund->>DB: A: SUCCEEDED, sem nova devolução
+        else Stripe comprova falha definitiva
+            Refund->>DB: A: FAILED e liberar reserva uma vez
+        end
+    end
+    Note over Refund,DB: Refund não repõe automaticamente o estoque

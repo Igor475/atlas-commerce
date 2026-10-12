@@ -1,0 +1,31 @@
+digraph ER02 {
+ graph [label="Atlas Commerce • ER-02 — Pagamentos, refunds, inbox e outbox (modelo conceitual)",labelloc=t,rankdir=TB,fontsize=19,fontname="DejaVu Sans",bgcolor="white",pad=.35,ranksep=1,nodesep=.47,splines=polyline];
+ node [shape=record,style="rounded,filled",fillcolor="#edf3fc",color="#5f7b9a",fontname="DejaVu Sans",fontsize=10,margin=".18,.12"];
+ edge [color="#667d98",arrowsize=.7,fontname="DejaVu Sans",fontsize=9];
+ subgraph cluster_commerce {label="Orders / PSP attempts";style=rounded;color="#b6cee9";
+  order [label="{Order|order_id • state|PAYMENT_REVIEW / PAID}"];
+  attempt [label="{PaymentAttempt|attempt_id • stripe_session_id|amount_cents • created/expires}"];
+  prov [label="{ProviderEvent|stripe_account • event_id UNIQUE|validated • received_at}"];
+ }
+ subgraph cluster_money {label="Payments · entidade financeira";style=rounded;color="#b6cee9";
+  capture [label="{Capture|capture_id • external_ref|captured_cents • currency}",fillcolor="#e4ecff"];
+  refund [label="{RefundOperation|refund_id • stable_idem_key|state • amount_cents}",fillcolor="#e4ecff"];
+  allocation [label="{RefundAllocation|capture_id • refund_id|reserved / succeeded}",fillcolor="#e4ecff"];
+ }
+ subgraph cluster_delivery {label="Integration · efeitos duráveis";style=rounded;color="#b2d5c1";
+  outbox [label="{OutboxMessage|message_id • aggregate/version|status • lease_until}",fillcolor="#eaf6ee"];
+  inbox [label="{InboxReceipt|consumer • message/event_id UNIQUE|processed_at}",fillcolor="#eaf6ee"];
+  audit [label="{AuditEntry|actor • cause_id|state transition • redacted}",fillcolor="#eaf6ee"];
+ }
+ order -> attempt [label="1:N"];
+ attempt -> prov [label="eventos"];
+ attempt -> capture [label="0:N"];
+ capture -> refund [label="1:N"];
+ refund -> allocation [label="saldo reservado"];
+ allocation -> capture [label="por captura",constraint=false];
+ prov -> inbox [label="dedup"];
+ capture -> outbox [label="fatos a publicar"];
+ refund -> outbox [label="refund/reconcile"];
+ outbox -> inbox [label="at-least-once"];
+ refund -> audit [label="decisões"];
+}

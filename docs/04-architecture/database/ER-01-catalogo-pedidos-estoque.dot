@@ -1,0 +1,32 @@
+digraph ER01 {
+ graph [label="Atlas Commerce • ER-01 — Catálogo, pedido e inventário (modelo conceitual)",labelloc=t,rankdir=TB,fontsize=19,fontname="DejaVu Sans",bgcolor="white",pad=.35,ranksep=1,nodesep=.45,splines=polyline];
+ node [shape=record,style="rounded,filled",fillcolor="#edf3fc",color="#5f7b9a",fontname="DejaVu Sans",fontsize=10,margin=".17,.12"];
+ edge [color="#69819b",arrowsize=.7,fontname="DejaVu Sans",fontsize=9];
+ subgraph cluster_catalog {label="Catalog · preço e composição editável";style=rounded;color="#b6cee9";
+  product [label="{Product / Edition|product_id • SKU|published • edition_id}"];
+  kit [label="{KitComposition (versionada)|kit_sku • component_sku|quantity • type}"];
+  price [label="{Price / Coupon|amount_cents • currency|valid_from/to}"];
+ }
+ subgraph cluster_order {label="Orders · snapshot comercial imutável";style=rounded;color="#b6cee9";
+  order [label="{Order|order_id • account_id|state • snapshot_version}",fillcolor="#e2ecff"];
+  line [label="{OrderLineSnapshot|order_id • line_id|SKU • qty • price_cents}",fillcolor="#e2ecff"];
+  component [label="{KitComponentSnapshot|line_id • component_sku|qty • license_version}",fillcolor="#e2ecff"];
+  checkout [label="{CheckoutRequest|actor • operation • key|fingerprint • result}"];
+ }
+ subgraph cluster_stock {label="Inventory · transação e ledger";style=rounded;color="#b2d5c1";
+  balance [label="{StockBalance|sku (único)|on_hand • reserved_active • allocated}",fillcolor="#e9f7ed"];
+  reservation [label="{Reservation|reservation_id • order_id|ACTIVE / CONFIRMED / EXPIRED / RELEASED}",fillcolor="#e9f7ed"];
+  reserve_line [label="{ReservationLine|reservation_id • SKU|qty • unique effect}",fillcolor="#e9f7ed"];
+  ledger [label="{StockLedgerEntry|sku • cause/effect_id|delta / type}",fillcolor="#e9f7ed"];
+ }
+ kit -> product [label="componentes"];
+ product -> price [label="cotação"];
+ order -> line [label="1:N"];
+ line -> component [label="kit: 1:N"];
+ checkout -> order [label="idempotência"];
+ order -> reservation [label="0:1"];
+ reservation -> reserve_line [label="1:N"];
+ reserve_line -> balance [label="por SKU"];
+ balance -> ledger [label="efeitos únicos"];
+ component -> reserve_line [label="físicos",style=dashed];
+}
