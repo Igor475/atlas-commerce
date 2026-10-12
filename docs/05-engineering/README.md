@@ -1,6 +1,6 @@
 # Fase 04 — Engenharia, estrutura e contratos de implementação
 
-> **Identificação:** `AC-ENG-001` · **Versão documental:** `0.2.0` · **Etapa:** `F04-02` · **Data:** 12/10/2026. **Estado:** monorepo físico **aprovado** (três apps + pnpm); contratos F04-02 **propostos** e não implementados, nenhum teste executado.
+> **Identificação:** `AC-ENG-001` · **Versão documental:** `0.3.0` · **Etapa:** `F04-03` · **Data:** 12/10/2026. **Estado:** monorepo físico **aprovado** (três apps + pnpm); contratos F04-02 **propostos** e não implementados, nenhum teste executado.
 
 ## Ponto de partida
 
@@ -32,11 +32,18 @@ A [Fase 03 v0.5](../04-architecture/CONSOLIDACAO-FINAL-FASE-03-v0.5.md) consolid
 
 O pacote F04-02 detalha **30 testes `API-001–030` planejados**; nenhum foi executado. A aprovação da separação de apps não aprova automaticamente cada endpoint do YAML, nem autoriza implementar domínios antes dos gates.
 
+## Preparação Codex F04-03 e direção de design profissional
+
+- [**FD-01 — Direção de design editorial premium**](FD-01-direcao-design-frontend-premium.md): regra explícita do responsável: nenhum template ou UI genérica; pesquisa, identidade e aprovação visual próprias antes de desenvolver as telas finais.
+- [**PROMPT-CODEX-F04-03 — Bootstrap técnico**](PROMPT-CODEX-F04-03-bootstrap.md): prompt completo para Codex criar os três apps, toolchain e CI sem módulos de domínio, sem deploy e sem UI comercial.
+
+O **frontend** nesta etapa possui apenas placeholders técnicos neutros e acessíveis. **Não** tomar sua aparência como identidade final. O prompt é entregável documental pronto para execução futura; a presença do arquivo não prova código nem testes executados.
+
 ## Estado de avanço
 
 - **F04-01**: separação física **aprovada** (`apps/storefront`, `apps/admin`, `apps/api`, pnpm), **ainda não implementada**.
 - **F04-02**: proposta detalhada [CT-01–09](contracts/README.md), OpenAPI e JSON Schema produzidos; **detalhes precisam de revisão/ratificação, endpoints não implementados**.
-- **F04-03 em diante**: Codex deverá criar código apenas mediante prompt detalhado com arquivos permitidos, testes e autorização. Não começar cobrança real.
+- **F04-03**: prompt de bootstrap disponível nesta versão. Codex deverá criar código dentro desse escopo, com evidência de testes; **ainda não implementado**. Não iniciar UI comercial ou cobrança real.
 
 ## Restrições invioláveis
 
