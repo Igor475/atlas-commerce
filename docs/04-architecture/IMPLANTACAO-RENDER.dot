@@ -1,0 +1,26 @@
+digraph AtlasRender {
+  graph [label="Atlas Commerce — Topologia alvo (não implantada)",labelloc=t,fontname="DejaVu Sans",fontsize=18,rankdir=LR,bgcolor="white",pad=.25,nodesep=.43,ranksep=.65,splines=polyline];
+  node [shape=box,style="rounded,filled",fontname="DejaVu Sans",fontsize=10,margin=".2,.12",fillcolor="#edf3fa",color="#64819c"];
+  edge [color="#637b98",fontname="DejaVu Sans",fontsize=9,arrowsize=.65];
+  Client [label="Cliente / Operador\nNavegador",fillcolor="#fff3e3",color="#c3a064"];
+  subgraph cluster_vercel {label="Vercel (escolhido; Hobby apenas opção pessoal)";color="#b7cade";style=rounded;
+   Next [label="Next.js\nStorefront / Backoffice",fillcolor="#e8f1fc"];
+  }
+  subgraph cluster_render {label="Render Free (Web Service escolhido)";color="#b7cade";style=rounded;
+    API [label="Web Service NestJS Free\nAPI + webhook (test mode)\nPausa após ociosidade",fillcolor="#ddedff",penwidth=2];
+  }
+  Jobs [label="Executor condicionado\nSupabase Cron: ensaio opcional\nWorker sempre ativo: futuro",style="rounded,dashed,filled",fillcolor="#f6f6e9"];
+  DB [label="Supabase PostgreSQL\nProvedor escolhido\nPlano a confirmar",shape=cylinder,fillcolor="#e7f4e8",color="#6b9c7c"];
+  Stripe [label="Stripe test mode\nCheckout + webhook",fillcolor="#f1ebfc",color="#9581b8"];
+  R2 [label="Cloudflare R2 Standard Free Tier\nBuckets público/privado",fillcolor="#f1ebfc",color="#9581b8"];
+  Mail [label="E-mail transacional\nFornecedor pendente",fillcolor="#f5f3f3"];
+  Client -> Next [label="HTTPS"];
+  Next -> API [label="HTTPS / auth"];
+  API -> DB [label="TLS • Supavisor session\nPrisma / TX / outbox"];
+  API -> Stripe [label="criar sessão / refund"];
+  Stripe -> API [label="webhook assinado"];
+  API -> R2 [label="acesso escopado"];
+  Jobs -> DB [label="claims/recovery (futuro)",style=dashed];
+  Jobs -> Stripe [label="reconciliação (futuro)",style=dashed];
+  Jobs -> Mail [label="notificações (futuro)",style=dashed];
+}
