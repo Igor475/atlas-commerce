@@ -2,71 +2,57 @@
 
 ### E-commerce B2C | Engenharia de Software & Arquitetura de Sistemas
 
-O **Atlas Commerce** é um projeto de E-commerce B2C desenvolvido com foco na aplicação prática de princípios de **Engenharia de Software, Arquitetura de Software, Design de Sistemas e boas práticas de desenvolvimento Full Stack**.
+O **Atlas Commerce** é um projeto de portfólio que simula o comércio editorial de **livros físicos, e-books, revistas digitais e kits**, demonstrando como requisitos, regras de negócio, arquitetura, segurança, implementação, testes e operação são conectados e verificados ao longo do ciclo de vida de software.
 
-A plataforma simula uma operação de comércio eletrônico do segmento editorial, contemplando a comercialização de livros físicos, e-books, revistas digitais e kits de produtos.
+O objetivo não é apenas construir uma loja virtual: é registrar decisões, trade-offs, cenários de falha, segurança *by design* e evidências reproduzíveis de engenharia. O projeto é fictício; os requisitos são **propostas**, não políticas de uma empresa real.
 
-Mais do que desenvolver uma loja virtual funcional, o objetivo é demonstrar o ciclo completo de construção de um software, desde a **análise de requisitos e modelagem das regras de negócio até a implementação, testes, segurança, observabilidade e implantação**.
+## Objetivos de engenharia
 
-## Objetivos do projeto
-
-- Aplicar metodologias e princípios de Engenharia de Software.
-- Documentar requisitos funcionais, não funcionais e regras de negócio.
-- Modelar processos, fluxos, casos de uso e diagramas arquiteturais.
-- Projetar uma arquitetura modular, escalável e de fácil manutenção.
-- Aplicar Domain-Driven Design (DDD), princípios SOLID e separação de responsabilidades.
-- Desenvolver interfaces modernas, responsivas e acessíveis.
-- Implementar práticas de segurança, integridade de dados e controle de acesso.
-- Adotar testes automatizados, CI/CD e práticas de DevOps.
-- Documentar decisões arquiteturais, trade-offs e evolução técnica do sistema.
+- Modelar domínios e invariantes de preço, estoque, pagamento, reembolso, conteúdo digital e kits.
+- Demonstrar DDD, separação de responsabilidades e monólito modular proporcional ao problema.
+- Planejar autenticação, autorização, privacidade e segurança de pagamentos desde a descoberta.
+- Documentar processos, máquinas de estados, contratos e fronteiras de confiança.
+- Implementar integridade transacional, idempotência, conciliação e processamento recuperável.
+- Produzir testes unitários, de integração, E2E, concorrência, segurança e carga.
+- Justificar escolhas em ADRs, com CI/CD, observabilidade e deploy de demonstração.
 
 ## Escopo funcional
 
-O projeto prevê os seguintes domínios:
+Catálogo editorial; identidade e acesso; carrinho/checkout; preços e cupons; reserva e controle de estoque; pedidos; pagamentos em **sandbox**; direitos digitais; remessa física; pós-venda e backoffice com auditoria. Não haverá marketplace nem coleta direta de dados completos de cartão no MVP.
 
-- **Catálogo:** produtos físicos e digitais, categorias, autores e publicações.
-- **Identidade e acesso:** autenticação, contas de clientes e permissões.
-- **Carrinho e checkout:** composição de compras, cálculo de preços e descontos.
-- **Estoque:** disponibilidade, reservas e movimentações.
-- **Pedidos:** processamento, histórico e acompanhamento.
-- **Pagamentos:** integração, confirmação, conciliação e reembolsos.
-- **Produtos digitais:** biblioteca, direitos de acesso e distribuição protegida.
-- **Administração:** gerenciamento operacional e auditoria.
+## Arquitetura pretendida
 
-## Arquitetura e tecnologias
+**Monólito modular**, com stack provisória TypeScript, Next.js, React, NestJS, PostgreSQL, Redis, Docker e GitHub Actions. Arquitetura concreta, serviços externos e fluxos de implantação serão justificados em ADRs, e não presumidos pela lista de tecnologias.
 
-A arquitetura será planejada a partir dos requisitos de negócio, priorizando um **monólito modular**, separação de domínios, consistência transacional, segurança e evolução sustentável.
+## Documentação versionada
 
-As tecnologias previstas incluem TypeScript, Next.js, React, NestJS, PostgreSQL, Redis, Docker e GitHub Actions. As escolhas definitivas serão justificadas por decisões arquiteturais documentadas (ADRs).
-
-## Documentação
-
-A documentação técnica é parte fundamental do projeto e será mantida versionada junto ao código-fonte.
-
-| Documento | Descrição |
+| Artefato | Propósito / estado |
 |---|---|
-| [Regras de Negócio](docs/02-business-requirements/REGRAS-DE-NEGOCIO.md) | Especificação inicial do domínio e das regras de negócio. |
-| [Políticas Críticas v0.2](docs/02-business-requirements/ADENDO-POLITICAS-CRITICAS-v0.2.md) | Complemento das regras de reservas, pagamentos, reembolsos e kits. |
-| [Processos e Diagramas](docs/03-business-processes/README.md) | Casos de uso, processos, sequências e máquinas de estados. |
-| [Políticas Consolidadas](docs/03-business-processes/POLITICAS-CONSOLIDADAS.md) | Definições operacionais das políticas críticas do E-commerce. |
+| [Índice e hierarquia de documentos](docs/README.md) | Versões, fontes de referência e como tratar divergências |
+| [Regras de negócio — AC-BRD-001 v0.2.1](docs/02-business-requirements/REGRAS-DE-NEGOCIO.md) | RN-001–070; RF, RNF e CA-001–010, incluindo ligações de segurança |
+| [Adendo de políticas críticas — v0.2](docs/02-business-requirements/ADENDO-POLITICAS-CRITICAS-v0.2.md) | RN-071–094: reservas, pagamentos tardios, refunds e kits |
+| [Processos e diagramas — Fase 02](docs/03-business-processes/README.md) | UC, PR, SQ, SM e BPMN; modelos criados, ainda para revisão |
+| [Políticas consolidadas — PC-01–04](docs/03-business-processes/POLITICAS-CONSOLIDADAS.md) | Semântica operacional das regras críticas propostas |
+| [Tabelas de transição](docs/03-business-processes/TABELAS-DE-TRANSICAO.md) | Guardas e transições de estados |
+| [Cenários críticos CA-011–026](docs/03-business-processes/CENARIOS-DE-ACEITE-v0.2.md) | Verificação futura de reserva, atraso, refund e kits |
+| [Matriz de rastreabilidade](docs/03-business-processes/MATRIZ-DE-RASTREABILIDADE.md) | RN/CA ↔ SEC/SA ↔ diagramas ↔ evidência futura |
+| [Integração com segurança](docs/03-business-processes/INTEGRACAO-SEGURANCA.md) | Interfaces entre processos e controles; lacunas dos desenhos conceituais |
+| [Especificação de segurança — AC-SEC-001 v0.2](docs/07-security/security-requirements.md) | SEC-001–038, SA-001–012 e DS-001–009 |
+| [Roteiro de segurança](docs/07-security/README.md) | O que deve ser modelado, implementado e comprovado |
 
-Novos documentos, diagramas e decisões arquiteturais serão adicionados conforme a evolução do projeto.
+Documentos e diagramas são **artefatos de projeto**, não prova de controles implementados, conformidade legal ou testes concluídos. Em políticas de negócio conflitantes, revisar o [índice de precedência](docs/README.md) e registrar a decisão antes de implementar.
 
-## Status do desenvolvimento
+## Estado do projeto (12/10/2026)
 
-**Fase atual: Análise e documentação de negócio.**
+- [x] Descoberta inicial e BRD v0.1.
+- [x] Diagramas e políticas críticas v0.2 **elaborados** (não homologados).
+- [x] Especificação de segurança **proposta** e vinculada aos requisitos.
+- [ ] Confirmar provedor de pagamentos, alçadas e políticas jurídicas pendentes.
+- [ ] Revisar/aprovar requisitos e coerência entre diagramas e transições.
+- [ ] Completar DFD/threat model, ADRs e matriz de autorização.
+- [ ] Implementar backend, frontend, testes de comportamento e validações de segurança.
+- [ ] Exercitar CI/CD, operações, deploy, backup/restore e relatórios de evidência.
 
-- [x] Especificação inicial das regras de negócio (v0.1).
-- [ ] Modelagem dos processos e diagramas.
-- [ ] Definição da arquitetura e decisões técnicas.
-- [ ] Estruturação do ambiente de desenvolvimento.
-- [ ] Implementação do backend.
-- [ ] Implementação do frontend.
-- [ ] Testes, segurança e validação de performance.
-- [ ] Implantação e documentação final.
+## Sobre
 
-## Sobre o projeto
-
-Este é um projeto independente, desenvolvido para fins educacionais e de portfólio profissional, com o objetivo de demonstrar conhecimentos em **Engenharia de Software, Arquitetura de Sistemas e Desenvolvimento Full Stack**.
-
-As funcionalidades, tecnologias e decisões arquiteturais serão evoluídas e documentadas progressivamente, buscando refletir práticas aplicáveis ao desenvolvimento de sistemas reais.
+Projeto independente e educacional, destinado ao GitHub e LinkedIn. Não oferece pagamentos reais, não declara certificação de segurança e não representa uma solução pronta para produção.
