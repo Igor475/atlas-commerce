@@ -1,0 +1,27 @@
+digraph G {
+
+  graph [fontname="DejaVu Sans", bgcolor="#FFFFFF", labeljust=l, labelloc=t, pad="0.32", nodesep="0.62", ranksep="0.85", splines=polyline];
+  node [shape=box, style="rounded,filled", fillcolor="#ECF5F6", color="#2D7180", fontname="DejaVu Sans", fontsize=11, margin="0.24,0.16"];
+  edge [color="#466879", arrowsize=0.75, fontname="DejaVu Sans", fontsize=9, fontcolor="#475569"];
+
+  graph [label="Atlas Commerce | C4 N1 — CONTEXTO (proposto)"];
+  Cliente [label="Cliente / Visitante
+Compra, biblioteca, pedidos", fillcolor="#FFF7E8", color="#C58B43"];
+  Operador [label="Equipe editorial e administrativa
+Publicação, estoque, suporte, financeiro", fillcolor="#FFF7E8", color="#C58B43"];
+  Plataforma [label="Atlas Commerce
+E-commerce editorial B2C
+[software system]", fillcolor="#CDEFF0", color="#086374", penwidth=2.2];
+  PSP [label="PSP sandbox
+Checkout hospedado, webhooks, refunds", fillcolor="#F1F1FC", color="#7470AD"];
+  Email [label="Provedor de e-mail
+Mensagens transacionais", fillcolor="#F1F1FC", color="#7470AD"];
+  Midia [label="Object storage
+Prévia pública / acervo privado", fillcolor="#F1F1FC", color="#7470AD"];
+  Cliente -> Plataforma [label=" navega / compra / lê "];
+  Operador -> Plataforma [label=" administra sob permissão "];
+  Plataforma -> PSP [label=" sessão + refund "];
+  PSP -> Plataforma [label=" webhook autenticável "];
+  Plataforma -> Email [label=" notificação recuperável "];
+  Plataforma -> Midia [label=" entrega autorizada "];
+}

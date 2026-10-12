@@ -1,0 +1,35 @@
+digraph G {
+
+  graph [fontname="DejaVu Sans", bgcolor="#FFFFFF", labeljust=l, labelloc=t, pad="0.32", nodesep="0.62", ranksep="0.85", splines=polyline];
+  node [shape=box, style="rounded,filled", fillcolor="#ECF5F6", color="#2D7180", fontname="DejaVu Sans", fontsize=11, margin="0.24,0.16"];
+  edge [color="#466879", arrowsize=0.75, fontname="DejaVu Sans", fontsize=9, fontcolor="#475569"];
+
+  graph [label="DFD-03 — LICENÇA, ENTITLEMENT E MÍDIA PRIVADA", rankdir=LR];
+  Buyer [label="[T0] Leitor autenticado
+Cliente / browser",fillcolor="#FFF7E8",color="#C58B43"];
+  Editor [label="[T0] Editor autorizado
+Upload editorial",fillcolor="#FFF7E8",color="#C58B43"];
+  subgraph cluster_server {
+    label="[T1] API — validação e autorização";style="rounded,filled";fillcolor="#F6FBFC";color="#8BBBC3";
+    Upload [label="Upload/inspeção
+Tipo, tamanho, licença"];
+    Library [label="Digital Library
+Entitlement + titularidade + kit"];
+    URL [label="Emissor de acesso
+URL/stream curto e escopado"];
+  }
+  DB [label="[T2] PostgreSQL
+Licença, Order, Entitlement, Audit",shape=cylinder,fillcolor="#F1F8FC"];
+  Pub [label="[T3] Storage público
+Somente capas/prévias autorizadas",fillcolor="#F1F1FC",color="#7470AD"];
+  Priv [label="[T3] Storage privado
+PDF/ebook/revista completos",fillcolor="#FCECF2",color="#AA5270"];
+  Buyer -> Library [label=" solicitar conteúdo "];
+  Library -> DB [label=" authz e licença "];
+  Library -> URL [label=" autorizado "];
+  URL -> Priv [label=" acesso temporal "];
+  Editor -> Upload [label=" nova mídia "];
+  Upload -> DB [label=" licença / revisão "];
+  Upload -> Pub [label=" prévia liberada "];
+  Upload -> Priv [label=" arquivo comercial isolado "];
+}

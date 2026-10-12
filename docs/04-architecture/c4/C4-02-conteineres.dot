@@ -1,0 +1,41 @@
+digraph G {
+
+  graph [fontname="DejaVu Sans", bgcolor="#FFFFFF", labeljust=l, labelloc=t, pad="0.32", nodesep="0.62", ranksep="0.85", splines=polyline];
+  node [shape=box, style="rounded,filled", fillcolor="#ECF5F6", color="#2D7180", fontname="DejaVu Sans", fontsize=11, margin="0.24,0.16"];
+  edge [color="#466879", arrowsize=0.75, fontname="DejaVu Sans", fontsize=9, fontcolor="#475569"];
+
+  graph [label="Atlas Commerce | C4 N2 — CONTÊINERES (proposta)", rankdir=LR];
+  Browser [label="Browser
+Cliente / Operador",fillcolor="#FFF7E8",color="#C58B43"];
+  subgraph cluster_atlas {
+    label="Atlas Commerce — software system"; style="rounded,filled"; color="#8BBBC3"; fillcolor="#F6FBFC"; fontsize=12;
+    Storefront [label="Storefront
+Next.js / React
+[web app]",fillcolor="#E0F2F4"];
+    Admin [label="Backoffice
+Next.js (ou app unificada por ADR)
+[web app]",fillcolor="#E0F2F4"];
+    API [label="API modular
+NestJS / TypeScript
+[backend]",fillcolor="#CAE7EA",penwidth=2];
+    DB [label="PostgreSQL
+Dados transacionais, outbox/inbox
+[database]",shape=cylinder,fillcolor="#F1F8FC"];
+    Job [label="Executor jobs / worker opcional
+Locks, reconciliação e notificações",style="rounded,dashed,filled",fillcolor="#FCF9EC",color="#C3A05C"];
+  }
+  PSP [label="PSP sandbox / hosted checkout",fillcolor="#F1F1FC",color="#7470AD"];
+  Storage [label="Object storage
+Privado / prévias",fillcolor="#F1F1FC",color="#7470AD"];
+  Email [label="E-mail externo",fillcolor="#F1F1FC",color="#7470AD"];
+  Browser -> Storefront [label=" HTTPS "];
+  Browser -> Admin [label=" HTTPS + MFA "];
+  Storefront -> API [label=" APIs + authz "];
+  Admin -> API [label=" APIs administrativas "];
+  API -> DB [label=" transações "];
+  Job -> DB [label=" retoma outbox "];
+  API -> PSP [label=" sessão / refund "];
+  PSP -> API [label=" webhook "];
+  API -> Storage [label=" valida / assina "];
+  Job -> Email [label=" mensagem recuperável "];
+}

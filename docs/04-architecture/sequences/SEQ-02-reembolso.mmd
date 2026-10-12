@@ -1,0 +1,32 @@
+sequenceDiagram
+    autonumber
+    actor Cliente
+    participant Support as Atendimento
+    participant Finance as Financeiro autorizado
+    participant Payments
+    participant DB as PostgreSQL
+    participant PSP as PSP sandbox
+    participant Fulfillment
+    participant Library as Biblioteca
+    Cliente->>Support: Solicitar devolução (inclusive digital/kit)
+    Support->>DB: Registrar motivo, data, itens e direitos aplicáveis
+    Support->>Finance: Encaminhar enquadramento e documentação
+    Finance->>Finance: Autorizar segundo alçada/MFA/separação (em decisão)
+    Finance->>Payments: Aprovar operação financeira referenciada
+    Payments->>DB: Lock captura + reservar saldo reembolsável e intenção
+    DB-->>Payments: Refund ID e key persistidos
+    Payments->>PSP: Refund com chave idempotente estável
+    alt Prova de reembolso concluído
+        PSP-->>Payments: Confirmação verificável
+        Payments->>DB: Marcar SUCCEEDED somente uma vez
+    else Timeout/estado externo indeterminado
+        PSP-->>Payments: Falha de rede / pendente
+        Payments->>DB: RECONCILIATION_REQUIRED, saldo permanece reservado
+        Payments->>PSP: Consultar mesmo refund até prova de estado
+    else Falha definitiva comprovada
+        PSP-->>Payments: Rejeição final verificável
+        Payments->>DB: FAILED; liberar reserva financeira
+    end
+    Support->>Fulfillment: Inspecionar retorno físico para disponibilidade
+    Support->>Library: Decidir direitos digitais fundamentadamente
+    Note over Support,Library: Pedido de devolução não revoga direito automaticamente

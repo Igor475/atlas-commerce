@@ -1,0 +1,38 @@
+digraph G {
+
+  graph [fontname="DejaVu Sans", bgcolor="#FFFFFF", labeljust=l, labelloc=t, pad="0.32", nodesep="0.62", ranksep="0.85", splines=polyline];
+  node [shape=box, style="rounded,filled", fillcolor="#ECF5F6", color="#2D7180", fontname="DejaVu Sans", fontsize=11, margin="0.24,0.16"];
+  edge [color="#466879", arrowsize=0.75, fontname="DejaVu Sans", fontsize=9, fontcolor="#475569"];
+
+  graph [label="DFD-02 — CHECKOUT, PSP, ESTOQUE, COMPENSAÇÃO", rankdir=LR];
+  Browser [label="[T0] Browser
+Preço não confiável",fillcolor="#FFF7E8",color="#C58B43"];
+  subgraph cluster_api {
+    label="[T1] API e contratos de domínio"; style="rounded,filled"; fillcolor="#F6FBFC"; color="#8BBBC3";
+    Checkout [label="Checkout
+Cotação e chave idempotente"];
+    Inventory [label="Inventory
+Reserva 40m, concorrência"];
+    Pay [label="Payments
+Webhook / prova / refund", fillcolor="#CAE7EA",penwidth=2];
+    Outbox [label="Outbox + executor
+Intent, retry, dedup"];
+  }
+  DB [label="[T2] PostgreSQL
+Order, Reservation, PSP event, Refund",shape=cylinder,fillcolor="#F1F8FC"];
+  PSP [label="[T3] PSP sandbox
+Hosted checkout e webhooks",fillcolor="#F1F1FC",color="#7470AD"];
+  Delivery [label="[T1] Fulfillment/Library
+Gating do acesso",fillcolor="#F7F9FA"];
+  Browser -> Checkout [label=" itens / intenção "];
+  Checkout -> Inventory [label=" reservar tudo ou nada "];
+  Inventory -> DB [label=" transação / DB clock "];
+  Checkout -> Pay [label=" tentativa estável "];
+  Pay -> PSP [label=" criar sessão / refund "];
+  PSP -> Pay [label=" signed webhook (não confiável até validar) "];
+  Pay -> DB [label=" dedup + fato persistido "];
+  Pay -> Inventory [label=" confirmar antes de expirar "];
+  Pay -> Outbox [label=" efeitos recuperáveis "];
+  Outbox -> Delivery [label=" entrega só se elegível "];
+  Outbox -> DB [label=" persistir retry "];
+}

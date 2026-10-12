@@ -1,0 +1,55 @@
+digraph G {
+
+  graph [fontname="DejaVu Sans", bgcolor="#FFFFFF", labeljust=l, labelloc=t, pad="0.32", nodesep="0.62", ranksep="0.85", splines=polyline];
+  node [shape=box, style="rounded,filled", fillcolor="#ECF5F6", color="#2D7180", fontname="DejaVu Sans", fontsize=11, margin="0.24,0.16"];
+  edge [color="#466879", arrowsize=0.75, fontname="DejaVu Sans", fontsize=9, fontcolor="#475569"];
+
+  graph [label="Atlas Commerce | C4 N3 — COMPONENTES DA API", rankdir=LR];
+  UI [label="Storefront / Backoffice",fillcolor="#FFF7E8",color="#C58B43"];
+  subgraph cluster_api {
+    label="API NestJS — monólito modular"; style="rounded,filled"; fillcolor="#F6FBFC"; color="#8BBBC3";
+    I [label="Identity & Access
+Sessões, MFA, permissões"];
+    C [label="Catalog
+Produtos, edição, licenças"];
+    PR [label="Pricing & Promotions
+Cotação, cupom"];
+    CO [label="Checkout & Orders
+Snapshot e pedido"];
+    INV [label="Inventory
+Reserva e expiração"];
+    PAY [label="Payments
+Tentativas, webhook, refund"];
+    LIB [label="Digital Library
+Entitlements / delivery"];
+    F [label="Fulfillment / Support
+Remessa, devolução"];
+    OUT [label="Integration / Outbox
+Intenção, retries"];
+    AUD [label="Audit / Privacy
+Trilha e minimização"];
+  }
+  DB [label="PostgreSQL
+fonte de verdade",shape=cylinder,fillcolor="#EDF3FA"];
+  PSP [label="PSP sandbox",fillcolor="#F1F1FC",color="#7470AD"];
+  OBJ [label="Object storage privado",fillcolor="#F1F1FC",color="#7470AD"];
+  UI -> I [label=" sessão "];
+  UI -> C [label=" catálogo "];
+  UI -> CO [label=" intenção / pedido "];
+  CO -> PR [label=" preço server-side "];
+  CO -> INV [label=" reservar "];
+  CO -> PAY [label=" iniciar tentativa "];
+  PAY -> INV [label=" confirmação sob guarda "];
+  PAY -> OUT [label=" persistir efeito "];
+  OUT -> LIB [label=" entrega idempotente "];
+  OUT -> F [label=" separação de remessas "];
+  F -> PAY [label=" caso de refund autorizado "];
+  LIB -> OBJ [label=" acesso após entitlement "];
+  PAY -> PSP [label=" webhook/refund "];
+  I -> DB;
+  INV -> DB;
+  CO -> DB;
+  PAY -> DB;
+  OUT -> DB;
+  AUD -> DB;
+}

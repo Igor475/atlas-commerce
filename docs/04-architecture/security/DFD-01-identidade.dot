@@ -1,0 +1,29 @@
+digraph G {
+
+  graph [fontname="DejaVu Sans", bgcolor="#FFFFFF", labeljust=l, labelloc=t, pad="0.32", nodesep="0.62", ranksep="0.85", splines=polyline];
+  node [shape=box, style="rounded,filled", fillcolor="#ECF5F6", color="#2D7180", fontname="DejaVu Sans", fontsize=11, margin="0.24,0.16"];
+  edge [color="#466879", arrowsize=0.75, fontname="DejaVu Sans", fontsize=9, fontcolor="#475569"];
+
+  graph [label="DFD-01 — IDENTIDADE, SESSÃO, MFA, RECUPERAÇÃO", rankdir=LR];
+  Usuario [label="Cliente / Operador
+[T0 Internet]",fillcolor="#FFF7E8",color="#C58B43"];
+  subgraph cluster_api {
+    label="[T1] Fronteira do backend autorizado"; style="rounded,filled"; fillcolor="#F6FBFC"; color="#8BBBC3";
+    API [label="API de identidade
+Validar input, rate limit, CSRF"];
+    AUTH [label="Sessão e credenciais
+Hash, revogação, MFA, step-up"];
+    ACL [label="Autorização recurso/ação
+BOLA, papel, escopo"];
+  }
+  DB [label="[T2] PostgreSQL
+contas, sessões, tokens de uso único",shape=cylinder,fillcolor="#F1F8FC"];
+  Mail [label="[T3] Provedor de e-mail
+canal de verificação/recuperação",fillcolor="#F1F1FC",color="#7470AD"];
+  Usuario -> API [label=" login / refresh / reset "];
+  API -> AUTH [label=" requests validadas "];
+  AUTH -> DB [label=" atomicidade / revogação "];
+  AUTH -> Mail [label=" token por propósito "];
+  API -> ACL [label=" ação autorizada "];
+  ACL -> DB [label=" titularidade e scope "];
+}

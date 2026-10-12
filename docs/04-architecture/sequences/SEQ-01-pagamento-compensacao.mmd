@@ -1,0 +1,37 @@
+sequenceDiagram
+    autonumber
+    actor Cliente
+    participant Checkout
+    participant Inventory
+    participant Orders
+    participant DB as PostgreSQL
+    participant Payments
+    participant PSP as PSP sandbox
+    participant Outbox
+    participant Delivery as Fulfillment/Library
+    Cliente->>Checkout: Confirmar cotação server-side (key estável)
+    Checkout->>DB: Transação: snapshot, pedido, cupom, reserva física completa
+    DB-->>Checkout: Commit ou rollback atômico; expires_at do banco
+    Checkout->>Payments: Criar tentativa estável
+    Payments->>PSP: Criar sessão apenas se 40/30/5 compatível
+    PSP-->>Payments: Identificador + vencimento absoluto
+    Payments-->>Cliente: Link, após validação da validade
+    PSP->>Payments: Webhook assinado (duplicável/fora de ordem)
+    Payments->>Payments: Validar autenticidade, valor, moeda, ID e replay
+    Payments->>DB: Deduplicar evento e persistir fato financeiro
+    alt Pago + reserva ACTIVE e válida
+        Payments->>Inventory: Confirmar reserva com transação/guarda serializada
+        Inventory->>DB: Confirmar CONFIRMED ou indicar disputa perdida
+        DB-->>Inventory: Confirmado
+        Inventory->>Orders: Transição permitida PENDING_PAYMENT -> PAID
+        Orders->>Outbox: Intenção durável de entrega
+        Outbox->>Delivery: Fulfillment/entitlement idempotente segundo item
+    else Pago + reserva EXPIRED/RELEASED
+        Payments->>Orders: PAYMENT_REVIEW; não liberar direitos/entrega
+        Payments->>DB: Registrar intenção de refund integral com chave estável
+        Payments->>PSP: Refund idempotente (fora da transação)
+        PSP-->>Payments: Confirmado ou incerto
+        Payments->>DB: Conciliar até prova
+    else Webhook inválido ou pendente
+        Payments->>DB: Rejeitar/autenticar ou marcar revisão
+    end
