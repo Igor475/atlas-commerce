@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1490" height="1215" viewBox="0 0 1490 1215">
+<rect width="1490" height="1215" fill="#fff"/>
+<text x="745.0" y="35" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="23" font-weight="bold">SQ-04-REEMBOLSO-IDEMPOTENTE • Reembolso concorrente e reconciliação</text>
+<defs><marker id="arr" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M 0 0 L 8 3.5 L 0 7 z" fill="#334155"/></marker></defs>
+<line x1="100.0" x2="100.0" y1="105" y2="1185" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="-12.0" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="100.0" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">Atendimento</text>
+<line x1="422.5" x2="422.5" y1="105" y2="1185" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="310.5" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="422.5" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">Reembolsos</text>
+<line x1="745.0" x2="745.0" y1="105" y2="1185" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="633.0" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="745.0" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">PostgreSQL</text>
+<line x1="1067.5" x2="1067.5" y1="105" y2="1185" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="955.5" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="1067.5" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">Provedor</text>
+<line x1="1390.0" x2="1390.0" y1="105" y2="1185" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="1278.0" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="1390.0" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">Conciliação</text>
+<text x="20" y="170" font-size="13" font-family="DejaVu Sans" fill="#64748b">01</text>
+<line x1="100.0" x2="422.5" y1="165" y2="165" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="261.2" y="151" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Solicitar refund por valor e itens</text>
+<text x="20" y="263" font-size="13" font-family="DejaVu Sans" fill="#64748b">02</text>
+<line x1="422.5" x2="745.0" y1="258" y2="258" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="583.8" y="244" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Transação: validar captação e reservar saldo</text>
+<text x="20" y="356" font-size="13" font-family="DejaVu Sans" fill="#64748b">03</text>
+<line x1="745.0" x2="422.5" y1="351" y2="351" stroke="#334155" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<text x="583.8" y="337" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Valor reservado ou saldo insuficiente</text>
+<text x="20" y="449" font-size="13" font-family="DejaVu Sans" fill="#64748b">04</text>
+<line x1="422.5" x2="745.0" y1="444" y2="444" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="583.8" y="430" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Gravar refund e chave idempotente estável</text>
+<text x="20" y="542" font-size="13" font-family="DejaVu Sans" fill="#64748b">05</text>
+<line x1="422.5" x2="1067.5" y1="537" y2="537" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="745.0" y="523" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Solicitar devolução com chave estável</text>
+<text x="20" y="635" font-size="13" font-family="DejaVu Sans" fill="#64748b">06</text>
+<line x1="1067.5" x2="422.5" y1="630" y2="630" stroke="#334155" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<text x="745.0" y="616" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Timeout ou resultado pendente</text>
+<text x="20" y="728" font-size="13" font-family="DejaVu Sans" fill="#64748b">07</text>
+<line x1="422.5" x2="745.0" y1="723" y2="723" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="583.8" y="709" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Marcar RECONCILIATION_REQUIRED sem liberar valor</text>
+<text x="20" y="821" font-size="13" font-family="DejaVu Sans" fill="#64748b">08</text>
+<line x1="1390.0" x2="1067.5" y1="816" y2="816" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="1228.8" y="802" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Consultar mesmo refund_id no provedor</text>
+<text x="20" y="914" font-size="13" font-family="DejaVu Sans" fill="#64748b">09</text>
+<line x1="1067.5" x2="1390.0" y1="909" y2="909" stroke="#334155" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<text x="1228.8" y="895" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Confirma sucesso ou falha definitiva</text>
+<text x="20" y="1007" font-size="13" font-family="DejaVu Sans" fill="#64748b">10</text>
+<line x1="1390.0" x2="745.0" y1="1002" y2="1002" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="1067.5" y="988" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Persistir resultado uma vez</text>
+<text x="20" y="1100" font-size="13" font-family="DejaVu Sans" fill="#64748b">11</text>
+<line x1="745.0" x2="100.0" y1="1095" y2="1095" stroke="#334155" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<text x="422.5" y="1081" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Disponibilizar status auditável ao atendimento</text>
+</svg>

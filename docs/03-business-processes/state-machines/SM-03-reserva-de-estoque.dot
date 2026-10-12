@@ -1,17 +1,17 @@
 digraph AtlasCommerce {
-	graph [bgcolor=white concentrate=false fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=23 label="SM-03 • Reserva de estoque físico" labelloc=t nodesep=.52 outputorder=edgesfirst pad=0.24 rankdir=LR ranksep=.87 splines=polyline]
-	node [color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=11 margin="0.14,0.09" penwidth=1.3 shape=box style="rounded,filled"]
-	edge [arrowsize=.7 color="#475569" fontcolor="#64748b" fontname="DejaVu Sans" fontsize=10]
-	active [label=ACTIVE color="#1d4ed8" fillcolor="#eff6ff"]
-	confirmed [label=CONFIRMED color="#0f172a" fillcolor="#e2e8f0" shape=box]
-	released [label=RELEASED color="#0f172a" fillcolor="#e2e8f0" shape=box]
-	expired [label=EXPIRED color="#0f172a" fillcolor="#e2e8f0" shape=box]
-	active -> confirmed [label="Pagamento validado +
-alocação vigente"]
-	active -> released [label="Cancelamento ou rejeição
-segura"]
-	active -> expired [label="Expiração atômica e
-liberação"]
-	NOTE [label="Transições terminais são idempotentes; nunca recriar estoque." color="#fcd34d" fillcolor="#fffbeb" fontsize=10 shape=note]
-	NOTE -> active [style=invis]
+graph [bgcolor=white fontname="DejaVu Sans" fontcolor="#0f172a" fontsize=22 label="SM-03 • Reserva física | TTL de 40 min" labelloc=t pad="0.34" rankdir=TB ranksep="0.83" nodesep="0.45" splines=polyline outputorder=edgesfirst];
+node [fontname="DejaVu Sans" fontsize=11 color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" style="rounded,filled" shape=box margin="0.16,0.12" penwidth=1.2];
+edge [fontname="DejaVu Sans" fontsize=10 color="#475569" fontcolor="#475569" arrowsize=.7];
+
+rankdir=LR;
+active [label="ACTIVE\nexpires_at = created_at + 40m" color="#1d4ed8" fillcolor="#eff6ff"];
+confirmed [label="CONFIRMED" color="#0f766e" fillcolor="#f0fdfa"];
+released [label="RELEASED" color="#64748b" fillcolor="#e2e8f0"];
+expired [label="EXPIRED" color="#64748b" fillcolor="#e2e8f0"];
+active -> confirmed [label="Pagamento validado +\nnow < expires_at"];
+active -> released [label="Cancelamento seguro\ncomprovado"];
+active -> expired [label="now >= expires_at;\nliberação atômica"];
+note [label="Sem extensão automática. Estados terminais não reabrem.\nWebhook pago após expiração: PAYMENT_REVIEW + refund." shape=note color="#f59e0b" fillcolor="#fffbeb"];
+note -> active [style=invis];
+
 }

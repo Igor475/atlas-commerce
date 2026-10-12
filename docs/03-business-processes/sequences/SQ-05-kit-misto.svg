@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1756" height="1308" viewBox="0 0 1756 1308">
+<rect width="1756" height="1308" fill="#fff"/>
+<text x="878.0" y="35" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="23" font-weight="bold">SQ-05-KIT-MISTO • Checkout e fulfillment de kit misto</text>
+<defs><marker id="arr" markerWidth="9" markerHeight="7" refX="8" refY="3.5" orient="auto"><path d="M 0 0 L 8 3.5 L 0 7 z" fill="#334155"/></marker></defs>
+<line x1="100.0" x2="100.0" y1="105" y2="1278" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="-12.0" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="100.0" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">Cliente</text>
+<line x1="411.2" x2="411.2" y1="105" y2="1278" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="299.2" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="411.2" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">Checkout</text>
+<line x1="722.4" x2="722.4" y1="105" y2="1278" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="610.4" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="722.4" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">PostgreSQL</text>
+<line x1="1033.6" x2="1033.6" y1="105" y2="1278" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="921.6" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="1033.6" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">Provedor</text>
+<line x1="1344.8" x2="1344.8" y1="105" y2="1278" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="1232.8" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="1344.8" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">Fulfillment</text>
+<line x1="1656.0" x2="1656.0" y1="105" y2="1278" stroke="#94a3b8" stroke-dasharray="5 5"/>
+<rect x="1544.0" y="60" width="224" height="46" rx="7" fill="#eff6ff" stroke="#1d4ed8" stroke-width="1.7"/>
+<text x="1656.0" y="87" text-anchor="middle" font-family="DejaVu Sans" fill="#0f172a" font-size="14" font-weight="bold">Biblioteca</text>
+<text x="20" y="170" font-size="13" font-family="DejaVu Sans" fill="#64748b">01</text>
+<line x1="100.0" x2="411.2" y1="165" y2="165" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="255.6" y="151" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Comprar kit com componentes físicos e digitais</text>
+<text x="20" y="263" font-size="13" font-family="DejaVu Sans" fill="#64748b">02</text>
+<line x1="411.2" x2="722.4" y1="258" y2="258" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="566.8" y="244" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Transação: snapshot e reserva all-or-nothing</text>
+<text x="20" y="356" font-size="13" font-family="DejaVu Sans" fill="#64748b">03</text>
+<line x1="722.4" x2="411.2" y1="351" y2="351" stroke="#334155" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<text x="566.8" y="337" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Pedido e reserva criados ou rollback total</text>
+<text x="20" y="449" font-size="13" font-family="DejaVu Sans" fill="#64748b">04</text>
+<line x1="411.2" x2="1033.6" y1="444" y2="444" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="722.4" y="430" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Criar tentativa compatível com validade da reserva</text>
+<text x="20" y="542" font-size="13" font-family="DejaVu Sans" fill="#64748b">05</text>
+<line x1="1033.6" x2="411.2" y1="537" y2="537" stroke="#334155" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<text x="722.4" y="523" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Sessão de pagamento e referência estável</text>
+<text x="20" y="635" font-size="13" font-family="DejaVu Sans" fill="#64748b">06</text>
+<line x1="1033.6" x2="411.2" y1="630" y2="630" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="722.4" y="616" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Pagamento confirmado e autenticado</text>
+<text x="20" y="728" font-size="13" font-family="DejaVu Sans" fill="#64748b">07</text>
+<line x1="411.2" x2="722.4" y1="723" y2="723" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="566.8" y="709" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Confirmar reserva ainda ACTIVE e pedido PAID</text>
+<text x="20" y="821" font-size="13" font-family="DejaVu Sans" fill="#64748b">08</text>
+<line x1="722.4" x2="411.2" y1="816" y2="816" stroke="#334155" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+<text x="566.8" y="802" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Alocação de todos os físicos confirmada</text>
+<text x="20" y="914" font-size="13" font-family="DejaVu Sans" fill="#64748b">09</text>
+<line x1="411.2" x2="1656.0" y1="909" y2="909" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="1033.6" y="895" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Conceder direitos digitais dos componentes uma vez</text>
+<text x="20" y="1007" font-size="13" font-family="DejaVu Sans" fill="#64748b">10</text>
+<line x1="411.2" x2="1344.8" y1="1002" y2="1002" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="878.0" y="988" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Preparar físicos do mesmo kit na mesma remessa</text>
+<text x="20" y="1100" font-size="13" font-family="DejaVu Sans" fill="#64748b">11</text>
+<line x1="1344.8" x2="722.4" y1="1095" y2="1095" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="1033.6" y="1081" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Registrar entrega completa ou exceção por falta</text>
+<text x="20" y="1193" font-size="13" font-family="DejaVu Sans" fill="#64748b">12</text>
+<line x1="1656.0" x2="722.4" y1="1188" y2="1188" stroke="#334155" stroke-width="1.6"  marker-end="url(#arr)"/>
+<text x="1189.2" y="1174" text-anchor="middle" font-size="12" font-family="DejaVu Sans" fill="#0f172a">Registrar direitos por item e titular</text>
+</svg>

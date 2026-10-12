@@ -1,0 +1,27 @@
+digraph AtlasCommerce {
+graph [bgcolor=white fontname="DejaVu Sans" fontcolor="#0f172a" fontsize=22 label="PC-04 • Venda e devolução de kits" labelloc=t pad="0.34" rankdir=TB ranksep="0.83" nodesep="0.45" splines=polyline outputorder=edgesfirst];
+node [fontname="DejaVu Sans" fontsize=11 color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" style="rounded,filled" shape=box margin="0.16,0.12" penwidth=1.2];
+edge [fontname="DejaVu Sans" fontsize=10 color="#475569" fontcolor="#475569" arrowsize=.7];
+
+start [label="Kit simples (SKU comercial)" fillcolor="#f0fdfa" color="#0f766e"];
+compose [label="Congelar composição, quantidades,\npreço único e componentes tipados" fillcolor="#eff6ff" color="#1d4ed8"];
+res [label="Reservar TODOS os componentes\nfísicos na mesma transação" fillcolor="#eff6ff" color="#1d4ed8"];
+check [label="Todos disponíveis?" shape=diamond fillcolor="#fffbeb" color="#f59e0b"];
+stop [label="Falhar kit inteiro;\nrollback total" fillcolor="#fef2f2" color="#b91c1c"];
+paid [label="Pagamento aprovado,\nreserva confirmada quando físico" fillcolor="#eff6ff" color="#1d4ed8"];
+ship [label="Físicos do mesmo kit\nseguem na mesma remessa" fillcolor="#eff6ff" color="#1d4ed8"];
+digital [label="Conceder entitlement de cada\ncomponente digital (1 vez)" fillcolor="#eff6ff" color="#1d4ed8"];
+returns [label="Pós-venda: se cliente solicitar
+devolução de kit" fillcolor="#eff6ff" color="#1d4ed8"];
+whole [label="Padrão: linha inteira\nExceções legais: analisar" fillcolor="#fff7ed" color="#b45309"];
+settle [label="Reembolsar com evidência PSP;\nrepor físicos só após inspeção" fillcolor="#f0fdfa" color="#0f766e"];
+start -> compose -> res -> check;
+check -> stop [label="não"];
+check -> paid [label="sim"];
+paid -> ship;
+paid -> digital;
+ship -> returns;
+digital -> returns;
+returns -> whole -> settle;
+
+}

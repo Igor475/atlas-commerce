@@ -1,0 +1,27 @@
+digraph AtlasCommerce {
+graph [bgcolor=white fontname="DejaVu Sans" fontcolor="#0f172a" fontsize=22 label="PC-01/02 • Reserva e compensação tardia" labelloc=t pad="0.34" rankdir=TB ranksep="0.83" nodesep="0.45" splines=polyline outputorder=edgesfirst];
+node [fontname="DejaVu Sans" fontsize=11 color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" style="rounded,filled" shape=box margin="0.16,0.12" penwidth=1.2];
+edge [fontname="DejaVu Sans" fontsize=10 color="#475569" fontcolor="#475569" arrowsize=.7];
+
+start [label="Confirmar checkout" fillcolor="#f0fdfa" color="#0f766e"];
+reserve [label="Validar + reservar TODOS os físicos\n+ pedido + expires_at (40 min)\ntransação única" fillcolor="#eff6ff" color="#1d4ed8"];
+psp [label="PSP: checkout expira até 30 min\ne antes da reserva" fillcolor="#eff6ff" color="#1d4ed8"];
+paid [label="Pagamento válido?" shape=diamond fillcolor="#fffbeb" color="#f59e0b"];
+valid [label="Reserva ainda ACTIVE,\nnow < expires_at?" shape=diamond fillcolor="#fffbeb" color="#f59e0b"];
+confirm [label="Confirmar reserva\n+ pedido PAID" fillcolor="#f0fdfa" color="#0f766e"];
+expired [label="Chegou o vencimento?" shape=diamond fillcolor="#fffbeb" color="#f59e0b"];
+release [label="EXPIRED com liberação uma vez\n+ reconciliação financeira" fillcolor="#eff6ff" color="#1d4ed8"];
+review [label="PAYMENT_REVIEW\nsem fulfillment" fillcolor="#fff7ed" color="#b45309"];
+refund [label="Refund integral idempotente\n+ aguardar confirmação" fillcolor="#fef2f2" color="#b91c1c"];
+finish [label="CANCELLED somente após\ncompensação comprovada" fillcolor="#f0fdfa" color="#0f766e"];
+start -> reserve -> psp -> paid;
+paid -> valid [label="sim"];
+valid -> confirm [label="sim"];
+valid -> review [label="não"];
+review -> refund -> finish;
+paid -> expired [label="não / indefinido"];
+expired -> release [label="sim"];
+release -> review [label="cobrança foi confirmada"];
+expired -> paid [label="não; aguarda/resolver",style=dashed];
+
+}

@@ -1,0 +1,18 @@
+sequenceDiagram
+autonumber
+participant A as Atendimento
+participant R as Reembolsos
+participant B as PostgreSQL
+participant P as Provedor
+participant C as Conciliação
+A->>R: Solicitar refund por valor e itens
+R->>B: Transação: validar captação e reservar saldo
+B-->>R: Valor reservado ou saldo insuficiente
+R->>B: Gravar refund e chave idempotente estável
+R->>P: Solicitar devolução com chave estável
+P-->>R: Timeout ou resultado pendente
+R->>B: Marcar RECONCILIATION_REQUIRED sem liberar valor
+C->>P: Consultar mesmo refund_id no provedor
+P-->>C: Confirma sucesso ou falha definitiva
+C->>B: Persistir resultado uma vez
+B-->>A: Disponibilizar status auditável ao atendimento

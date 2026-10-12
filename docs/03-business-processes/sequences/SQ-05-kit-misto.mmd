@@ -1,0 +1,20 @@
+sequenceDiagram
+autonumber
+participant C as Cliente
+participant K as Checkout
+participant B as PostgreSQL
+participant P as Provedor
+participant F as Fulfillment
+participant D as Biblioteca
+C->>K: Comprar kit com componentes físicos e digitais
+K->>B: Transação: snapshot e reserva all-or-nothing
+B-->>K: Pedido e reserva criados ou rollback total
+K->>P: Criar tentativa compatível com validade da reserva
+P-->>K: Sessão de pagamento e referência estável
+P->>K: Pagamento confirmado e autenticado
+K->>B: Confirmar reserva ainda ACTIVE e pedido PAID
+B-->>K: Alocação de todos os físicos confirmada
+K->>D: Conceder direitos digitais dos componentes uma vez
+K->>F: Preparar físicos do mesmo kit na mesma remessa
+F->>B: Registrar entrega completa ou exceção por falta
+D->>B: Registrar direitos por item e titular

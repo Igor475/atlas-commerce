@@ -1,9 +1,9 @@
 # Atlas Commerce — Fase 02: Modelagem de processos e diagramas
 
 > **Identificador:** AC-MODEL-002  
-> **Versão:** 0.1.0 — proposta para revisão  
+> **Versão:** 0.2.0 — políticas críticas propostas para revisão  
 > **Data:** 12/10/2026  
-> **Fonte:** [Regras de Negócio v0.1](../02-business-requirements/REGRAS-DE-NEGOCIO.md)  
+> **Fonte:** [BRD v0.1](../02-business-requirements/REGRAS-DE-NEGOCIO.md) + [Adendo v0.2](../02-business-requirements/ADENDO-POLITICAS-CRITICAS-v0.2.md)  
 > **Estado:** Modelos propostos; nenhuma funcionalidade é considerada implementada.
 
 ## Objetivo
@@ -19,7 +19,7 @@ Representar, de maneira visual e rastreável, os **atores e capacidades**, os **
 
 **Semântica fundamental:** `Pedido`, `Tentativa de pagamento`, `Reserva`, `Remessa`, `Direito digital` e `Solicitação de devolução` possuem ciclos de vida **diferentes**. Uma notificação do provedor não pode atualizar todos indiscriminadamente.
 
-## Catálogo dos diagramas
+## Catálogo dos 20 diagramas visuais
 
 | ID | Diagrama | Fonte editável | Visualização | Regras principais |
 |---|---|---|---|---|
@@ -47,6 +47,31 @@ Representar, de maneira visual e rastreável, os **atores e capacidades**, os **
 
 Os arquivos `.bpmn` contêm **XML BPMN 2.0 e informações BPMN DI** para editores compatíveis. Os SVGs de PR-01 e PR-03 são **fluxogramas conceituais**, não exportações de um editor BPMN; não confundir as notações. Esses BPMNs não são automações executáveis.
 
+
+## Atualização v0.2 — políticas de negócio consolidadas
+
+- [Políticas consolidadas (PC-01 a PC-04)](POLITICAS-CONSOLIDADAS.md)
+- [Tabelas de transição com guardas e efeitos](TABELAS-DE-TRANSICAO.md)
+- [Cenários CA-011 a CA-026](CENARIOS-DE-ACEITE-v0.2.md)
+- [Adendo de regras RN-071 a RN-094](../02-business-requirements/ADENDO-POLITICAS-CRITICAS-v0.2.md)
+
+### Diagramas criados ou revisados para v0.2
+
+| ID | Tema | Fonte | Visual |
+|---|---|---|---|
+| SM-01 | Pedido (revisado) | [DOT](state-machines/SM-01-pedido.dot) | [SVG](state-machines/SM-01-pedido.svg) |
+| SM-02 | Tentativa de pagamento (revisado) | [DOT](state-machines/SM-02-tentativa-de-pagamento.dot) | [SVG](state-machines/SM-02-tentativa-de-pagamento.svg) |
+| SM-03 | Reserva de estoque (revisado) | [DOT](state-machines/SM-03-reserva-de-estoque.dot) | [SVG](state-machines/SM-03-reserva-de-estoque.svg) |
+| SM-07 | Reembolso (novo) | [DOT](state-machines/SM-07-reembolso.dot) | [SVG](state-machines/SM-07-reembolso.svg) |
+| PC-01/02 | Reserva e pagamento tardio | [DOT](processes/PC-01-reserva-e-pagamento-tardio.dot) | [SVG](processes/PC-01-reserva-e-pagamento-tardio.svg) |
+| PC-03 | Reembolso | [DOT](processes/PC-03-reembolso.dot) | [SVG](processes/PC-03-reembolso.svg) |
+| PC-04 | Kits | [DOT](processes/PC-04-kits.dot) | [SVG](processes/PC-04-kits.svg) |
+| SQ-03 | Pagamento tardio (revisado) | [Mermaid](sequences/SQ-03-pagamento-tardio.mmd) | [SVG](sequences/SQ-03-pagamento-tardio.svg) |
+| SQ-04 | Reembolso idempotente | [Mermaid](sequences/SQ-04-reembolso-idempotente.mmd) | [SVG](sequences/SQ-04-reembolso-idempotente.svg) |
+| SQ-05 | Kit misto | [Mermaid](sequences/SQ-05-kit-misto.mmd) | [SVG](sequences/SQ-05-kit-misto.svg) |
+
+**Atenção:** os diagramas anteriores PR-01–03 e BPMN-01/02 permanecem fluxos **conceituais de alto nível**. Para políticas transacionais e guardas específicas, os documentos de v0.2 prevalecem em caso de divergência. Ainda não foi feita validação completa dos dois modelos BPMN 2.0 com esta revisão, que deverá ocorrer antes da aprovação final da Fase 02.
+
 ## Rastreabilidade e revisão
 
 Os identificadores `RN-XXX`, `RF-XXX` e `CA-XXX` referem-se à especificação v0.1. A matriz inicial para testes está em [MATRIZ-DE-RASTREABILIDADE.md](MATRIZ-DE-RASTREABILIDADE.md). Decisões abertas e pontos que exigem refinamento estão em [DECISOES-PENDENTES.md](DECISOES-PENDENTES.md).
@@ -58,8 +83,9 @@ Os identificadores `RN-XXX`, `RF-XXX` e `CA-XXX` referem-se à especificação v
 - [x] Ilustrar checkout idempotente, webhook e pagamento tardio.
 - [x] Separar estados de pedido, tentativa, reserva, entitlement, remessa e solicitação.
 - [x] Gerar fontes editáveis, SVG e PNG independentes.
-- [ ] Validar as decisões DA-004, DA-005, DA-006, DA-009 e DA-012 com as políticas escolhidas.
-- [ ] Refinar transições e guardas com casos de aceitação negativos e concorrentes.
+- [x] Consolidar as propostas DA-004, DA-005, DA-009 e DA-012 com reservas e reembolsos.
+- [ ] Validar a compatibilidade do provedor de pagamento DA-006 e regras legais pendentes.
+- [x] Especificar transições, guardas e casos de aceitação negativos/concorrentes; executar testes apenas após implementação.
 - [ ] Aprovar a versão e atualizar a rastreabilidade antes da implementação.
 
 ## Regeneração das imagens
@@ -74,7 +100,7 @@ Get-ChildItem 'docs/03-business-processes' -Recurse -Filter '*.dot' | ForEach-Ob
 }
 ```
 
-Para as sequências, os arquivos `.mmd` podem ser colados em blocos `mermaid` no GitHub ou abertos no [Mermaid Live Editor](https://mermaid.live/). Os SVG/PNG fornecidos foram renderizados a partir das mesmas etapas conceituais, mas não pelo CLI Mermaid; ao alterar um `.mmd`, regenere e revise sua visualização para evitar divergência. Editores BPMN 2.0, como Camunda Modeler, podem abrir os `.bpmn`.
+Para as sequências, os arquivos `.mmd` podem ser colados em blocos `mermaid` no GitHub ou abertos no [Mermaid Live Editor](https://mermaid.live/). As sequências revisadas SQ-03 a SQ-05 têm SVG/PNG produzidos por um renderizador simples a partir das mensagens Mermaid, sem suporte a todos os recursos da notação; regenere e revise ao alterar a fonte. As sequências originais SQ-01 e SQ-02 permanecem exportações conceituais anteriores. Editores BPMN 2.0, como Camunda Modeler, podem abrir os `.bpmn`.
 
 ## Limites da modelagem
 

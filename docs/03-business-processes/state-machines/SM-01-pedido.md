@@ -1,18 +1,16 @@
-# SM-01 — Estados do pedido
+# SM — Estados comerciais do pedido
 
-> **Versão:** 0.1 (em revisão)  
-> **Fase:** AC-MODEL-002  
-> **Origem:** [BRD v0.1](../../02-business-requirements/REGRAS-DE-NEGOCIO.md)  
-> **Regras:** RN-035–040, RN-046, RN-058, RN-062–063  
-> **Capacidades:** RF-006, RF-009
+> **Versão:** 0.2 — políticas consolidadas (em revisão)  
+> **Origem:** [Adendo de regras v0.2](../../02-business-requirements/ADENDO-POLITICAS-CRITICAS-v0.2.md)  
+> **Regras:** RN-035, RN-046, RN-077–080, RN-084  
+> **Estado:** modelo proposto, não implementado.
 
-Máquina comercial separada de pagamentos, reservas, remessas e solicitações pós-venda.
+`PAYMENT_REVIEW` não indica reembolso concluído; `CANCELLED` após pagamento tardio depende de compensação integral comprovada. Reembolso de pedido já entregue é acompanhado no caso pós-venda, sem apagar entrega histórica.
 
-![SM-01 — Estados do pedido](SM-01-pedido.svg)
+![Estados comerciais do pedido](SM-01-pedido.svg)
 
 **Arquivos:** [Fonte editável `.dot`](SM-01-pedido.dot) · [SVG](SM-01-pedido.svg) · [PNG](SM-01-pedido.png)  
-**Voltar:** [Índice da Fase 02](../README.md)
+**Guardas e efeitos:** [Tabelas de transição](../TABELAS-DE-TRANSICAO.md).  
+**Voltar:** [Índice Fase 02](../README.md)
 
-## Limites e premissas
-
-Este é um **modelo conceitual**, não comprova implementação, homologação de regras ou conformidade legal. Os ramos de exceção, as precondições e os efeitos colaterais serão especificados em contratos de domínio e testes de integração. Consulte as [decisões pendentes](../DECISOES-PENDENTES.md).
+As setas representam transições de negócio; detalhes transacionais e implementação serão decididos na Fase 03.

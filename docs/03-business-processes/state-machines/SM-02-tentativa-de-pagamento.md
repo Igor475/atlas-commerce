@@ -1,18 +1,16 @@
-# SM-02 — Estados da tentativa de pagamento
+# SM — Estados da tentativa de pagamento
 
-> **Versão:** 0.1 (em revisão)  
-> **Fase:** AC-MODEL-002  
-> **Origem:** [BRD v0.1](../../02-business-requirements/REGRAS-DE-NEGOCIO.md)  
-> **Regras:** RN-041–048  
-> **Capacidades:** RF-007
+> **Versão:** 0.2 — políticas consolidadas (em revisão)  
+> **Origem:** [Adendo de regras v0.2](../../02-business-requirements/ADENDO-POLITICAS-CRITICAS-v0.2.md)  
+> **Regras:** RN-041–048, RN-080–084  
+> **Estado:** modelo proposto, não implementado.
 
-Estados são da tentativa, não do pedido inteiro. Reembolso é registro/valor próprio além do estado simplificado.
+A tentativa não possui estados `PARTIALLY_REFUNDED`/`REFUNDED` na v0.2. A cobrança aprovada permanece como evidência histórica; devoluções pertencem ao processo `SM-07`. Falha/timeout externo sem prova é um estado de reconciliação operacional e não significa pagamento `FAILED`.
 
-![SM-02 — Estados da tentativa de pagamento](SM-02-tentativa-de-pagamento.svg)
+![Estados da tentativa de pagamento](SM-02-tentativa-de-pagamento.svg)
 
 **Arquivos:** [Fonte editável `.dot`](SM-02-tentativa-de-pagamento.dot) · [SVG](SM-02-tentativa-de-pagamento.svg) · [PNG](SM-02-tentativa-de-pagamento.png)  
-**Voltar:** [Índice da Fase 02](../README.md)
+**Guardas e efeitos:** [Tabelas de transição](../TABELAS-DE-TRANSICAO.md).  
+**Voltar:** [Índice Fase 02](../README.md)
 
-## Limites e premissas
-
-Este é um **modelo conceitual**, não comprova implementação, homologação de regras ou conformidade legal. Os ramos de exceção, as precondições e os efeitos colaterais serão especificados em contratos de domínio e testes de integração. Consulte as [decisões pendentes](../DECISOES-PENDENTES.md).
+As setas representam transições de negócio; detalhes transacionais e implementação serão decididos na Fase 03.

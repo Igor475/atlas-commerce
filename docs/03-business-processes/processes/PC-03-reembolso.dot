@@ -1,0 +1,29 @@
+digraph AtlasCommerce {
+graph [bgcolor=white fontname="DejaVu Sans" fontcolor="#0f172a" fontsize=22 label="PC-03 • Política de reembolso e saldo" labelloc=t pad="0.34" rankdir=TB ranksep="0.83" nodesep="0.45" splines=polyline outputorder=edgesfirst];
+node [fontname="DejaVu Sans" fontsize=11 color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" style="rounded,filled" shape=box margin="0.16,0.12" penwidth=1.2];
+edge [fontname="DejaVu Sans" fontsize=10 color="#475569" fontcolor="#475569" arrowsize=.7];
+
+start [label="Solicitação (total, parcial ou arrependimento)" fillcolor="#f0fdfa" color="#0f766e"];
+reg [label="Registrar direitos, motivo e itens\nsem descartar produto digital" fillcolor="#eff6ff" color="#1d4ed8"];
+review [label="Avaliar enquadramento legal,\nalçada e valor pelo snapshot" fillcolor="#eff6ff" color="#1d4ed8"];
+elig [label="Aprovação cabível?" shape=diamond fillcolor="#fffbeb" color="#f59e0b"];
+rejected [label="Responder fundamentadamente,\nrespeitando direitos legais" fillcolor="#fff7ed" color="#b45309"];
+reserve [label="Reservar saldo em transação\ncapturado - sucesso - pendente" fillcolor="#eff6ff" color="#1d4ed8"];
+psp [label="Criar refund estável no PSP\ncom chave idempotente" fillcolor="#eff6ff" color="#1d4ed8"];
+status [label="Resposta conclusiva?" shape=diamond fillcolor="#fffbeb" color="#f59e0b"];
+reconcile [label="RECONCILIATION_REQUIRED\nconsultar MESMA devolução" fillcolor="#fff7ed" color="#b45309"];
+ok [label="SUCCEEDED apenas com\ncomprovação do provedor" fillcolor="#f0fdfa" color="#0f766e"];
+fail [label="FAILED somente com\nfalha definitiva comprovada" fillcolor="#fef2f2" color="#b91c1c"];
+post [label="Estoque: reinspeção independente\nDigital: revisão independente" fillcolor="#eff6ff" color="#1d4ed8"];
+start -> reg -> review -> elig;
+elig -> rejected [label="não, quando cabível"];
+elig -> reserve [label="sim"];
+reserve -> psp -> status;
+status -> reconcile [label="não"];
+status -> ok [label="sucesso"];
+status -> fail [label="falha definitiva"];
+reconcile -> ok [label="consulta confirma sucesso"];
+reconcile -> fail [label="consulta confirma falha"];
+ok -> post;
+
+}

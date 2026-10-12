@@ -1,26 +1,30 @@
-# Decisões e lacunas de modelagem — Fase 02
+# Registro de decisões e pendências — Fase 02 (v0.2)
 
-> Este documento registra hipóteses e pendências intencionalmente não resolvidas no BRD v0.1; nenhum ponto listado deve ser considerado política de produção aprovada.
+> **Estado:** proposta de política do projeto, não homologação de integração nem aprovação de empresa real. Ver [políticas consolidadas](POLITICAS-CONSOLIDADAS.md).
 
-| Referência | Pergunta a resolver | Efeito na modelagem |
-|---|---|---|
-| DA-004 | Kits são indivisíveis em entrega e devolução ou apenas na reserva? | PR-02 e SM-05 precisam esclarecer fulfillment parcial de kits. |
-| DA-005 / DA-012 | Qual o TTL da reserva e qual a regra de prorrogação enquanto o pagamento está pendente? | Define temporizadores, ordem das transições de SM-01 e SM-03 e a reconciliação SQ-03. |
-| DA-006 | Qual provedor sandbox e quais eventos/estados realmente oferece? | Mapeia estados externos de SQ-02 para SM-02 sem regressão indevida. |
-| DA-007 | Qual a fórmula do frete e sua validade na cotação? | Determina dados de snapshot e quando exigir reconfirmação. |
-| DA-008 | Leitura online, download ou ambos; licenças e revogações? | Afeta PR-02, UC-01 e SM-04. |
-| DA-009 | Quem pode autorizar reembolso/cancelamento, em quais etapas e valores? | PR-03, SM-01, SM-02 e SM-06 precisam de política e limites precisos. |
-| DA-010 | Emissão fiscal e tributos fora do MVP real; como apresentar valores em demo? | Evitar alegar conformidade fiscal/produção. |
-| DA-011 | Quando um uso de cupom é comprometido, confirmado ou liberado? | SQ-01 e concorrência de campanhas dependem de estratégia transacional. |
-| RN-038 / RN-063 | Como marcar pedido misto quando um item é entregue e outro falha? | Precisa matriz de quantidade/fulfillment por item e agregação determinística. |
-| RN-041–047 | Como resolver pagamento tardio aprovado sem alocação de estoque? | SQ-03 demanda política de reposição ou reembolso, sempre rastreável. |
-| RN-049–054 | Estorno parcial de pedido misto afeta quais direitos digitais? | SM-04 deve operar sobre itens/direitos individualizados e com trilha. |
-| RN-058–062 | Como tratar arrependimento e bens digitais conforme o regime jurídico aplicável? | PR-03 e SM-06 requerem validação jurídico-comercial; não inventar exceções. |
+| Referência | Decisão de modelagem proposta | Status | Dependência remanescente |
+|---|---|---|---|
+| DA-004 — kits | Unidade comercial indivisível; componentes fixos; reserva all-or-nothing; físicos juntos; direitos digitais por componente | Resolvida para MVP | Exceções legais e licenciamento |
+| DA-005 / DA-012 — reserva | 40 min; sem extensão; checkout externo até 30 min e término ao menos 5 min antes | Proposta condicionada | Compatibilidade exata com PSP sandbox escolhido |
+| DA-006 — PSP | Não selecionado | Aberta | Eventos, limites de sessão, tentativas e reembolso idempotente |
+| DA-007 — frete | Simulador determinístico | Aberta em detalhe | Validade da cotação e bases de reembolso |
+| DA-008 — leitura/download | Entitlement por item, acesso protegido | Parcial | Termos de licença e modo de distribuição |
+| DA-009 — reembolso | Total/parcial para itens avulsos; kit integral padrão; saldo e concorrência; aprovação + comprovação independentes | Parcial | Alçadas e tratamentos jurídico-fiscais específicos |
+| DA-010 — fiscal | Fora da integração real do MVP | Mantida | Revisar requisitos de operação real |
+| DA-011 — cupom | Um por pedido, reservar e confirmar com checkout/pagamento | Aberta em detalhe | Reversões, múltiplas tentativas e cotação |
+| RN-038 / RN-063 — mistos | Fulfillment por item; kit indivisível na venda, física junta | Parcial | Agregação dos estados da remessa |
+| RN-041–047 — atraso | Pago sem reserva vigente -> `PAYMENT_REVIEW` + refund integral padrão, sem fulfillment | Resolvida para MVP | Mapeamento de resposta/incerteza do PSP |
+| RN-049–054 — acesso | Misto: exige pagamento e alocação física completa; suspensão por decisão autorizada | Resolvida para MVP | Exceções jurídicas/licenciamento |
+| RN-058–062 — arrependimento | Solicitação sempre registrável; não negar digitais automaticamente | Parcial | Revisão legal em operação real |
 
-## Recomendações para a Fase 03
+## Critérios para aprovar a política v0.2
 
-1. Elaborar uma tabela formal de transições: **estado inicial, comando, guardas, estado final, efeito transacional, auditoria e tratamento de falha**.
-2. Delimitar agregados e invariantes (reserva, pedido, tentativa de pagamento, refund, entitlement, remessa), sem presumir microservices.
-3. Escolher e documentar estratégia de idempotência, lock/constraint e outbox (ADR).
-4. Verificar cada integração externa e modelos de consistência com o provedor escolhido.
-5. Revisar as regras de arrependimento e retenção com especialista antes de operar venda real.
+- [x] Proposta de regras, transições, concorrência e critérios de aceitação documentada.
+- [x] Invariantes explícitas de estoque, cobranças, refund e kits.
+- [ ] Confirmar se o PSP escolhido permite expirar sessão externa antes da reserva.
+- [ ] Mapear taxonomia real de eventos, assinaturas, retries e estados do PSP.
+- [ ] Revisar normas e alçadas de pós-venda antes de qualquer operação real.
+- [ ] Aprovar a política parametrizada e atualizar BRD principal.
+- [ ] Implementar e executar cenários CA-011–CA-026.
+
+Sem autorização para remover unilateralmente direitos do consumidor ou colocar pagamentos reais em operação.

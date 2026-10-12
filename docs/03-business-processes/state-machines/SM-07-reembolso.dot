@@ -1,0 +1,29 @@
+digraph AtlasCommerce {
+graph [bgcolor=white fontname="DejaVu Sans" fontcolor="#0f172a" fontsize=22 label="SM-07 • Processo financeiro de reembolso" labelloc=t pad="0.34" rankdir=TB ranksep="0.83" nodesep="0.45" splines=polyline outputorder=edgesfirst];
+node [fontname="DejaVu Sans" fontsize=11 color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" style="rounded,filled" shape=box margin="0.16,0.12" penwidth=1.2];
+edge [fontname="DejaVu Sans" fontsize=10 color="#475569" fontcolor="#475569" arrowsize=.7];
+
+requested [label="REQUESTED\ncaso pós-venda" color="#1d4ed8" fillcolor="#eff6ff"];
+approved [label="APPROVED\nsaldo reservado" color="#1d4ed8" fillcolor="#eff6ff"];
+rejected [label="REJECTED\ndecisão fundamentada" color="#64748b" fillcolor="#e2e8f0"];
+submitted [label="SUBMITTED\nPSP chamado" color="#1d4ed8" fillcolor="#eff6ff"];
+pending [label="PENDING\naguarda confirmação" color="#1d4ed8" fillcolor="#eff6ff"];
+unknown [label="RECONCILIATION_REQUIRED" color="#b45309" fillcolor="#fff7ed"];
+success [label="SUCCEEDED\nfinanceiro comprovado" color="#0f766e" fillcolor="#f0fdfa"];
+fail [label="FAILED\nfalha definitiva" color="#b91c1c" fillcolor="#fef2f2"];
+requested -> approved [label="Política/alçada;\nreservar saldo"];
+requested -> rejected [label="Recusa fundamentada\nquando legalmente cabível"];
+approved -> submitted [label="ID e chave estáveis"];
+submitted -> pending [label="PSP pendente"];
+submitted -> unknown [label="Timeout/erro ambíguo"];
+pending -> unknown [label="Sem resultado conclusivo"];
+submitted -> success [label="Confirmação válida"];
+pending -> success [label="Confirmação válida"];
+unknown -> success [label="Consulta confirma sucesso"];
+submitted -> fail [label="Falha definitiva"];
+pending -> fail [label="Falha definitiva"];
+unknown -> fail [label="Consulta comprova falha"];
+note [label="Saldo pendente comprometido;\nfalha de rede não libera valor nem cria refund novo." shape=note fillcolor="#fffbeb" color="#f59e0b"];
+note -> unknown [style=invis];
+
+}

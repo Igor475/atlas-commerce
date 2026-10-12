@@ -45,7 +45,10 @@ A documentação técnica é parte fundamental do projeto e será mantida versio
 
 | Documento | Descrição |
 |---|---|
-| [Regras de Negócio](docs/02-business-requirements/REGRAS-DE-NEGOCIO.md) | Especificação inicial dos requisitos, regras, processos e critérios de aceitação |
+| [Regras de Negócio](docs/02-business-requirements/REGRAS-DE-NEGOCIO.md) | Especificação inicial do domínio e das regras de negócio. |
+| [Políticas Críticas v0.2](docs/02-business-requirements/ADENDO-POLITICAS-CRITICAS-v0.2.md) | Complemento das regras de reservas, pagamentos, reembolsos e kits. |
+| [Processos e Diagramas](docs/03-business-processes/README.md) | Casos de uso, processos, sequências e máquinas de estados. |
+| [Políticas Consolidadas](docs/03-business-processes/POLITICAS-CONSOLIDADAS.md) | Definições operacionais das políticas críticas do E-commerce. |
 
 Novos documentos, diagramas e decisões arquiteturais serão adicionados conforme a evolução do projeto.
 

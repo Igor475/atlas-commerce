@@ -1,26 +1,19 @@
 digraph AtlasCommerce {
-	graph [bgcolor=white concentrate=false fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=23 label="SM-02 • Estado da tentativa de pagamento" labelloc=t nodesep=.52 outputorder=edgesfirst pad=0.24 rankdir=TB ranksep=.87 splines=polyline]
-	node [color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=11 margin="0.14,0.09" penwidth=1.3 shape=box style="rounded,filled"]
-	edge [arrowsize=.7 color="#475569" fontcolor="#64748b" fontname="DejaVu Sans" fontsize=10]
-	created [label=CREATED color="#1d4ed8" fillcolor="#eff6ff"]
-	pending [label=PENDING color="#1d4ed8" fillcolor="#eff6ff"]
-	approved [label=APPROVED color="#0f766e" fillcolor="#f0fdfa"]
-	failed [label=FAILED color="#b91c1c" fillcolor="#fef2f2" fontcolor="#991b1b"]
-	cancelled [label=CANCELLED color="#0f172a" fillcolor="#e2e8f0" shape=box]
-	part [label=PARTIALLY_REFUNDED color="#1d4ed8" fillcolor="#eff6ff"]
-	refunded [label=REFUNDED color="#0f172a" fillcolor="#e2e8f0" shape=box]
-	created -> pending [label="Tentativa iniciada"]
-	created -> failed [label="Falha de iniciação
-comprovada"]
-	pending -> approved [label="Confirmação verificada"]
-	pending -> failed [label="Recusa definitiva"]
-	pending -> cancelled [label="Cancelamento confirmado"]
-	approved -> part [label="Reembolso parcial confirmado"]
-	approved -> refunded [label="Reembolso integral
-confirmado"]
-	part -> part [label="Outro reembolso parcial
-válido"]
-	part -> refunded [label="Saldo totalmente reembolsado"]
-	NOTE [label="Eventos duplicados ou atrasados não fazem regressão de estado." color="#fcd34d" fillcolor="#fffbeb" fontsize=10 shape=note]
-	NOTE -> created [style=invis]
+graph [bgcolor=white fontname="DejaVu Sans" fontcolor="#0f172a" fontsize=22 label="SM-02 • Tentativa de pagamento" labelloc=t pad="0.34" rankdir=TB ranksep="0.83" nodesep="0.45" splines=polyline outputorder=edgesfirst];
+node [fontname="DejaVu Sans" fontsize=11 color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" style="rounded,filled" shape=box margin="0.16,0.12" penwidth=1.2];
+edge [fontname="DejaVu Sans" fontsize=10 color="#475569" fontcolor="#475569" arrowsize=.7];
+
+created [label="CREATED" color="#1d4ed8" fillcolor="#eff6ff"];
+pending [label="PENDING" color="#1d4ed8" fillcolor="#eff6ff"];
+approved [label="APPROVED" color="#0f766e" fillcolor="#f0fdfa"];
+failed [label="FAILED" color="#b91c1c" fillcolor="#fef2f2"];
+cancel [label="CANCELLED" color="#64748b" fillcolor="#e2e8f0"];
+created -> pending [label="Tentativa criada no PSP"];
+created -> failed [label="Falha comprovada na criação"];
+pending -> approved [label="Pagamento comprovado\ne valor/moeda validados"];
+pending -> failed [label="Recusa definitiva comprovada"];
+pending -> cancel [label="Cancelamento externo confirmado"];
+note [shape=note label="Timeout não prova falha. Reembolso é entidade separada (SM-07).\nRepetições e eventos fora de ordem não regridem estado." color="#f59e0b" fillcolor="#fffbeb"];
+note -> pending [style=invis];
+
 }
