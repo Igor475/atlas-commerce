@@ -118,7 +118,7 @@ A modelagem de ameaças detalhada será produzida em `docs/07-security/threat-mo
 
 **Contrato de autoridade do pagamento:** resposta de navegador, redirect, `2xx` de criação de sessão e webhook não verificado não são prova de quitação. A validação/conciliação ocorre no contexto de Pagamentos; componentes de checkout e fulfillment consomem resultados persistidos e autorizados.
 
-**Risco de desenhos:** as sequências SQ-01–SQ-05 são conceituais. Em especial, SQ-05 representa uma notificação do provedor ao checkout; o contrato de implementação exige a autenticação e conciliação pelo contexto de Pagamentos **antes de acionar o checkout/fulfillment**. Atualizar fontes `.mmd` e exportações visuais de modo conjunto quando o detalhamento arquitetural for aprovado; uma nota não torna o gráfico automaticamente corrigido.
+**Risco de desenhos:** as sequências SQ-01–SQ-05 são conceituais. A SQ-05 já representa o provedor notificando o módulo Pagamentos, que autentica e valida assinatura, identidade, valor e moeda, deduplica e persiste os eventos financeiros. A confirmação do pagamento não dispensa a validação transacional da reserva; fulfillment e direitos digitais dependem das condições de negócio aplicáveis, inclusive alocação física completa no kit misto. O detalhamento arquitetural, a implementação e os testes permanecem pendentes para a Fase 03.
 
 ## 4. Cenários de aceitação de segurança iniciais
 
@@ -200,5 +200,5 @@ Os testes de segurança SA-001–012 não substituem os cenários CA-011–026. 
 1. Não criar um threat model “aprovado” sem verificar DFDs e fronteiras de confiança. Seus arquivos de desenho são entregáveis **futuros**, não controles implantados.
 2. Resolver DA-006/DS-004 **antes** de consolidar a janela da sessão externa no código. Se incompatível com os 40/30/5 minutos propostos, atualizar simultaneamente adendo, políticas, tabelas, diagramas e casos CA.
 3. Documentar matriz real de autorização (incluindo operações financeiras), estratégia de sessão/MFA, armazenamento/entitlement, retenção e continuidade em artefatos separados.
-4. Conferir coerência entre Mermaid/DOT, exportações e tabelas. Em particular, SQ-05 precisará representar Pagamentos como autoridade da confirmação quando refinada.
+4. Conferir coerência entre Mermaid/DOT, exportações e tabelas. Na Fase 03, refinar os contratos arquiteturais, a persistência e a integração do fluxo já corrigido da SQ-05 e verificar sua correspondência com a implementação e os testes.
 5. Testar cenários CA e SA no backend real e nos contratos PSP; não afirmar “segurança robusta verificada” nesta etapa.

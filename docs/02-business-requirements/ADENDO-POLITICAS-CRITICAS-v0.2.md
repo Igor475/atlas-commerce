@@ -2,12 +2,12 @@
 
 > **ID:** AC-BRD-001-A | **Versão:** 0.2.0 proposta | **Data:** 12/10/2026  
 > **Estado:** políticas propostas para aprovação do projeto de portfólio; não implementadas.  
-> **Base:** [REGRAS-DE-NEGOCIO.md](REGRAS-DE-NEGOCIO.md), v0.1.  
+> **Base:** [REGRAS-DE-NEGOCIO.md](REGRAS-DE-NEGOCIO.md), v0.2.1.
 > **Documento operacional:** [POLITICAS-CONSOLIDADAS.md](../03-business-processes/POLITICAS-CONSOLIDADAS.md).
 
 ## Regra de precedência
 
-Este adendo **complementa e refina**, sem apagar o documento original, as regras `RN-007`, `RN-027–031`, `RN-035–038`, `RN-041–054` e `RN-058–063`. Quando houver discrepância nas políticas de reserva, pagamentos tardios, reembolsos e kits, aplicar as definições deste adendo **após aprovação formal**, preservando a regra base e registrando seu histórico. Não modificar outros domínios por consequência implícita. O estado `v0.2` é um rascunho de decisão e não torna o BRD v0.1 automaticamente aprovado.
+Este adendo **complementa e refina**, sem apagar o documento original, as regras `RN-007`, `RN-027–031`, `RN-035–038`, `RN-041–054` e `RN-058–063`. Quando houver discrepância nas políticas de reserva, pagamentos tardios, reembolsos e kits, aplicar as definições deste adendo **após aprovação formal**, preservando a regra base e registrando seu histórico. Não modificar outros domínios por consequência implícita. O estado `v0.2` é um rascunho de decisão e não torna o BRD v0.2.1 automaticamente aprovado.
 
 ## Novas regras complementares
 

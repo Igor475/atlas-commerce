@@ -27,8 +27,8 @@
 - **DA-009 / DS-003:** alçadas e segregação de reembolsos, revisão jurídica/fiscal e evidências.
 - **DS-001/002:** sessão, recuperação de conta e MFA privilegiado.
 - **DS-005–009:** distribuição digital, uploads, privacidade, segurança de infraestrutura e perfil de testes ASVS.
-- **SQ-05:** a sequência de kit misto precisa ser refinada para mostrar Pagamentos como autoridade da confirmação e regenerar as exportações, preservando seus estados de negócio.
-- **BPMN-01/02:** a revisão de compatibilidade com as políticas críticas v0.2 ainda está pendente.
+- **SQ-05:** a correção conceitual foi realizada: Pagamentos recebe o webhook, valida assinatura, identidade, valor, moeda e duplicidade, persiste a evidência financeira e confirma a reserva física de modo transacional. Fulfillment e direitos digitais dependem da confirmação financeira e da alocação física completa; pagamento tardio entra em `PAYMENT_REVIEW` e segue para reembolso integral idempotente no MVP. O refinamento arquitetural e a validação na implementação permanecem para a Fase 03.
+- **BPMN-01/02:** os modelos foram revisados. O BPMN-01 contempla confirmação financeira, expiração da reserva, revisão e compensação; o BPMN-02 contempla solicitação de devolução, análise de direitos, autorização financeira, reembolso e reconciliação. Fontes BPMN editáveis e prévias visuais estão disponíveis; a abertura e validação em modelador BPMN compatível continuam pendentes.
 
 ## Checklist para alterações futuras
 
