@@ -1,145 +1,264 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_Process_PosVenda" targetNamespace="https://atlas-commerce.example/docs/processos">
-  <bpmn:process id="Process_PosVenda" name="Tratamento de pós-venda - modelo descritivo" isExecutable="false">
-    <bpmn:startEvent id="start" name="Solicitação recebida">
+<?xml version='1.0' encoding='utf-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_PosVenda" targetNamespace="https://atlas-commerce.example/docs/processos">
+  <bpmn:process id="Process_PosVenda" name="BPMN-02 — Pós-venda e reembolso — modelo descritivo" isExecutable="false">
+    <bpmn:startEvent id="start" name="Início">
       <bpmn:outgoing>Flow_01</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:userTask id="register" name="Registrar pedido pós-venda">
+    <bpmn:userTask id="receive" name="Registrar solicitação inclusive digital">
       <bpmn:incoming>Flow_01</bpmn:incoming>
       <bpmn:outgoing>Flow_02</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:serviceTask id="check" name="Validar elegibilidade e direitos">
+    <bpmn:serviceTask id="legal" name="Analisar direito e natureza do pedido">
       <bpmn:incoming>Flow_02</bpmn:incoming>
       <bpmn:outgoing>Flow_03</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="eligible" name="Elegível?">
+    <bpmn:exclusiveGateway id="gateway" name="Elegível?">
       <bpmn:incoming>Flow_03</bpmn:incoming>
       <bpmn:outgoing>Flow_04</bpmn:outgoing>
       <bpmn:outgoing>Flow_05</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:userTask id="decide" name="Aprovar atendimento">
+    <bpmn:userTask id="authorize" name="Autorizar alçada / segregação">
       <bpmn:incoming>Flow_04</bpmn:incoming>
-      <bpmn:outgoing>Flow_07</bpmn:outgoing>
-    </bpmn:userTask>
-    <bpmn:serviceTask id="actions" name="Tratar remessa e direitos digitais">
       <bpmn:incoming>Flow_07</bpmn:incoming>
-      <bpmn:outgoing>Flow_08</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="refund" name="Solicitar reembolso elegível">
-      <bpmn:incoming>Flow_08</bpmn:incoming>
       <bpmn:outgoing>Flow_09</bpmn:outgoing>
-    </bpmn:serviceTask>
-    <bpmn:serviceTask id="confirm" name="Conciliar reembolso confirmado">
+    </bpmn:userTask>
+    <bpmn:serviceTask id="calculate" name="Snapshot e saldo disponível">
       <bpmn:incoming>Flow_09</bpmn:incoming>
       <bpmn:outgoing>Flow_10</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="stock" name="Avaliar reposição física se aplicável">
+    <bpmn:serviceTask id="reserve" name="Reservar refund no banco">
       <bpmn:incoming>Flow_10</bpmn:incoming>
       <bpmn:outgoing>Flow_11</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:endEvent id="finish" name="Tratado e auditado">
+    <bpmn:serviceTask id="submit" name="Enviar refund idempotente ao PSP">
       <bpmn:incoming>Flow_11</bpmn:incoming>
+      <bpmn:outgoing>Flow_12</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="reconcile" name="Conciliar resposta do PSP">
+      <bpmn:incoming>Flow_12</bpmn:incoming>
+      <bpmn:outgoing>Flow_13</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="state" name="Estado?">
+      <bpmn:incoming>Flow_13</bpmn:incoming>
+      <bpmn:outgoing>Flow_14</bpmn:outgoing>
+      <bpmn:outgoing>Flow_18</bpmn:outgoing>
+      <bpmn:outgoing>Flow_20</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="success" name="Registrar refund SUCCEEDED">
+      <bpmn:incoming>Flow_14</bpmn:incoming>
+      <bpmn:outgoing>Flow_15</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="inspect" name="Inspecionar devolução física">
+      <bpmn:incoming>Flow_15</bpmn:incoming>
+      <bpmn:outgoing>Flow_16</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="digital" name="Revisar direitos digitais (sem auto revogar)">
+      <bpmn:incoming>Flow_16</bpmn:incoming>
+      <bpmn:outgoing>Flow_17</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="done" name="Concluído">
+      <bpmn:incoming>Flow_17</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:userTask id="reject" name="Comunicar decisão justificada">
+    <bpmn:userTask id="exception" name="Revisão humana/CDC - registrar justificativa">
       <bpmn:incoming>Flow_05</bpmn:incoming>
       <bpmn:outgoing>Flow_06</bpmn:outgoing>
     </bpmn:userTask>
-    <bpmn:endEvent id="endno" name="Solicitação encerrada">
+    <bpmn:exclusiveGateway id="decision" name="Deferir?">
       <bpmn:incoming>Flow_06</bpmn:incoming>
+      <bpmn:outgoing>Flow_07</bpmn:outgoing>
+      <bpmn:outgoing>Flow_08</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="denied" name="Decisão fundamentada">
+      <bpmn:incoming>Flow_08</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_01" sourceRef="start" targetRef="register"/>
-    <bpmn:sequenceFlow id="Flow_02" sourceRef="register" targetRef="check"/>
-    <bpmn:sequenceFlow id="Flow_03" sourceRef="check" targetRef="eligible"/>
-    <bpmn:sequenceFlow id="Flow_04" sourceRef="eligible" targetRef="decide" name="Sim"/>
-    <bpmn:sequenceFlow id="Flow_05" sourceRef="eligible" targetRef="reject" name="Não"/>
-    <bpmn:sequenceFlow id="Flow_06" sourceRef="reject" targetRef="endno"/>
-    <bpmn:sequenceFlow id="Flow_07" sourceRef="decide" targetRef="actions"/>
-    <bpmn:sequenceFlow id="Flow_08" sourceRef="actions" targetRef="refund"/>
-    <bpmn:sequenceFlow id="Flow_09" sourceRef="refund" targetRef="confirm"/>
-    <bpmn:sequenceFlow id="Flow_10" sourceRef="confirm" targetRef="stock"/>
-    <bpmn:sequenceFlow id="Flow_11" sourceRef="stock" targetRef="finish"/>
+    <bpmn:serviceTask id="unknown" name="Resposta ambígua: manter saldo reservado">
+      <bpmn:incoming>Flow_18</bpmn:incoming>
+      <bpmn:outgoing>Flow_19</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="pending" name="Aguardar reconciliação">
+      <bpmn:incoming>Flow_19</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="failed" name="Falha definitiva: liberar reserva financeira">
+      <bpmn:incoming>Flow_20</bpmn:incoming>
+      <bpmn:outgoing>Flow_21</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="endfailed" name="Falha tratada">
+      <bpmn:incoming>Flow_21</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_01" sourceRef="start" targetRef="receive"/>
+    <bpmn:sequenceFlow id="Flow_02" sourceRef="receive" targetRef="legal"/>
+    <bpmn:sequenceFlow id="Flow_03" sourceRef="legal" targetRef="gateway"/>
+    <bpmn:sequenceFlow id="Flow_04" sourceRef="gateway" targetRef="authorize" name="Sim"/>
+    <bpmn:sequenceFlow id="Flow_05" sourceRef="gateway" targetRef="exception" name="Revisar / exceção"/>
+    <bpmn:sequenceFlow id="Flow_06" sourceRef="exception" targetRef="decision"/>
+    <bpmn:sequenceFlow id="Flow_07" sourceRef="decision" targetRef="authorize" name="Autorizar"/>
+    <bpmn:sequenceFlow id="Flow_08" sourceRef="decision" targetRef="denied" name="Indeferir cabível"/>
+    <bpmn:sequenceFlow id="Flow_09" sourceRef="authorize" targetRef="calculate"/>
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="calculate" targetRef="reserve"/>
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="reserve" targetRef="submit"/>
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="submit" targetRef="reconcile"/>
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="reconcile" targetRef="state"/>
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="state" targetRef="success" name="Confirmado"/>
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="success" targetRef="inspect"/>
+    <bpmn:sequenceFlow id="Flow_16" sourceRef="inspect" targetRef="digital"/>
+    <bpmn:sequenceFlow id="Flow_17" sourceRef="digital" targetRef="done"/>
+    <bpmn:sequenceFlow id="Flow_18" sourceRef="state" targetRef="unknown" name="Incerto"/>
+    <bpmn:sequenceFlow id="Flow_19" sourceRef="unknown" targetRef="pending"/>
+    <bpmn:sequenceFlow id="Flow_20" sourceRef="state" targetRef="failed" name="Falha definitiva"/>
+    <bpmn:sequenceFlow id="Flow_21" sourceRef="failed" targetRef="endfailed"/>
   </bpmn:process>
-  <bpmndi:BPMNDiagram id="Diagram_Process_PosVenda">
-    <bpmndi:BPMNPlane id="Plane_Process_PosVenda" bpmnElement="Process_PosVenda">
+  <bpmndi:BPMNDiagram id="Diagram_PosVenda">
+    <bpmndi:BPMNPlane id="Plane_PosVenda" bpmnElement="Process_PosVenda">
       <bpmndi:BPMNShape id="Shape_start" bpmnElement="start">
-        <dc:Bounds x="100" y="150" width="48" height="48"/>
+        <dc:Bounds x="55" y="160" width="48" height="48"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_register" bpmnElement="register">
-        <dc:Bounds x="200" y="135" width="180" height="70"/>
+      <bpmndi:BPMNShape id="Shape_receive" bpmnElement="receive">
+        <dc:Bounds x="155" y="140" width="210" height="84"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_check" bpmnElement="check">
-        <dc:Bounds x="430" y="135" width="180" height="70"/>
+      <bpmndi:BPMNShape id="Shape_legal" bpmnElement="legal">
+        <dc:Bounds x="415" y="140" width="205" height="84"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_eligible" bpmnElement="eligible">
-        <dc:Bounds x="660" y="146" width="48" height="48"/>
+      <bpmndi:BPMNShape id="Shape_gateway" bpmnElement="gateway">
+        <dc:Bounds x="680" y="157" width="56" height="56"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_decide" bpmnElement="decide">
-        <dc:Bounds x="770" y="135" width="180" height="70"/>
+      <bpmndi:BPMNShape id="Shape_authorize" bpmnElement="authorize">
+        <dc:Bounds x="795" y="140" width="200" height="84"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_actions" bpmnElement="actions">
-        <dc:Bounds x="1000" y="135" width="180" height="70"/>
+      <bpmndi:BPMNShape id="Shape_calculate" bpmnElement="calculate">
+        <dc:Bounds x="1050" y="140" width="206" height="84"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_refund" bpmnElement="refund">
-        <dc:Bounds x="1230" y="135" width="180" height="70"/>
+      <bpmndi:BPMNShape id="Shape_reserve" bpmnElement="reserve">
+        <dc:Bounds x="1310" y="140" width="195" height="84"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_confirm" bpmnElement="confirm">
-        <dc:Bounds x="1460" y="135" width="180" height="70"/>
+      <bpmndi:BPMNShape id="Shape_submit" bpmnElement="submit">
+        <dc:Bounds x="1560" y="140" width="210" height="84"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_stock" bpmnElement="stock">
-        <dc:Bounds x="1690" y="135" width="180" height="70"/>
+      <bpmndi:BPMNShape id="Shape_reconcile" bpmnElement="reconcile">
+        <dc:Bounds x="1820" y="140" width="200" height="84"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_finish" bpmnElement="finish">
-        <dc:Bounds x="1920" y="150" width="48" height="48"/>
+      <bpmndi:BPMNShape id="Shape_state" bpmnElement="state">
+        <dc:Bounds x="2080" y="155" width="58" height="58"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_reject" bpmnElement="reject">
-        <dc:Bounds x="770" y="320" width="180" height="70"/>
+      <bpmndi:BPMNShape id="Shape_success" bpmnElement="success">
+        <dc:Bounds x="2210" y="140" width="195" height="84"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Shape_endno" bpmnElement="endno">
-        <dc:Bounds x="1000" y="335" width="48" height="48"/>
+      <bpmndi:BPMNShape id="Shape_inspect" bpmnElement="inspect">
+        <dc:Bounds x="2460" y="140" width="190" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_digital" bpmnElement="digital">
+        <dc:Bounds x="2700" y="140" width="220" height="84"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_done" bpmnElement="done">
+        <dc:Bounds x="2970" y="158" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_exception" bpmnElement="exception">
+        <dc:Bounds x="760" y="350" width="240" height="85"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_decision" bpmnElement="decision">
+        <dc:Bounds x="1080" y="367" width="60" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_denied" bpmnElement="denied">
+        <dc:Bounds x="1260" y="386" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_unknown" bpmnElement="unknown">
+        <dc:Bounds x="2150" y="365" width="245" height="90"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_pending" bpmnElement="pending">
+        <dc:Bounds x="2470" y="386" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_failed" bpmnElement="failed">
+        <dc:Bounds x="2120" y="575" width="250" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_endfailed" bpmnElement="endfailed">
+        <dc:Bounds x="2440" y="595" width="48" height="48"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Edge_01" bpmnElement="Flow_01">
-        <di:waypoint x="148" y="174"/>
-        <di:waypoint x="200" y="170"/>
+        <di:waypoint x="103" y="184"/>
+        <di:waypoint x="155" y="182"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_02" bpmnElement="Flow_02">
-        <di:waypoint x="380" y="170"/>
-        <di:waypoint x="430" y="170"/>
+        <di:waypoint x="365" y="182"/>
+        <di:waypoint x="415" y="182"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_03" bpmnElement="Flow_03">
-        <di:waypoint x="610" y="170"/>
-        <di:waypoint x="660" y="170"/>
+        <di:waypoint x="620" y="182"/>
+        <di:waypoint x="680" y="185"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_04" bpmnElement="Flow_04">
-        <di:waypoint x="708" y="170"/>
-        <di:waypoint x="770" y="170"/>
+        <di:waypoint x="736" y="185"/>
+        <di:waypoint x="795" y="182"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_05" bpmnElement="Flow_05">
-        <di:waypoint x="708" y="170"/>
-        <di:waypoint x="770" y="355"/>
+        <di:waypoint x="708" y="213"/>
+        <di:waypoint x="708" y="392"/>
+        <di:waypoint x="760" y="392"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_06" bpmnElement="Flow_06">
-        <di:waypoint x="950" y="355"/>
-        <di:waypoint x="1000" y="359"/>
+        <di:waypoint x="1000" y="392"/>
+        <di:waypoint x="1080" y="397"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_07" bpmnElement="Flow_07">
-        <di:waypoint x="950" y="170"/>
-        <di:waypoint x="1000" y="170"/>
+        <di:waypoint x="1110" y="367"/>
+        <di:waypoint x="1110" y="182"/>
+        <di:waypoint x="795" y="182"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_08" bpmnElement="Flow_08">
-        <di:waypoint x="1180" y="170"/>
-        <di:waypoint x="1230" y="170"/>
+        <di:waypoint x="1140" y="397"/>
+        <di:waypoint x="1260" y="410"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_09" bpmnElement="Flow_09">
-        <di:waypoint x="1410" y="170"/>
-        <di:waypoint x="1460" y="170"/>
+        <di:waypoint x="995" y="182"/>
+        <di:waypoint x="1050" y="182"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_10" bpmnElement="Flow_10">
-        <di:waypoint x="1640" y="170"/>
-        <di:waypoint x="1690" y="170"/>
+        <di:waypoint x="1256" y="182"/>
+        <di:waypoint x="1310" y="182"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Edge_11" bpmnElement="Flow_11">
-        <di:waypoint x="1870" y="170"/>
-        <di:waypoint x="1920" y="174"/>
+        <di:waypoint x="1505" y="182"/>
+        <di:waypoint x="1560" y="182"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_12" bpmnElement="Flow_12">
+        <di:waypoint x="1770" y="182"/>
+        <di:waypoint x="1820" y="182"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_13" bpmnElement="Flow_13">
+        <di:waypoint x="2020" y="182"/>
+        <di:waypoint x="2080" y="184"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_14" bpmnElement="Flow_14">
+        <di:waypoint x="2138" y="184"/>
+        <di:waypoint x="2210" y="182"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_15" bpmnElement="Flow_15">
+        <di:waypoint x="2405" y="182"/>
+        <di:waypoint x="2460" y="182"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_16" bpmnElement="Flow_16">
+        <di:waypoint x="2650" y="182"/>
+        <di:waypoint x="2700" y="182"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_17" bpmnElement="Flow_17">
+        <di:waypoint x="2920" y="182"/>
+        <di:waypoint x="2970" y="182"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_18" bpmnElement="Flow_18">
+        <di:waypoint x="2109" y="213"/>
+        <di:waypoint x="2109" y="410"/>
+        <di:waypoint x="2150" y="410"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_19" bpmnElement="Flow_19">
+        <di:waypoint x="2395" y="410"/>
+        <di:waypoint x="2470" y="410"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_20" bpmnElement="Flow_20">
+        <di:waypoint x="2109" y="213"/>
+        <di:waypoint x="2109" y="618"/>
+        <di:waypoint x="2120" y="618"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_21" bpmnElement="Flow_21">
+        <di:waypoint x="2370" y="618"/>
+        <di:waypoint x="2440" y="619"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

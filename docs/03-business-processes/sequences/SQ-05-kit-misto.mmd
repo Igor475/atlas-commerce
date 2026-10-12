@@ -1,20 +1,37 @@
 sequenceDiagram
 autonumber
-participant C as Cliente
+actor C as Cliente
 participant K as Checkout
 participant B as PostgreSQL
-participant P as Provedor
+participant G as Pagamentos
+participant P as Provedor PSP
 participant F as Fulfillment
 participant D as Biblioteca
-C->>K: Comprar kit com componentes físicos e digitais
-K->>B: Transação: snapshot e reserva all-or-nothing
-B-->>K: Pedido e reserva criados ou rollback total
-K->>P: Criar tentativa compatível com validade da reserva
-P-->>K: Sessão de pagamento e referência estável
-P->>K: Pagamento confirmado e autenticado
-K->>B: Confirmar reserva ainda ACTIVE e pedido PAID
-B-->>K: Alocação de todos os físicos confirmada
-K->>D: Conceder direitos digitais dos componentes uma vez
-K->>F: Preparar físicos do mesmo kit na mesma remessa
-F->>B: Registrar entrega completa ou exceção por falta
-D->>B: Registrar direitos por item e titular
+C->>K: Confirmar compra de kit misto
+K->>B: Transacao: snapshot, pedido e reserva fisica atomica
+B-->>K: Commit ou rollback integral do kit
+K->>G: Criar tentativa persistida e idempotente
+G->>P: Criar sessao (TTL PSP compativel com reserva)
+P-->>G: ID e validade externa comprovados
+G-->>K: URL somente apos validar janela 40/30/5
+P->>G: Webhook assinado (evento possivelmente repetido)
+G->>G: Validar assinatura, IDs, valor, moeda e replay
+G->>B: Persistir evidencia financeira / deduplicar evento
+alt Pagamento valido e reserva ACTIVE antes da expiracao
+    G->>B: Confirmar toda reserva fisica com guarda atomica
+    B-->>G: Reserva CONFIRMED (um unico vencedor)
+    G->>B: Marcar pedido PAID + registrar intencoes duraveis
+    B-->>F: Tarefa fisica idempotente por kit
+    B-->>D: Concessao digital idempotente por componente
+    F->>B: Remessa do kit completa ou excecao operacional
+    D->>B: Direito por titular e componente auditado
+else Pagamento valido e reserva EXPIRED ou RELEASED
+    G->>B: Registrar PAYMENT_REVIEW; sem alocacao
+    Note over G,D: Bloquear fulfillment e direitos digitais deste kit
+    G->>P: Solicitar reembolso integral idempotente
+    P-->>G: Resposta definitiva ou estado incerto
+    G->>B: Conciliar mesmo refund ate prova de resultado
+else Evento invalido, divergente ou nao conclusivo
+    G->>B: Rejeitar evento falso ou sinalizar revisao
+    Note over G,D: Nenhum direito digital ou entrega por callback isolado
+end

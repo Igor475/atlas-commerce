@@ -1,110 +1,68 @@
-# Atlas Commerce — Fase 02: Modelagem de processos e diagramas
+# Atlas Commerce — Fase 02: processos e diagramas
 
-> **Identificador:** AC-MODEL-002  
-> **Versão:** 0.2.0 — políticas críticas propostas para revisão  
-> **Data:** 12/10/2026  
-> **Fonte:** [BRD v0.1](../02-business-requirements/REGRAS-DE-NEGOCIO.md) + [Adendo v0.2](../02-business-requirements/ADENDO-POLITICAS-CRITICAS-v0.2.md)  
-> **Estado:** Modelos propostos; nenhuma funcionalidade é considerada implementada.
+> **ID:** AC-MODEL-002 | **Versão:** 0.3.0 — refinamento de fluxos críticos  
+> **Data:** 12/10/2026 | **Estado:** diagramas conceituais revisados; controles e integrações não implementados  
+> **Fontes:** [BRD v0.2.1](../02-business-requirements/REGRAS-DE-NEGOCIO.md), [Adendo v0.2](../02-business-requirements/ADENDO-POLITICAS-CRITICAS-v0.2.md), [SEC v0.2](../07-security/security-requirements.md).
 
-## Objetivo
+## Objetivo e alcance
 
-Representar, de maneira visual e rastreável, os **atores e capacidades**, os **processos de compra e pós-venda**, as **interações críticas** e as **máquinas de estados independentes** do Atlas Commerce. Cada diagrama possui um arquivo-fonte editável e uma exportação em SVG e PNG. Não se deve introduzir uma tecnologia de implementação apenas porque ela consta do desenho conceitual.
+Este diretório documenta processos de compra, pós-venda, máquinas de estados e casos de uso com fontes editáveis. Os **vinte diagramas visuais legados** de Fase 02 são preservados, assim como a matriz, regras RN-001–094 e critérios CA-001–026. Esta revisão altera **SQ-05 e BPMN-01/02**, sem renumerar seus IDs, e complementa a rastreabilidade e as decisões técnicas condicionadas.
 
-### Interpretação das notações
+**Notações:** casos de uso e estados são representações inspiradas em UML; PR/PC em `.dot` são fluxogramas, **não** BPMN; SQ em `.mmd` são diagramas Mermaid; `bpmn/*.bpmn` contém XML BPMN 2.0 com BPMN DI, `isExecutable=false`, para inspeção e modelagem, não para execução. SVG/PNG são prévias independentes. Guards normativas encontram-se nas [tabelas de transição](TABELAS-DE-TRANSICAO.md), [políticas](POLITICAS-CONSOLIDADAS.md) e [segurança](../07-security/security-requirements.md).
 
-- **UC (casos de uso):** notação gráfica **inspirada em UML**, com atores identificados e casos em elipses. Não é uma declaração de conformidade integral com a especificação UML.
-- **PR (processos):** **fluxogramas de negócio** (Graphviz/DOT), não diagramas BPMN formais. Os modelos descritivos BPMN 2.0 estão em [`bpmn/`](bpmn/) e devem ser abertos num editor compatível.
-- **SQ (sequências):** passos ordenados entre participantes, escritos em **Mermaid `sequenceDiagram`**, com SVG e PNG independentes para visualização. As exceções resumidas em notas precisam ser refinadas em diagramas condicionais na revisão arquitetural.
-- **SM (estados):** representações de estados e transições inspiradas nas máquinas de estados UML. Guardas e políticas devem ser implementadas e testadas explicitamente.
+## Catálogo dos diagramas existentes (preservar)
 
-**Semântica fundamental:** `Pedido`, `Tentativa de pagamento`, `Reserva`, `Remessa`, `Direito digital` e `Solicitação de devolução` possuem ciclos de vida **diferentes**. Uma notificação do provedor não pode atualizar todos indiscriminadamente.
-
-## Catálogo dos 20 diagramas visuais
-
-| ID | Diagrama | Fonte editável | Visualização | Regras principais |
-|---|---|---|---|---|
-| UC-01 | [Casos de uso da loja e do cliente](use-cases/UC-01-loja-e-cliente.md) | [.dot](use-cases/UC-01-loja-e-cliente.dot) | [SVG](use-cases/UC-01-loja-e-cliente.svg) · [PNG](use-cases/UC-01-loja-e-cliente.png) | RN-001, RN-006, RN-009–015, RN-032–039, RN-049–053, RN-059 |
-| UC-02 | [Casos de uso do backoffice e integrações](use-cases/UC-02-backoffice-e-integracoes.md) | [.dot](use-cases/UC-02-backoffice-e-integracoes.dot) | [SVG](use-cases/UC-02-backoffice-e-integracoes.svg) · [PNG](use-cases/UC-02-backoffice-e-integracoes.png) | RN-029, RN-039, RN-041–048, RN-059, RN-064–070 |
-| PR-01 | [Processo de compra física](processes/PR-01-compra-fisica.md) | [.dot](processes/PR-01-compra-fisica.dot) | [SVG](processes/PR-01-compra-fisica.svg) · [PNG](processes/PR-01-compra-fisica.png) | RN-015–018, RN-023–028, RN-032–046, RN-055–057 |
-| PR-02 | [Compra digital, física ou mista](processes/PR-02-compra-digital-e-mista.md) | [.dot](processes/PR-02-compra-digital-e-mista.dot) | [SVG](processes/PR-02-compra-digital-e-mista.svg) · [PNG](processes/PR-02-compra-digital-e-mista.png) | RN-002, RN-007–008, RN-024, RN-030, RN-038, RN-049–055, RN-063 |
-| PR-03 | [Pós-venda, devolução e reembolso](processes/PR-03-pos-venda-e-reembolso.md) | [.dot](processes/PR-03-pos-venda-e-reembolso.dot) | [SVG](processes/PR-03-pos-venda-e-reembolso.svg) · [PNG](processes/PR-03-pos-venda-e-reembolso.png) | RN-047–048, RN-054, RN-058–063, RN-065 |
-| SQ-01 | [Checkout idempotente com reserva](sequences/SQ-01-checkout-idempotente.md) | [.mmd](sequences/SQ-01-checkout-idempotente.mmd) | [SVG](sequences/SQ-01-checkout-idempotente.svg) · [PNG](sequences/SQ-01-checkout-idempotente.png) | RN-016–023, RN-025–028, RN-032–037 |
-| SQ-02 | [Webhook idempotente e fulfillment](sequences/SQ-02-webhook-idempotente.md) | [.mmd](sequences/SQ-02-webhook-idempotente.mmd) | [SVG](sequences/SQ-02-webhook-idempotente.svg) · [PNG](sequences/SQ-02-webhook-idempotente.png) | RN-031, RN-041–050, RN-070 |
-| SQ-03 | [Pagamento aprovado após expiração](sequences/SQ-03-pagamento-tardio.md) | [.mmd](sequences/SQ-03-pagamento-tardio.mmd) | [SVG](sequences/SQ-03-pagamento-tardio.svg) · [PNG](sequences/SQ-03-pagamento-tardio.png) | RN-027–028, RN-031, RN-043–046, RN-049 |
-| SM-01 | [Estados do pedido](state-machines/SM-01-pedido.md) | [.dot](state-machines/SM-01-pedido.dot) | [SVG](state-machines/SM-01-pedido.svg) · [PNG](state-machines/SM-01-pedido.png) | RN-035–040, RN-046, RN-058, RN-062–063 |
-| SM-02 | [Estados da tentativa de pagamento](state-machines/SM-02-tentativa-de-pagamento.md) | [.dot](state-machines/SM-02-tentativa-de-pagamento.dot) | [SVG](state-machines/SM-02-tentativa-de-pagamento.svg) · [PNG](state-machines/SM-02-tentativa-de-pagamento.png) | RN-041–048 |
-| SM-03 | [Estados da reserva de estoque](state-machines/SM-03-reserva-de-estoque.md) | [.dot](state-machines/SM-03-reserva-de-estoque.dot) | [SVG](state-machines/SM-03-reserva-de-estoque.svg) · [PNG](state-machines/SM-03-reserva-de-estoque.png) | RN-024–031 |
-| SM-04 | [Estados do direito digital](state-machines/SM-04-direito-de-acesso-digital.md) | [.dot](state-machines/SM-04-direito-de-acesso-digital.dot) | [SVG](state-machines/SM-04-direito-de-acesso-digital.svg) · [PNG](state-machines/SM-04-direito-de-acesso-digital.png) | RN-014, RN-049–054 |
-| SM-05 | [Estados da remessa física](state-machines/SM-05-remessa-fisica.md) | [.dot](state-machines/SM-05-remessa-fisica.dot) | [SVG](state-machines/SM-05-remessa-fisica.svg) · [PNG](state-machines/SM-05-remessa-fisica.png) | RN-055–057, RN-061, RN-063 |
-| SM-06 | [Estados da solicitação de devolução](state-machines/SM-06-solicitacao-de-devolucao.md) | [.dot](state-machines/SM-06-solicitacao-de-devolucao.dot) | [SVG](state-machines/SM-06-solicitacao-de-devolucao.svg) · [PNG](state-machines/SM-06-solicitacao-de-devolucao.png) | RN-059–063 |
-
-### Diagramas BPMN 2.0 (modelos descritivos separados)
-
-| ID | Processo | Modelo BPMN editável | Pré-visualização conceitual |
+| ID | Tema | Fonte | Visualização |
 |---|---|---|---|
-| BPMN-01 | Compra física | [Arquivo BPMN](bpmn/BPMN-01-compra-fisica.bpmn) | [PR-01](processes/PR-01-compra-fisica.md) |
-| BPMN-02 | Tratamento pós-venda | [Arquivo BPMN](bpmn/BPMN-02-pos-venda.bpmn) | [PR-03](processes/PR-03-pos-venda-e-reembolso.md) |
+| UC-01 | Loja e cliente | [.dot](use-cases/UC-01-loja-e-cliente.dot) | [SVG](use-cases/UC-01-loja-e-cliente.svg) · [PNG](use-cases/UC-01-loja-e-cliente.png) |
+| UC-02 | Backoffice e integrações | [.dot](use-cases/UC-02-backoffice-e-integracoes.dot) | [SVG](use-cases/UC-02-backoffice-e-integracoes.svg) · [PNG](use-cases/UC-02-backoffice-e-integracoes.png) |
+| PR-01 | Compra física | [.dot](processes/PR-01-compra-fisica.dot) | [SVG](processes/PR-01-compra-fisica.svg) · [PNG](processes/PR-01-compra-fisica.png) |
+| PR-02 | Compra digital e mista | [.dot](processes/PR-02-compra-digital-e-mista.dot) | [SVG](processes/PR-02-compra-digital-e-mista.svg) · [PNG](processes/PR-02-compra-digital-e-mista.png) |
+| PR-03 | Pós-venda e reembolso | [.dot](processes/PR-03-pos-venda-e-reembolso.dot) | [SVG](processes/PR-03-pos-venda-e-reembolso.svg) · [PNG](processes/PR-03-pos-venda-e-reembolso.png) |
+| SQ-01 | Checkout idempotente | [.mmd](sequences/SQ-01-checkout-idempotente.mmd) | [SVG](sequences/SQ-01-checkout-idempotente.svg) · [PNG](sequences/SQ-01-checkout-idempotente.png) |
+| SQ-02 | Webhook idempotente | [.mmd](sequences/SQ-02-webhook-idempotente.mmd) | [SVG](sequences/SQ-02-webhook-idempotente.svg) · [PNG](sequences/SQ-02-webhook-idempotente.png) |
+| SQ-03 | Pagamento tardio | [.mmd](sequences/SQ-03-pagamento-tardio.mmd) | [SVG](sequences/SQ-03-pagamento-tardio.svg) · [PNG](sequences/SQ-03-pagamento-tardio.png) |
+| SQ-04 | Reembolso idempotente | [.mmd](sequences/SQ-04-reembolso-idempotente.mmd) | [SVG](sequences/SQ-04-reembolso-idempotente.svg) · [PNG](sequences/SQ-04-reembolso-idempotente.png) |
+| **SQ-05** | **Kit misto (corrigido)** | **[.mmd](sequences/SQ-05-kit-misto.mmd)** | **[SVG](sequences/SQ-05-kit-misto.svg) · [PNG](sequences/SQ-05-kit-misto.png)** |
+| SM-01 | Pedido | [.dot](state-machines/SM-01-pedido.dot) | [SVG](state-machines/SM-01-pedido.svg) |
+| SM-02 | Tentativa de pagamento | [.dot](state-machines/SM-02-tentativa-de-pagamento.dot) | [SVG](state-machines/SM-02-tentativa-de-pagamento.svg) |
+| SM-03 | Reserva | [.dot](state-machines/SM-03-reserva-de-estoque.dot) | [SVG](state-machines/SM-03-reserva-de-estoque.svg) |
+| SM-04 | Direito digital | [.dot](state-machines/SM-04-direito-de-acesso-digital.dot) | [SVG](state-machines/SM-04-direito-de-acesso-digital.svg) |
+| SM-05 | Remessa física | [.dot](state-machines/SM-05-remessa-fisica.dot) | [SVG](state-machines/SM-05-remessa-fisica.svg) |
+| SM-06 | Solicitação de devolução | [.dot](state-machines/SM-06-solicitacao-de-devolucao.dot) | [SVG](state-machines/SM-06-solicitacao-de-devolucao.svg) |
+| SM-07 | Reembolso | [.dot](state-machines/SM-07-reembolso.dot) | [SVG](state-machines/SM-07-reembolso.svg) |
+| PC-01/02 | Reserva + pagamento tardio | [.dot](processes/PC-01-reserva-e-pagamento-tardio.dot) | [SVG](processes/PC-01-reserva-e-pagamento-tardio.svg) |
+| PC-03 | Reembolso | [.dot](processes/PC-03-reembolso.dot) | [SVG](processes/PC-03-reembolso.svg) |
+| PC-04 | Kits | [.dot](processes/PC-04-kits.dot) | [SVG](processes/PC-04-kits.svg) |
 
-Os arquivos `.bpmn` contêm **XML BPMN 2.0 e informações BPMN DI** para editores compatíveis. Os SVGs de PR-01 e PR-03 são **fluxogramas conceituais**, não exportações de um editor BPMN; não confundir as notações. Esses BPMNs não são automações executáveis.
+Os `.png` dos diagramas de Graphviz legados permanecem em seus caminhos atuais e **não precisam ser substituídos**. Os arquivos descritivos `.md` de cada diagrama também são preservados. O pacote desta revisão contém apenas os arquivos que mudaram.
 
+## BPMN 2.0 — fontes e prévias revisadas
 
-## Atualização v0.2 — políticas de negócio consolidadas
-
-- [Políticas consolidadas (PC-01 a PC-04)](POLITICAS-CONSOLIDADAS.md)
-- [Tabelas de transição com guardas e efeitos](TABELAS-DE-TRANSICAO.md)
-- [Cenários CA-011 a CA-026](CENARIOS-DE-ACEITE-v0.2.md)
-- [Adendo de regras RN-071 a RN-094](../02-business-requirements/ADENDO-POLITICAS-CRITICAS-v0.2.md)
-
-### Diagramas criados ou revisados para v0.2
-
-| ID | Tema | Fonte | Visual |
+| Diagrama | BPMN XML (editável) | Nova prévia visual | Correção de comportamento |
 |---|---|---|---|
-| SM-01 | Pedido (revisado) | [DOT](state-machines/SM-01-pedido.dot) | [SVG](state-machines/SM-01-pedido.svg) |
-| SM-02 | Tentativa de pagamento (revisado) | [DOT](state-machines/SM-02-tentativa-de-pagamento.dot) | [SVG](state-machines/SM-02-tentativa-de-pagamento.svg) |
-| SM-03 | Reserva de estoque (revisado) | [DOT](state-machines/SM-03-reserva-de-estoque.dot) | [SVG](state-machines/SM-03-reserva-de-estoque.svg) |
-| SM-07 | Reembolso (novo) | [DOT](state-machines/SM-07-reembolso.dot) | [SVG](state-machines/SM-07-reembolso.svg) |
-| PC-01/02 | Reserva e pagamento tardio | [DOT](processes/PC-01-reserva-e-pagamento-tardio.dot) | [SVG](processes/PC-01-reserva-e-pagamento-tardio.svg) |
-| PC-03 | Reembolso | [DOT](processes/PC-03-reembolso.dot) | [SVG](processes/PC-03-reembolso.svg) |
-| PC-04 | Kits | [DOT](processes/PC-04-kits.dot) | [SVG](processes/PC-04-kits.svg) |
-| SQ-03 | Pagamento tardio (revisado) | [Mermaid](sequences/SQ-03-pagamento-tardio.mmd) | [SVG](sequences/SQ-03-pagamento-tardio.svg) |
-| SQ-04 | Reembolso idempotente | [Mermaid](sequences/SQ-04-reembolso-idempotente.mmd) | [SVG](sequences/SQ-04-reembolso-idempotente.svg) |
-| SQ-05 | Kit misto | [Mermaid](sequences/SQ-05-kit-misto.mmd) | [SVG](sequences/SQ-05-kit-misto.svg) |
+| BPMN-01 — Compra física | [BPMN](bpmn/BPMN-01-compra-fisica.bpmn) | [SVG](bpmn/BPMN-01-compra-fisica.svg) · [PNG](bpmn/BPMN-01-compra-fisica.png) | Separa reserva, expiração, confirmação financeira, revisão e refund integral |
+| BPMN-02 — Pós-venda | [BPMN](bpmn/BPMN-02-pos-venda.bpmn) | [SVG](bpmn/BPMN-02-pos-venda.svg) · [PNG](bpmn/BPMN-02-pos-venda.png) | Preserva solicitação de digital, análise legal/alçada, refund incerto e inspeção física |
 
-**Atenção:** os diagramas anteriores PR-01–03 e BPMN-01/02 permanecem fluxos **conceituais de alto nível**. Para políticas transacionais e guardas específicas, os documentos de v0.2 prevalecem em caso de divergência. Ainda não foi feita validação completa dos dois modelos BPMN 2.0 com esta revisão, que deverá ocorrer antes da aprovação final da Fase 02.
+Os diagramas são **descritivos**, não orquestrações executáveis. O XML possui nós, sequência de fluxo e coordenadas BPMN DI estruturalmente validados por análise XML; abertura em um modelador BPMN externo e qualidade de layout nesse software continuam por validar. A prévia SVG/PNG foi gerada a partir dos mesmos nós e arestas e pode ter tipografia/layout diferente do modelador.
 
-## Rastreabilidade e revisão
+## Contratos de negócio e segurança
 
-Os identificadores `RN-XXX`, `RF-XXX` e `CA-XXX` referem-se à especificação v0.1. A matriz inicial para testes está em [MATRIZ-DE-RASTREABILIDADE.md](MATRIZ-DE-RASTREABILIDADE.md). Decisões abertas e pontos que exigem refinamento estão em [DECISOES-PENDENTES.md](DECISOES-PENDENTES.md).
+- **PC-01 — Reserva:** 40 minutos pelo relógio do PostgreSQL; sessão PSP de no máximo 30 minutos e expiração ao menos cinco minutos antes da reserva; parâmetros **condicionados à confirmação no PSP**.
+- **PC-02 — Pago após reserva expirada:** `PAYMENT_REVIEW`, bloqueio de fulfillment e acesso digital do pedido misto, refund integral idempotente por padrão.
+- **PC-03 — Reembolso:** separar solicitação, autorização, reserva financeira, submissão ao PSP, reconciliação e confirmação. Saldo = `captured - succeeded - outstanding_reserved`, sem retry com outro ID.
+- **PC-04 — Kits:** composição fixada, reserva all-or-nothing, componentes físicos juntos e direitos digitais somente após quitação e alocação física completa.
+- **Segurança:** módulos de Pagamentos validam os webhooks (SEC-020–024); nenhuma notificação externa pode conferir acesso sem guardas e direitos por recurso (SEC-025).
 
-### Critério de revisão desta etapa
+## Rastreabilidade e decisões
 
-- [x] Identificar os atores do cliente e da operação.
-- [x] Desenhar fluxos de compra física, digital/mista e pós-venda.
-- [x] Ilustrar checkout idempotente, webhook e pagamento tardio.
-- [x] Separar estados de pedido, tentativa, reserva, entitlement, remessa e solicitação.
-- [x] Gerar fontes editáveis, SVG e PNG independentes.
-- [x] Consolidar as propostas DA-004, DA-005, DA-009 e DA-012 com reservas e reembolsos.
-- [ ] Validar a compatibilidade do provedor de pagamento DA-006 e regras legais pendentes.
-- [x] Especificar transições, guardas e casos de aceitação negativos/concorrentes; executar testes apenas após implementação.
-- [ ] Aprovar a versão e atualizar a rastreabilidade antes da implementação.
+- [Políticas PC-01–04](POLITICAS-CONSOLIDADAS.md)
+- [Tabelas de estados/guardas](TABELAS-DE-TRANSICAO.md)
+- [Cenários CA-011–026](CENARIOS-DE-ACEITE-v0.2.md)
+- [Integração processo × segurança](INTEGRACAO-SEGURANCA.md)
+- [Matriz de rastreabilidade](MATRIZ-DE-RASTREABILIDADE.md)
+- [Decisões pendentes v0.4](DECISOES-PENDENTES.md)
+- [Critérios para PSP, alçadas e licenças](CRITERIOS-DECISOES-EXTERNAS.md)
+- [Requisitos de segurança](../07-security/security-requirements.md)
 
-## Regeneração das imagens
-
-Os diagramas de casos de uso, processos e estados têm como fonte os `.dot` e são exportáveis com **Graphviz**:
-
-```powershell
-# Dentro da raiz do repositório, com Graphviz instalado no PATH:
-Get-ChildItem 'docs/03-business-processes' -Recurse -Filter '*.dot' | ForEach-Object {
-    dot -Tsvg $_.FullName -o ([IO.Path]::ChangeExtension($_.FullName, '.svg'))
-    dot -Tpng -Gdpi=130 $_.FullName -o ([IO.Path]::ChangeExtension($_.FullName, '.png'))
-}
-```
-
-Para as sequências, os arquivos `.mmd` podem ser colados em blocos `mermaid` no GitHub ou abertos no [Mermaid Live Editor](https://mermaid.live/). As sequências revisadas SQ-03 a SQ-05 têm SVG/PNG produzidos por um renderizador simples a partir das mensagens Mermaid, sem suporte a todos os recursos da notação; regenere e revise ao alterar a fonte. As sequências originais SQ-01 e SQ-02 permanecem exportações conceituais anteriores. Editores BPMN 2.0, como Camunda Modeler, podem abrir os `.bpmn`.
-
-## Limites da modelagem
-
-1. As regras de negócio v0.1 são hipóteses de um projeto de portfólio, não requisitos aprovados de cliente real.
-2. O processamento físico e digital é assíncrono conceitualmente; a estratégia exata de transações/outbox será decidida em arquitetura.
-3. A política de aceitação de pagamentos tardios, reembolsos, expiração de reserva e direitos digitais está pendente de decisões de negócio.
-4. As exportações visuais e XML foram verificadas estruturalmente, mas a abertura e edição em ferramentas externas específicas devem ser verificadas no ambiente local.
+As políticas comerciais/tecnológicas são **propostas do projeto fictício**: nenhum teste de software, confirmação do PSP, alçada operacional real nem parecer jurídico foi concluído. Para Fase 03, a seleção de provedor, matriz de autorização e registro dos termos de licença serão formalizados antes da implementação. **Não tratar decisões abertas como prontidão de produção.**
