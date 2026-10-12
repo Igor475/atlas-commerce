@@ -1,12 +1,12 @@
 # Atlas Commerce — Especificação de Regras de Negócio
 
 > **Identificador:** AC-BRD-001  
-> **Versão:** 0.1.0 — descoberta inicial  
+> **Versão:** 0.2.1 — sincronização com políticas críticas e requisitos de segurança  
 > **Data:** 12/10/2026  
 > **Estado:** Rascunho para validação; não representa requisitos aprovados de uma empresa real  
 > **Idioma:** pt-BR  
-> **Repositório proposto:** `atlas-commerce`  
-> **Localização futura:** `docs/02-business-requirements/REGRAS-DE-NEGOCIO.md`
+> **Repositório:** `Igor475/atlas-commerce` (documento proposto; publicação ainda pendente)  
+> **Localização:** `docs/02-business-requirements/REGRAS-DE-NEGOCIO.md`
 
 ## 0. Finalidade e controle do documento
 
@@ -17,12 +17,41 @@ Este documento inaugura o projeto de portfólio **Atlas Commerce**, uma platafor
 - **RN-XXX:** regra de negócio (restrição ou invariante do domínio).
 - **RF-XXX:** requisito funcional (capacidade observável).
 - **RNF-XXX:** requisito não funcional (atributo de qualidade).
+- **SEC-XXX:** requisito de segurança especializado, vinculado à especificação AC-SEC-001.
+- **SA-XXX:** cenário de aceitação de segurança, vinculado à especificação AC-SEC-001.
 - **CA-XXX:** cenário de aceitação.
 - **DA-XXX:** decisão de negócio/escopo ainda aberta.
 - **MVP:** primeira versão demonstrável de ponta a ponta; **Evolução:** fase posterior.
 - **Premissa:** escolha de modelagem para avançar sem stakeholders reais; deve ser confirmada antes da arquitetura definitiva.
 
 **Importante:** as regras numeradas abaixo são **propostas de projeto**, não fatos sobre uma empresa existente. Assuntos legais, fiscais, comerciais ou de licenciamento exigirão análise apropriada antes de qualquer operação comercial real.
+
+### 0.1 Integração documental, versões e precedência
+
+Esta versão **mantém RN-001–RN-070, RF-001–RF-015 e CA-001–CA-010**, sem renumerar ou excluir conteúdo preexistente. A especificação é dividida em documentos com responsabilidades complementares:
+
+| Documento | Escopo / IDs | Autoridade da proposta |
+|---|---|---|
+| **Este BRD (AC-BRD-001 v0.2.1)** | Regras gerais RN-001–070, RF/RNF e CA-001–010 | Base do domínio e escopo |
+| [Adendo de políticas críticas v0.2](ADENDO-POLITICAS-CRITICAS-v0.2.md) | **RN-071–094** | Refinamentos propostos de reserva, pagamento tardio, reembolso e kits |
+| [Políticas consolidadas](../03-business-processes/POLITICAS-CONSOLIDADAS.md) | PC-01–PC-04 | Detalhes operacionais das políticas críticas propostas |
+| [Transições de estados](../03-business-processes/TABELAS-DE-TRANSICAO.md) | Guardas e efeitos das máquinas de estados | Condições específicas; não substitui invariantes de negócio |
+| [Cenários críticos](../03-business-processes/CENARIOS-DE-ACEITE-v0.2.md) | CA-011–CA-026 | Casos adicionais para validar políticas críticas |
+| [Segurança AC-SEC-001](../07-security/security-requirements.md) | SEC-001–SEC-038 e SA-001–SA-012 | Controles de segurança obrigatórios/condicionais por superfície |
+| [Rastreabilidade cruzada](../03-business-processes/MATRIZ-DE-RASTREABILIDADE.md) | RN, CA, SEC, SA, diagramas | Mapa de referências; não redefine política |
+
+**Regra anticolisão:** o adendo detalha regras de negócio mais específicas; a política consolidada esclarece a operação; a especificação SEC complementa-as e **não pode ser interpretada como autorização para reduzir controles ou direitos**. Havendo incompatibilidade real, registrar decisão DA/DS/ADR e corrigir todas as referências antes de implementar. Diagramas não têm precedência sobre invariantes e tabelas de transição. Regras legais aplicáveis exigem avaliação própria.
+
+**Situação:** as políticas v0.2 são **propostas condicionadas** à validação do provedor de pagamento e às pendências comerciais/jurídicas, não decisões homologadas nem funcionalidades implementadas. Até decisão formal, usar os valores abaixo apenas no protótipo/sandbox e manter os pontos condicionados explicitamente em aberto.
+
+### 0.2 Parâmetros propostos de reserva e compensação
+
+- **RN-071–076 / PC-01:** TTL da reserva física de **40 minutos pelo relógio do banco**, sem extensão automática; sessão externa com duração **até 30 minutos desde a criação** e encerramento **ao menos 5 minutos antes** da reserva. Só ofertar método compatível. Dependência aberta: **DA-006 (PSP)**.
+- **RN-077–080 / PC-02:** pagamento autenticado sem alocação física válida entra em `PAYMENT_REVIEW`, bloqueia fulfillment e direitos digitais de **pedido misto**, e inicia **reembolso integral idempotente como padrão do MVP**. Sem reatribuição automática.
+- **RN-081–087 / PC-03:** reembolso tem estado próprio; limite = captura − reembolsos concluídos − valores pendentes reservados; timeout ambíguo **não** libera saldo nem autoriza refund adicional; retorno ao estoque depende de recebimento/inspeção, não da liquidação financeira.
+- **RN-088–094 / PC-04:** kit usa snapshot imutável e reserva física all-or-nothing, é indivisível comercialmente no MVP; direitos digitais do kit misto exigem pagamento válido **e toda alocação física confirmada**; exceções legais são analisadas e auditadas.
+
+Não copiar estas regras para novos IDs independentes: os IDs normativos propostos são **RN-071–094**.
 
 ---
 
@@ -282,7 +311,7 @@ Os estados abaixo são **vocabulário inicial**, não uma máquina UML aprovada.
 
 ---
 
-## 9. Fluxos principais (descrição textual; diagramas virão na próxima etapa)
+## 9. Fluxos principais (descrição textual; diagramas propostos na Fase 02)
 
 ### FL-001 — Compra física
 
@@ -314,8 +343,8 @@ Os estados abaixo são **vocabulário inicial**, não uma máquina UML aprovada.
 1. Reserva é liberada conforme sua validade e regras de reconciliação.
 2. Posteriormente, o provedor comunica pagamento aprovado e autenticamente validado.
 3. Sistema verifica a inexistência de reserva/estoque alocado e abre `PAYMENT_REVIEW`.
-4. Nenhuma venda adicional de estoque é inventada e nenhum direito digital é liberado automaticamente nesse caso.
-5. Operador ou rotina controlada decide por reposição/reacomodação, cancelamento e reembolso, com auditoria.
+4. Nenhuma venda adicional de estoque é inventada e nenhum direito digital do pedido misto é liberado automaticamente nesse caso.
+5. Inicia-se **reembolso integral idempotente como compensação padrão do MVP**, sujeito a conciliação até comprovação; exceções de realocação exigem decisão humana autorizada, sem retomada automática de reserva.
 
 ---
 
@@ -387,20 +416,28 @@ Os estados abaixo são **vocabulário inicial**, não uma máquina UML aprovada.
 
 | ID | Qualidade | Critério/abordagem proposta |
 |---|---|---|
-| RNF-001 | Segurança | Autenticação robusta, autorização por recurso/ação, validação e proteção de segredos; matriz de ameaças e testes. |
+| RNF-001 | Segurança | Controles baseados em risco, detalhados como SEC-001 a SEC-038 em `docs/07-security/security-requirements.md`; prova por comportamento, separando aplicação, runtime e infraestrutura. |
 | RNF-002 | Integridade | Operações críticas de estoque, cupom, checkout e reembolso resistem a concorrência e replay. |
 | RNF-003 | Resiliência | Integrações externas têm timeout, tratamento de retries, reconciliação e comportamento em falha documentado. |
-| RNF-004 | Rastreabilidade | Correlation ID, logs estruturados, auditoria de ações sensíveis e histórico de estados. |
-| RNF-005 | Privacidade | Minimização de dados, controles de acesso, retenção, mecanismos de exercício de direitos e revisão LGPD. |
+| RNF-004 | Rastreabilidade | Correlation ID, logs estruturados e auditoria de ações sensíveis, com minimização de PII e sem segredos; SEC-030 e SEC-036. |
+| RNF-005 | Privacidade | Minimização de dados, controle de acesso em listagens/exportações, finalidade, retenção/descarte e direitos dos titulares; SEC-028 e SEC-029. |
 | RNF-006 | Performance | Medir latência p50/p95/p99 de catálogo e checkout em ambiente e carga documentados; estabelecer metas após baseline. |
 | RNF-007 | Escalabilidade | Planejar evolução por evidências de carga e gargalos; não assumir necessidade de microsserviços antecipadamente. |
 | RNF-008 | Testabilidade | Testes unitários, integração com PostgreSQL real, contratos de integração, E2E e cenários de concorrência. |
 | RNF-009 | Acessibilidade | Mirar WCAG 2.2 nível AA para interfaces; verificar com automação e avaliação manual. |
-| RNF-010 | Operabilidade | Health checks, métricas, alertas, backups e plano testado de restauração/rollback. |
+| RNF-010 | Operabilidade | Health checks, métricas, alertas, backups e restauração testada, com resposta a incidentes; SEC-035, SEC-036 e SEC-038. |
 | RNF-011 | Manutenibilidade | Módulos com responsabilidades claras, contratos definidos, documentação de decisões e CI. |
 | RNF-012 | Portabilidade | Desenvolvimento reproduzível com variáveis de ambiente exemplificadas e contêineres quando aplicável. |
 
 **Observação:** nenhuma meta de SLA, p95 ou VUs é considerada atingida por constar neste documento; evidência depende de medição reproduzível.
+
+### 11.1 Especificação especializada de segurança
+
+A segurança é planejada **desde a descoberta**, mas sua arquitetura e implementação serão determinadas nas fases seguintes. O documento **AC-SEC-001**, versionado em `docs/07-security/security-requirements.md`, detalha SEC-001–SEC-038, cenários SA-001–SA-012, ativos sensíveis, fronteiras de confiança, rastreabilidade e decisões DS-001–DS-009.
+
+**Princípio de verificação:** nenhum requisito pode ser declarado implementado sem evidência; presença de configuração, biblioteca, middleware ou anotação não comprova proteção efetiva. Controles dependentes da infraestrutura devem permanecer **não verificados** até inspeção de ambiente/provedor e, quando apropriado, teste funcional.
+
+**Nota de escopo:** checkout em sandbox, sem coleta direta de PAN/CVV no Atlas; conformidade PCI DSS e outras exigências reais dependem da integração final e de avaliação própria. A gestão de arquivos digitais e uploads requer controles específicos, sem supor que URLs assinadas impeçam compartilhamento durante sua validade.
 
 ---
 
@@ -431,20 +468,26 @@ A aplicação de prazos, devoluções de digitais, exceções e obrigações fis
 | DA-001 | Modelo de negócio | Uma editora brasileira fictícia vendendo B2C | Alta |
 | DA-002 | Tipos de produto | Livro físico, e-book, revista digital e kit simples | Alta |
 | DA-003 | Cadastro obrigatório | Sim, no checkout MVP; visitante pesquisa e monta carrinho | Média |
-| DA-004 | Política de kits | Composição fixa e venda como oferta única | Alta |
-| DA-005 | Estoque | Depósito lógico único; reserva com TTL parametrizável | Alta |
+| DA-004 | Política de kits | Proposta RN-088–094: kit indivisível, snapshot fixo e reserva all-or-nothing; exceções legais permanecem | Alta |
+| DA-005 | Estoque | Depósito lógico único; TTL proposto de 40 min pelo relógio do banco, condicionado a DA-006 | Alta |
 | DA-006 | Provedor de pagamento | Escolher integração oficial com sandbox e webhooks | Alta |
 | DA-007 | Frete | Simulador determinístico no MVP; provedor real depois | Média |
 | DA-008 | Produtos digitais | Biblioteca e visualização/download autorizado por licença | Alta |
-| DA-009 | Reembolsos e devoluções | Solicitação rastreada + tratamento assistido inicialmente | Alta |
+| DA-009 | Reembolsos e devoluções | Política RN-081–087 proposta; refund integral padrão para cobrança tardia; alçadas e tratamento jurídico-fiscal pendentes | Alta |
 | DA-010 | Impostos e emissão fiscal | Fora da integração real do MVP, sem alegar prontidão comercial | Alta |
 | DA-011 | Cupons | Um por pedido; sem empilhamento | Média |
-| DA-012 | Reserva de estoque | Prazo e tratamento de pagamento pendente a definir por ADR/processo | Alta |
+| DA-012 | Reserva de estoque | Reserva 40 min, PSP até 30 min e gap mínimo de 5 min; proposta condicionada à DA-006 | Alta |
 | DA-013 | Público e conteúdo | Conteúdo de demonstração próprio ou licenciado | Alta |
 | DA-014 | Forma de hospedagem | Ambiente demonstrativo sem transações financeiras reais | Média |
 | DA-015 | Política de dados e retenção | Definir inventário de dados e descarte legalmente apropriado | Alta |
+| DA-016 | Política de identidade e sessão | Resolver DS-001, DS-002: cookies, TTL, revogação e MFA de contas privilegiadas | Alta |
+| DA-017 | Matriz de autorização | Resolver DS-003: permissões por ação/recurso e separação de operações financeiras | Alta |
+| DA-018 | Segurança de integrações | Resolver DS-004: assinatura de webhook, retries, sandbox e escopo PCI | Alta |
+| DA-019 | Mídia e arquivos privados | Resolver DS-005, DS-006: uploads, prévias e armazenamento de downloads | Alta |
+| DA-020 | Evidências de segurança operacional | Resolver DS-008: scans, CI, secrets, TLS, backup/restore e alertas | Alta |
+| DA-021 | Referencial verificável | Resolver DS-009: selecionar requisitos OWASP ASVS aplicáveis por risco | Média |
 
-**Estado da versão:** as hipóteses acima permitem avançar na modelagem, mas nenhuma deve ser apresentada como decisão de uma empresa real.
+**Estado da versão:** as hipóteses acima permitem avançar na modelagem, mas nenhuma deve ser apresentada como decisão de uma empresa real. As decisões DS-001 a DS-009 estão detalhadas na especificação de segurança AC-SEC-001.
 
 ---
 
@@ -457,8 +500,13 @@ A aplicação de prazos, devoluções de digitais, exceções e obrigações fis
 | Duplicidade de webhook | RN-041–044, RN-049–050 | RF-007, RF-010 | Testes de replay, assinatura e out-of-order |
 | Acesso digital indevido | RN-009, RN-014, RN-049–054 | RF-010 | Testes de autorização e acesso a mídia |
 | Cupom sob disputa | RN-019–021 | RF-005 | Teste transacional de uso concorrente |
-| Cancelamento/reembolso | RN-047, RN-058–063 | RF-012 | Testes de fluxo, compensação e trilha de auditoria |
+| Cancelamento/reembolso | RN-047, RN-058–063, RN-077–087 | RF-012 | CA-015–021; testes de fluxo, saldo reservado, compensação e auditoria |
 | Alteração administrativa | RN-064–069 | RF-011 | Testes de permissão e evidência de auditoria |
+| Controle de acesso horizontal | RN-009, RN-014, RN-039 | RF-009, RF-010 | SEC-001–003, SA-001 e SA-009; testes de titularidade |
+| Autenticação e sessão | RN-009, RN-013 | RF-003 | SEC-004–009, SA-003 e SA-004; testes de MFA/sessão |
+| Catálogo e checkout expostos | RN-006, RN-016–021 | RF-002, RF-005 | SEC-010–019, SA-005 e SA-010; manipulação, uploads e abuso |
+| Provedor e reembolso | RN-041–048, RN-058–063 | RF-007, RF-012 | SEC-020–024, SA-007 e SA-008; assinatura, replay e autorização |
+| Proteção de dados e operação | RN-064–069 | RF-011, RF-013 | SEC-028–038, SA-011 e SA-012; privacidade, logs e restore |
 
 Na implementação, essa matriz deve referenciar links reais para código, PRs e testes, sem links fictícios.
 
@@ -475,13 +523,20 @@ Na implementação, essa matriz deve referenciar links reais para código, PRs e
 - **R-005 — Ambiguidade de kits e remessas parciais:** fixar invariantes antes de modelagem física.
 - **R-006 — Informação legal insuficiente:** revisão de políticas e exigências antes de produção real.
 - **R-007 — Escopo excessivo:** preservar MVP e justificar cada expansão.
+- **R-008 — Acesso horizontal e escalonamento:** consultar pedidos, endereços, arquivos ou relatórios alheios sem autorização.
+- **R-009 — Comprometimento de contas privilegiadas:** MFA e autorizações administrativas precisam de estratégia explícita.
+- **R-010 — Abuso de arquivos e integrações:** uploads, URLs externas e webhooks exigem fronteiras e validação.
+- **R-011 — Vazamento por observabilidade/exports:** logs, arquivos de exportação e terceiros recebem dados que precisam de finalidade e controle.
+- **R-012 — Controles operacionais apenas declarados:** CI, TLS, secrets e restore devem ter evidências reais, não somente configurações. 
 
 ### Definição de pronto da fase de regras de negócio
 
 - [ ] Domínio, atores e glossário revisados.
-- [ ] Regras contraditórias identificadas e resolvidas.
-- [ ] DA-001 a DA-015 avaliadas e registradas como decididas/adiadas.
-- [ ] Critérios de aceitação prioritários revisados.
+- [ ] Inconsistências relevantes resolvidas e políticas v0.2 validadas contra a escolha do PSP (DA-006).
+- [ ] DA-001 a DA-021 avaliadas e registradas como decididas/adiadas.
+- [ ] Requisitos SEC-001 a SEC-038 revisados, priorizados e associados às superfícies do projeto.
+- [ ] Casos SA-001 a SA-012 selecionados para testes futuros e decisões DS-001 a DS-009 priorizadas.
+- [ ] Critérios CA-001–026 e SA-001–012 revisados, incluindo links para cenários de políticas críticas.
 - [ ] Estados e limites de contexto aceitos para serem diagramados.
 - [ ] Matriz de rastreabilidade inicial atualizada.
 - [ ] Requisitos legais marcados para revisão especializada, quando aplicável.
@@ -490,7 +545,7 @@ Na implementação, essa matriz deve referenciar links reais para código, PRs e
 
 ## 16. Próxima etapa documentada
 
-**Etapa 2 — Modelagem de processos e diagramas**, com entregáveis independentes:
+**Etapa 2 — Modelagem de processos e diagramas (artefatos iniciais já presentes no repositório; revisão e aprovação pendentes)**, com entregáveis independentes:
 
 1. Mapa de contexto de negócio e atores.
 2. Diagrama de casos de uso por papel.
@@ -499,6 +554,13 @@ Na implementação, essa matriz deve referenciar links reais para código, PRs e
 5. Máquina de estados: pedido, pagamento, reserva e entitlement (cada uma separada).
 6. Modelo conceitual de entidades e agregados.
 7. Diagrama C4 de contexto (nível 1) e contêineres (nível 2) **após** validar as fronteiras de negócio.
+8. Diagrama de fluxo de dados (DFD) para conta, checkout, webhooks, administração e arquivos, identificando fronteiras de confiança e cenários de abuso.
 
 > **Regra de engenharia do portfólio:** a documentação serve como contrato de entendimento e referência de testes, mas deve evoluir sempre que o comportamento real mudar. Não registrar funcionalidade como implementada sem evidências.
 
+
+## 17. Controle de sincronização
+
+- O repositório já contém modelos da Fase 02 (UC, PR, SQ, SM, BPMN), políticas PC-01–04 e critérios CA-011–026; todos são **propostos**, não código implementado.
+- Alterações futuras em RN-071–094 exigem revisão dos modelos e das referências SEC-018–024, SEC-025, SA-006–009, e da [matriz](../03-business-processes/MATRIZ-DE-RASTREABILIDADE.md).
+- A atualização da versão base não significa aprovação automática do adendo nem validação da integração com o PSP.
