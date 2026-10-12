@@ -1,0 +1,41 @@
+digraph AtlasCommerce {
+	graph [bgcolor=white concentrate=false fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=23 label="UC-01 • Casos de uso | Loja e conta do cliente" labelloc=t nodesep=0.36 outputorder=edgesfirst pad=0.24 rankdir=LR ranksep=1.5 splines=polyline]
+	node [color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=11 margin="0.14,0.09" penwidth=1.3 shape=box style="rounded,filled"]
+	edge [arrowsize=.7 color="#475569" fontcolor="#64748b" fontname="DejaVu Sans" fontsize=10]
+	node [color="#93c5fd" fillcolor="#eff6ff" fontsize=10 shape=ellipse]
+	subgraph cluster_a {
+		color="#cbd5e1" fontcolor="#64748b" fontname="DejaVu Sans" label=ATORES style="rounded,dashed"
+		visitor [label="«ator»
+Visitante" color="#5eead4" fillcolor="#f0fdfa" fontsize=11 shape=box]
+		client [label="«ator»
+Cliente autenticado" color="#5eead4" fillcolor="#f0fdfa" fontsize=11 shape=box]
+	}
+	subgraph cluster_s {
+		color="#93c5fd" fontcolor="#0f172a" fontname="DejaVu Sans" label="ATLAS COMMERCE | CASOS DE USO" style=rounded
+		catalog [label="Consultar catálogo" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		search [label="Pesquisar e filtrar" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		preview [label="Visualizar prévia" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		cart [label="Gerenciar carrinho" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		login [label="Autenticar-se" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		checkout [label="Confirmar checkout" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		orders [label="Consultar meus pedidos" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		address [label="Gerenciar endereços" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		library [label="Acessar biblioteca digital" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		request [label="Solicitar cancelamento
+ou devolução" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+	}
+	visitor -> catalog [arrowhead=none color="#64748b"]
+	visitor -> search [arrowhead=none color="#64748b"]
+	visitor -> preview [arrowhead=none color="#64748b"]
+	visitor -> cart [arrowhead=none color="#64748b"]
+	client -> login [arrowhead=none color="#64748b"]
+	client -> catalog [arrowhead=none color="#64748b"]
+	client -> search [arrowhead=none color="#64748b"]
+	client -> preview [arrowhead=none color="#64748b"]
+	client -> cart [arrowhead=none color="#64748b"]
+	client -> checkout [arrowhead=none color="#64748b"]
+	client -> orders [arrowhead=none color="#64748b"]
+	client -> address [arrowhead=none color="#64748b"]
+	client -> library [arrowhead=none color="#64748b"]
+	client -> request [arrowhead=none color="#64748b"]
+}

@@ -1,0 +1,146 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_Process_PosVenda" targetNamespace="https://atlas-commerce.example/docs/processos">
+  <bpmn:process id="Process_PosVenda" name="Tratamento de pós-venda - modelo descritivo" isExecutable="false">
+    <bpmn:startEvent id="start" name="Solicitação recebida">
+      <bpmn:outgoing>Flow_01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="register" name="Registrar pedido pós-venda">
+      <bpmn:incoming>Flow_01</bpmn:incoming>
+      <bpmn:outgoing>Flow_02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="check" name="Validar elegibilidade e direitos">
+      <bpmn:incoming>Flow_02</bpmn:incoming>
+      <bpmn:outgoing>Flow_03</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="eligible" name="Elegível?">
+      <bpmn:incoming>Flow_03</bpmn:incoming>
+      <bpmn:outgoing>Flow_04</bpmn:outgoing>
+      <bpmn:outgoing>Flow_05</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="decide" name="Aprovar atendimento">
+      <bpmn:incoming>Flow_04</bpmn:incoming>
+      <bpmn:outgoing>Flow_07</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="actions" name="Tratar remessa e direitos digitais">
+      <bpmn:incoming>Flow_07</bpmn:incoming>
+      <bpmn:outgoing>Flow_08</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="refund" name="Solicitar reembolso elegível">
+      <bpmn:incoming>Flow_08</bpmn:incoming>
+      <bpmn:outgoing>Flow_09</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="confirm" name="Conciliar reembolso confirmado">
+      <bpmn:incoming>Flow_09</bpmn:incoming>
+      <bpmn:outgoing>Flow_10</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="stock" name="Avaliar reposição física se aplicável">
+      <bpmn:incoming>Flow_10</bpmn:incoming>
+      <bpmn:outgoing>Flow_11</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="finish" name="Tratado e auditado">
+      <bpmn:incoming>Flow_11</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="reject" name="Comunicar decisão justificada">
+      <bpmn:incoming>Flow_05</bpmn:incoming>
+      <bpmn:outgoing>Flow_06</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="endno" name="Solicitação encerrada">
+      <bpmn:incoming>Flow_06</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_01" sourceRef="start" targetRef="register"/>
+    <bpmn:sequenceFlow id="Flow_02" sourceRef="register" targetRef="check"/>
+    <bpmn:sequenceFlow id="Flow_03" sourceRef="check" targetRef="eligible"/>
+    <bpmn:sequenceFlow id="Flow_04" sourceRef="eligible" targetRef="decide" name="Sim"/>
+    <bpmn:sequenceFlow id="Flow_05" sourceRef="eligible" targetRef="reject" name="Não"/>
+    <bpmn:sequenceFlow id="Flow_06" sourceRef="reject" targetRef="endno"/>
+    <bpmn:sequenceFlow id="Flow_07" sourceRef="decide" targetRef="actions"/>
+    <bpmn:sequenceFlow id="Flow_08" sourceRef="actions" targetRef="refund"/>
+    <bpmn:sequenceFlow id="Flow_09" sourceRef="refund" targetRef="confirm"/>
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="confirm" targetRef="stock"/>
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="stock" targetRef="finish"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_Process_PosVenda">
+    <bpmndi:BPMNPlane id="Plane_Process_PosVenda" bpmnElement="Process_PosVenda">
+      <bpmndi:BPMNShape id="Shape_start" bpmnElement="start">
+        <dc:Bounds x="100" y="150" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_register" bpmnElement="register">
+        <dc:Bounds x="200" y="135" width="180" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_check" bpmnElement="check">
+        <dc:Bounds x="430" y="135" width="180" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_eligible" bpmnElement="eligible">
+        <dc:Bounds x="660" y="146" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_decide" bpmnElement="decide">
+        <dc:Bounds x="770" y="135" width="180" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_actions" bpmnElement="actions">
+        <dc:Bounds x="1000" y="135" width="180" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_refund" bpmnElement="refund">
+        <dc:Bounds x="1230" y="135" width="180" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_confirm" bpmnElement="confirm">
+        <dc:Bounds x="1460" y="135" width="180" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_stock" bpmnElement="stock">
+        <dc:Bounds x="1690" y="135" width="180" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_finish" bpmnElement="finish">
+        <dc:Bounds x="1920" y="150" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_reject" bpmnElement="reject">
+        <dc:Bounds x="770" y="320" width="180" height="70"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_endno" bpmnElement="endno">
+        <dc:Bounds x="1000" y="335" width="48" height="48"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_01" bpmnElement="Flow_01">
+        <di:waypoint x="148" y="174"/>
+        <di:waypoint x="200" y="170"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_02" bpmnElement="Flow_02">
+        <di:waypoint x="380" y="170"/>
+        <di:waypoint x="430" y="170"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_03" bpmnElement="Flow_03">
+        <di:waypoint x="610" y="170"/>
+        <di:waypoint x="660" y="170"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_04" bpmnElement="Flow_04">
+        <di:waypoint x="708" y="170"/>
+        <di:waypoint x="770" y="170"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_05" bpmnElement="Flow_05">
+        <di:waypoint x="708" y="170"/>
+        <di:waypoint x="770" y="355"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_06" bpmnElement="Flow_06">
+        <di:waypoint x="950" y="355"/>
+        <di:waypoint x="1000" y="359"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_07" bpmnElement="Flow_07">
+        <di:waypoint x="950" y="170"/>
+        <di:waypoint x="1000" y="170"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_08" bpmnElement="Flow_08">
+        <di:waypoint x="1180" y="170"/>
+        <di:waypoint x="1230" y="170"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_09" bpmnElement="Flow_09">
+        <di:waypoint x="1410" y="170"/>
+        <di:waypoint x="1460" y="170"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_10" bpmnElement="Flow_10">
+        <di:waypoint x="1640" y="170"/>
+        <di:waypoint x="1690" y="170"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_11" bpmnElement="Flow_11">
+        <di:waypoint x="1870" y="170"/>
+        <di:waypoint x="1920" y="174"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

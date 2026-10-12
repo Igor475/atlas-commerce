@@ -1,0 +1,46 @@
+digraph AtlasCommerce {
+	graph [bgcolor=white concentrate=false fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=23 label="PR-02 • Processo | Compra digital, física ou mista" labelloc=t nodesep=.4 outputorder=edgesfirst pad=0.24 rankdir=TB ranksep=.5 splines=polyline]
+	node [color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=11 margin="0.14,0.09" penwidth=1.3 shape=box style="rounded,filled"]
+	edge [arrowsize=.7 color="#475569" fontcolor="#64748b" fontname="DejaVu Sans" fontsize=10]
+	s [label="" color="#0f766e" fillcolor="#0f766e" fixedsize=true height=.24 shape=circle width=.24]
+	a [label="Cliente seleciona itens
+físicos, digitais ou kit" color="#0f766e" fillcolor="#f0fdfa"]
+	b [label="Expandir kit e validar
+composição da oferta" color="#1d4ed8" fillcolor="#eff6ff"]
+	c [label="Validar cotação e
+reservar físicos atomicamente" color="#1d4ed8" fillcolor="#eff6ff"]
+	q [label="Elegível e disponível?" color="#f59e0b" fillcolor="#fffbeb" fontcolor="#713f12" margin="0.09,0.04" shape=diamond]
+	r [label="Recusar compra sem
+comprometer componentes" color="#b91c1c" fillcolor="#fef2f2" fontcolor="#991b1b"]
+	d [label="Criar snapshot de pedido e
+solicitar pagamento" color="#1d4ed8" fillcolor="#eff6ff"]
+	e [label="Pagamento autenticado,
+aprovado e elegível?" color="#f59e0b" fillcolor="#fffbeb" fontcolor="#713f12" margin="0.09,0.04" shape=diamond]
+	f [label="Manter pendência ou
+iniciar reconciliação" color="#b91c1c" fillcolor="#fef2f2" fontcolor="#991b1b"]
+	g [label="Confirmar alocação física
+quando aplicável" color="#1d4ed8" fillcolor="#eff6ff"]
+	h [label="Conceder direitos digitais
+de forma idempotente" color="#1d4ed8" fillcolor="#eff6ff"]
+	i [label="Processar fulfillment físico
+de forma independente" shape=box]
+	j [label="Consolidar progresso por item;
+concluir somente quando elegível" color="#1d4ed8" fillcolor="#eff6ff"]
+	t [label="" color="#0f172a" fillcolor="#0f172a" fixedsize=true height=.25 shape=doublecircle width=.25]
+	s -> a
+	a -> b
+	b -> c
+	c -> q
+	q -> r [label="Não" color="#b91c1c" fontcolor="#b91c1c" style=dashed]
+	r -> t
+	q -> d [label=Sim color="#0f766e" fontcolor="#0f766e"]
+	d -> e
+	e -> f [label="Não" color="#b91c1c" fontcolor="#b91c1c" style=dashed]
+	f -> t
+	e -> g [label="Sim, sem impedimento" color="#0f766e" fontcolor="#0f766e"]
+	g -> h [label="se há digital"]
+	g -> i [label="se há físico"]
+	h -> j
+	i -> j
+	j -> t
+}

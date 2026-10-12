@@ -1,0 +1,48 @@
+digraph AtlasCommerce {
+	graph [bgcolor=white concentrate=false fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=23 label="PR-03 • Processo | Solicitação pós-venda" labelloc=t nodesep=.4 outputorder=edgesfirst pad=0.24 rankdir=TB ranksep=.5 splines=polyline]
+	node [color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=11 margin="0.14,0.09" penwidth=1.3 shape=box style="rounded,filled"]
+	edge [arrowsize=.7 color="#475569" fontcolor="#64748b" fontname="DejaVu Sans" fontsize=10]
+	s [label="" color="#0f766e" fillcolor="#0f766e" fixedsize=true height=.24 shape=circle width=.24]
+	a [label="Cliente solicita cancelamento,
+devolução ou arrependimento" color="#0f766e" fillcolor="#f0fdfa"]
+	b [label="Registrar solicitação, itens,
+justificativa e momento" color="#1d4ed8" fillcolor="#eff6ff"]
+	c [label="Verificar compra, fase,
+elegibilidade legal e comercial" color="#1d4ed8" fillcolor="#eff6ff"]
+	q [label="Elegível?" color="#f59e0b" fillcolor="#fffbeb" fontcolor="#713f12" margin="0.09,0.04" shape=diamond]
+	no [label="Informar decisão fundamentada
+e permitir tratamento adequado" color="#b91c1c" fillcolor="#fef2f2" fontcolor="#991b1b"]
+	d [label="Atendimento aprova/encaminha
+conforme política" shape=box]
+	e [label="Encerrar/cancelar tentativas
+pendentes quando aplicável" color="#1d4ed8" fillcolor="#eff6ff"]
+	f [label="Se produto físico retornou,
+inspecionar condição de revenda" shape=box]
+	g [label="Se digital, revisar direitos
+sem revogação automática" shape=box]
+	h [label="Se pagamento capturado, solicitar
+reembolso dentro do saldo elegível" color="#1d4ed8" fillcolor="#eff6ff"]
+	i [label="Conciliar confirmação de
+reembolso com provedor" color="#1d4ed8" fillcolor="#eff6ff"]
+	j [label="Restituir inventário apenas
+após aptidão verificada" color="#1d4ed8" fillcolor="#eff6ff"]
+	k [label="Registrar compensações,
+audit trail e conclusão" color="#1d4ed8" fillcolor="#eff6ff"]
+	t [label="" color="#0f172a" fillcolor="#0f172a" fixedsize=true height=.25 shape=doublecircle width=.25]
+	s -> a
+	a -> b
+	b -> c
+	c -> q
+	q -> no [label="Não" color="#b91c1c" fontcolor="#b91c1c" style=dashed]
+	no -> t
+	q -> d [label=Sim color="#0f766e" fontcolor="#0f766e"]
+	d -> e
+	e -> f [label="se físico"]
+	e -> g [label="se digital"]
+	f -> h
+	g -> h
+	h -> i
+	i -> j
+	j -> k
+	k -> t
+}

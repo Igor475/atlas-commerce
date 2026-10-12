@@ -1,0 +1,17 @@
+digraph AtlasCommerce {
+	graph [bgcolor=white concentrate=false fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=23 label="SM-03 • Reserva de estoque físico" labelloc=t nodesep=.52 outputorder=edgesfirst pad=0.24 rankdir=LR ranksep=.87 splines=polyline]
+	node [color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=11 margin="0.14,0.09" penwidth=1.3 shape=box style="rounded,filled"]
+	edge [arrowsize=.7 color="#475569" fontcolor="#64748b" fontname="DejaVu Sans" fontsize=10]
+	active [label=ACTIVE color="#1d4ed8" fillcolor="#eff6ff"]
+	confirmed [label=CONFIRMED color="#0f172a" fillcolor="#e2e8f0" shape=box]
+	released [label=RELEASED color="#0f172a" fillcolor="#e2e8f0" shape=box]
+	expired [label=EXPIRED color="#0f172a" fillcolor="#e2e8f0" shape=box]
+	active -> confirmed [label="Pagamento validado +
+alocação vigente"]
+	active -> released [label="Cancelamento ou rejeição
+segura"]
+	active -> expired [label="Expiração atômica e
+liberação"]
+	NOTE [label="Transições terminais são idempotentes; nunca recriar estoque." color="#fcd34d" fillcolor="#fffbeb" fontsize=10 shape=note]
+	NOTE -> active [style=invis]
+}

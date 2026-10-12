@@ -1,0 +1,56 @@
+digraph AtlasCommerce {
+	graph [bgcolor=white concentrate=false fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=23 label="PR-01 • Processo | Compra de produto físico" labelloc=t nodesep=.4 outputorder=edgesfirst pad=0.24 rankdir=TB ranksep=.5 splines=polyline]
+	node [color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=11 margin="0.14,0.09" penwidth=1.3 shape=box style="rounded,filled"]
+	edge [arrowsize=.7 color="#475569" fontcolor="#64748b" fontname="DejaVu Sans" fontsize=10]
+	s [label="" color="#0f766e" fillcolor="#0f766e" fixedsize=true height=.24 shape=circle width=.24]
+	a [label="Cliente seleciona produtos
+e autentica-se" color="#0f766e" fillcolor="#f0fdfa"]
+	b [label="Servidor calcula cotação:
+preço, cupom, frete, total" color="#1d4ed8" fillcolor="#eff6ff"]
+	c [label="Cliente confirma
+valores apresentados" color="#0f766e" fillcolor="#f0fdfa"]
+	d [label="Servidor revalida preço
+e elegibilidade" color="#1d4ed8" fillcolor="#eff6ff"]
+	q [label="Estoque físico
+suficiente?" color="#f59e0b" fillcolor="#fffbeb" fontcolor="#713f12" margin="0.09,0.04" shape=diamond]
+	no [label="Rejeitar checkout e
+orientar revisão do carrinho" color="#b91c1c" fillcolor="#fef2f2" fontcolor="#991b1b"]
+	e [label="Criar pedido + reservar
+estoque atomicamente" color="#1d4ed8" fillcolor="#eff6ff"]
+	f [label="Iniciar tentativa de pagamento" color="#1d4ed8" fillcolor="#eff6ff"]
+	g [label="Receber evidência válida
+do pagamento" color="#1d4ed8" fillcolor="#eff6ff"]
+	paid [label="Aprovado?" color="#f59e0b" fillcolor="#fffbeb" fontcolor="#713f12" margin="0.09,0.04" shape=diamond]
+	pending [label="Permanecer pendente ou
+tratar falha/expiração" shape=box]
+	h [label="Reserva ainda alocável?" color="#f59e0b" fillcolor="#fffbeb" fontcolor="#713f12" margin="0.09,0.04" shape=diamond]
+	review [label="Abrir PAYMENT_REVIEW;
+reconciliar/compensar" color="#b91c1c" fillcolor="#fef2f2" fontcolor="#991b1b"]
+	i [label="Confirmar alocação e
+marcar pedido pago" color="#1d4ed8" fillcolor="#eff6ff"]
+	j [label="Preparar e expedir
+remessa física" shape=box]
+	k [label="Atualizar entrega
+e conclusão do pedido" shape=box]
+	t [label="" color="#0f172a" fillcolor="#0f172a" fixedsize=true height=.25 shape=doublecircle width=.25]
+	s -> a
+	a -> b
+	b -> c
+	c -> d
+	d -> q
+	q -> no [label="Não" color="#b91c1c" fontcolor="#b91c1c" style=dashed]
+	q -> e [label=Sim color="#0f766e" fontcolor="#0f766e"]
+	no -> t
+	e -> f
+	f -> g
+	g -> paid
+	paid -> pending [label="Não" color="#b91c1c" fontcolor="#b91c1c" style=dashed]
+	paid -> h [label=Sim color="#0f766e" fontcolor="#0f766e"]
+	pending -> t
+	h -> review [label="Não" color="#b91c1c" fontcolor="#b91c1c" style=dashed]
+	h -> i [label=Sim color="#0f766e" fontcolor="#0f766e"]
+	review -> t
+	i -> j
+	j -> k
+	k -> t
+}

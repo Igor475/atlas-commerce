@@ -1,0 +1,22 @@
+digraph AtlasCommerce {
+	graph [bgcolor=white concentrate=false fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=23 label="SM-05 • Remessa física" labelloc=t nodesep=.52 outputorder=edgesfirst pad=0.24 rankdir=TB ranksep=.87 splines=polyline]
+	node [color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=11 margin="0.14,0.09" penwidth=1.3 shape=box style="rounded,filled"]
+	edge [arrowsize=.7 color="#475569" fontcolor="#64748b" fontname="DejaVu Sans" fontsize=10]
+	picking [label=AWAITING_PICKING color="#1d4ed8" fillcolor="#eff6ff"]
+	packed [label=PACKED color="#1d4ed8" fillcolor="#eff6ff"]
+	shipped [label=SHIPPED color="#1d4ed8" fillcolor="#eff6ff"]
+	delivered [label=DELIVERED color="#0f172a" fillcolor="#e2e8f0" shape=box]
+	exception [label=EXCEPTION color="#b91c1c" fillcolor="#fef2f2" fontcolor="#991b1b"]
+	picking -> packed [label="Separação e embalagem"]
+	packed -> shipped [label="Despacho comprovado"]
+	shipped -> delivered [label="Entrega comprovada"]
+	picking -> exception [label="Problema de preparação"]
+	packed -> exception [label="Problema operacional"]
+	shipped -> exception [label="Ocorrência logística"]
+	exception -> picking [label="Retomar separação com
+autorização"]
+	exception -> shipped [label="Retomar acompanhamento da
+remessa"]
+	NOTE [label="Uma remessa evolui separadamente do pagamento." color="#fcd34d" fillcolor="#fffbeb" fontsize=10 shape=note]
+	NOTE -> picking [style=invis]
+}

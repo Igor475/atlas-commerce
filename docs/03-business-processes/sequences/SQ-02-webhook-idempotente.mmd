@@ -1,0 +1,21 @@
+sequenceDiagram
+autonumber
+participant G as Provedor
+participant H as Webhook API
+participant V as Validação
+participant B as PostgreSQL
+participant F as Fulfillment
+participant N as Notificações
+G->>H: Enviar evento de pagamento
+H->>V: Verificar assinatura, escopo e identificadores
+V->>H: Autenticidade comprovada ou rejeição
+H->>B: Registrar evento único por origem e identificador
+B->>H: Novo evento ou repetição
+Note over H,B: Se duplicado, devolver 2xx e encerrar. Os passos seguintes são apenas para eventos novos.
+H->>B: Travar estado; validar moeda, valor, ordem e reserva
+B->>H: Estado consistente ou revisão necessária
+H->>B: Confirmar reserva se vigente; persistir estado e outbox atomicamente
+H->>G: ACK 2xx após persistência durável
+B->>F: Consumir trabalho pendente de modo idempotente
+F->>B: Conceder digital se elegível; preparar remessa se físico
+B->>N: Notificação pendente com retry

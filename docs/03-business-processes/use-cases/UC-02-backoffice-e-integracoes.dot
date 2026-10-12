@@ -1,0 +1,40 @@
+digraph AtlasCommerce {
+	graph [bgcolor=white concentrate=false fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=23 label="UC-02 • Casos de uso | Operação e integrações" labelloc=t nodesep=0.36 outputorder=edgesfirst pad=0.24 rankdir=LR ranksep=1.5 splines=polyline]
+	node [color="#cbd5e1" fillcolor="#f8fafc" fontcolor="#0f172a" fontname="DejaVu Sans" fontsize=11 margin="0.14,0.09" penwidth=1.3 shape=box style="rounded,filled"]
+	edge [arrowsize=.7 color="#475569" fontcolor="#64748b" fontname="DejaVu Sans" fontsize=10]
+	node [color="#93c5fd" fillcolor="#eff6ff" fontsize=10 shape=ellipse]
+	subgraph cluster_a {
+		color="#cbd5e1" fontcolor="#64748b" fontname="DejaVu Sans" label=ATORES style="rounded,dashed"
+		admin [label="«ator»
+Administrador" color="#5eead4" fillcolor="#f0fdfa" fontsize=11 shape=box]
+		editor [label="«ator»
+Gestor de catálogo" color="#5eead4" fillcolor="#f0fdfa" fontsize=11 shape=box]
+		inventory [label="«ator»
+Operador de estoque" color="#5eead4" fillcolor="#f0fdfa" fontsize=11 shape=box]
+		finance [label="«ator»
+Operador financeiro" color="#5eead4" fillcolor="#f0fdfa" fontsize=11 shape=box]
+		support [label="«ator»
+Atendimento" color="#5eead4" fillcolor="#f0fdfa" fontsize=11 shape=box]
+		provider [label="«ator»
+Provedor de pagamento" color="#5eead4" fillcolor="#f0fdfa" fontsize=11 shape=box]
+	}
+	subgraph cluster_s {
+		color="#93c5fd" fontcolor="#0f172a" fontname="DejaVu Sans" label="ATLAS COMMERCE | CASOS DE USO" style=rounded
+		permissions [label="Gerenciar permissões" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		publish [label="Publicar e atualizar produtos" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		adjust [label="Ajustar estoque com motivo" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		track [label="Consultar pedidos autorizados" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		review [label="Investigar conciliação" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		refund [label="Iniciar reembolso autorizado" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		post [label="Tratar solicitação pós-venda" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+		notify [label="Informar eventos verificados" color="#93c5fd" fillcolor="#eff6ff" shape=ellipse]
+	}
+	admin -> permissions [arrowhead=none color="#64748b"]
+	editor -> publish [arrowhead=none color="#64748b"]
+	inventory -> adjust [arrowhead=none color="#64748b"]
+	finance -> review [arrowhead=none color="#64748b"]
+	finance -> refund [arrowhead=none color="#64748b"]
+	support -> track [arrowhead=none color="#64748b"]
+	support -> post [arrowhead=none color="#64748b"]
+	provider -> notify [arrowhead=none color="#64748b"]
+}
