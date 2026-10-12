@@ -41,3 +41,9 @@ Legenda: `P` = pública; `O` = somente recurso do próprio titular; `R` = ação
 - Fator MFA (WebAuthn/TOTP) e step-up; DS-002.
 
 **Validação prevista:** SA-001/002/009, SA-003/004, SA-008, SEC-001–005, SEC-014, SEC-022, SEC-025, SEC-028.
+
+## Refinamento da autenticação na Fase 03 v0.3
+
+Permissões `O`, `R`, `A` e `S` da tabela são aplicadas **após** validar a classe de sessão e o estado da conta. Um login de operador com senha correta mas MFA pendente **não** equivale a uma sessão de equipe autorizada. Não compartilhar cookie entre origens administrativas e da loja. A permissão `A` exige autorização por papel/recurso e autenticação recente conforme política DS-003; quando aplicável, o aprovador é identidade diferente do solicitante. Recuperação de MFA não concede permissão financeira temporária.
+
+Relacionar [ADR-003](../adrs/ADR-003-autenticacao-sessoes.md), [AUTH-001–020](../09-cenarios-aceite-autenticacao.md), SA-001/002/003/004/008. Os valores de alçada permanecem abertos.

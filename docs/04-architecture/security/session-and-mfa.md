@@ -1,23 +1,41 @@
-# DS-001/002 — Desenho de sessão e MFA (opções, não implementação)
+# DS-001/DS-002 — Autenticação, sessão, MFA e recuperação (refinamento v0.3)
 
-## Baseline recomendado para avaliação
+> **Status:** proposta arquitetural para aprovação; não implementada nem testada. Não substituir [ADR-003](../adrs/ADR-003-autenticacao-sessoes.md) nem [SEC-001–011](../../07-security/security-requirements.md).
 
-1. Navegador autentica contra API em conexão protegida. Avaliar cookie `HttpOnly`, `Secure`, `SameSite` coerente com domínios e proxy, sessão persistida/rotacionável no servidor, sem armazenar credencial de longa duração em `localStorage`.
-2. A escolha final entre sessão opaca, cookies de refresh + token de acesso ou outro padrão exige ADR e definição de **topologia web/API**. Cookies enviados automaticamente impõem proteção CSRF proporcional a método e SameSite.
-3. Argon2id ou função de password hashing apropriada com parâmetros medidos; antiforça bruta e antienumeração; não expor existência de conta.
-4. Logout de dispositivo e global revogam credenciais persistentes; rotação atômica e detecção de replay onde aplicável; não aceitar refresh revogado.
-5. Reset de senha usa token por propósito/TTL/uso único, hash armazenado quando adequado, canal verificado, expira sessões conforme política. MFA recovery não pode contornar autorização sem trilha.
-6. Backoffice privilegiado exige MFA; step-up separado para permissão financeira/gerência de MFA quando decisão DS-003 o exigir.
+## Fronteiras e ciclo de vida da sessão
 
-## Ameaças a exercitar
+- Usuário visita loja (anônimo) → inicia autenticação → backend verifica credencial → se cliente habilitado, emite nova sessão opaca; se operador, gera **somente desafio MFA** até prova válida. Não reaproveitar sessão anônima como identificador autenticado.
+- `Session`: identidade opaca gerada pelo backend, hash armazenado no PostgreSQL, `account_id`, classe de sessão (`SHOPPER`/`STAFF`), `created_at`, `last_seen_at`, `idle_expires_at`, `absolute_expires_at`, `revoked_at`, autenticação forte recente e metadados minimizados. O hash/identidade de sessão não deve ser exposto a logs.
+- `MfaChallenge`: propósito `STAFF_LOGIN` ou `STEP_UP`, um uso, curta duração, sujeito a rate limit; a validação não aceita que o browser declare `mfa_complete=true`. 
+- Logout revoga registro do servidor em transação; cookie é limpo no navegador como ação complementar. Logout global invalida sessões ativas; qualquer eventual cache deve respeitar revogação.
+- Rate limit/antienumeração por conta+origem quando aplicável, sem bloqueios facilmente exploráveis para negar serviço a terceiros.
 
-- CSRF em ações de mudança/checkout usando cookies, origens inesperadas, XSS, fixação de sessão, refresh replay, token de reset reutilizado, enumeração de contas, alteração de e-mail e sessão roubada.
-- Sem acesso à conta A por ator B mesmo com ID válido; URLs `download` revalidadas por entitlement.
+## Cookies, proxy e proteção CSRF
 
-## Pontos de decisão
+A direção recomendada é um ingresso de mesma origem: `GET /...` e `/api/...` pertencem à origem da interface pública ou administrativa, com proxy controlado para NestJS. Admin e loja **não compartilham cookie**; a separação se mantém se duas apps forem usadas. CORS restrito quando inevitável, credenciais nunca em `*`, `Secure` obrigatório em produção e cabeçalhos `X-Forwarded-*` aceitos apenas de proxies confiáveis.
 
-- Se storefront e API estiverem em sites diferentes, avaliar credenciais cross-site, `SameSite=None; Secure`, CORS estrito, CSP e token CSRF. Preferir topologia de mesmo site quando disponível, sem assumir que é escolhida.
-- Sessão única versus múltiplos dispositivos, renovação, TTL absoluto/inatividade, expiração administrativa, tratamento de alteração de senha.
-- Política de MFA e backup codes, provisioning/admin recovery, criptografia de segredos TOTP e rotação de chaves. Não gerar valores nem caminhos de implementação sem ADR aprovado.
+Cookie host-only `__Host-*`, sem `Domain`, `Path=/`, `HttpOnly`, `Secure`, `SameSite` configurado por risco/topologia. CSRF: validar `Origin`, token vinculado à sessão para mutações; `SameSite` apenas camada adicional. Segurança de repositório e pipeline impede segredos de cookie/MFA no Git.
 
-**Cenários:** SA-001–004; SEC-001–011. **Status:** nenhum teste executado.
+| Caminho / ação | Sessão necessária | Segurança adicional |
+|---|---|---|
+| Catálogo/prévia liberada | Não | somente conteúdo autorizado como público |
+| Checkout / pedido / endereços / biblioteca | Sessão de cliente ativa | titularidade, autorização, CSRF nas mutações |
+| Backoffice | Sessão staff com MFA concluído | ação/recurso, least privilege, CSRF nas mutações |
+| Refund manual | Staff, MFA, permissão financeira | reauth/step-up recente, segregação, saldo e idempotência |
+| Configuração de MFA/role | Staff MFA, permissão | reauth, auditoria, anti-autoelevação |
+| Webhook Stripe | Nunca usar sessão browser | validar assinatura `Stripe-Signature` sobre raw body |
+| Job interno | Credencial técnica escopada | autenticação de serviço, idempotência, auditoria |
+
+## Segundo fator, onboarding e recuperação
+
+- Preferência para WebAuthn/FIDO2 com `userVerification=required` no papel de operador; selecionar origens e RP ID reais antes de desenvolver. TOTP pode ser oferecido por política explícita; códigos não são phishing-resistant.
+- Provisionamento do primeiro operador exige fluxo de bootstrap administrativo restrito, de uso único, sem senha padrão; desabilitar bootstrap após uso e preservar auditoria.
+- Guardar credencial pública WebAuthn com challenge, origin, RP ID, flags e prevenção de replay; segredo TOTP protegido em repouso e fora de logs; recovery codes de alta entropia armazenados em hash, uso único.
+- Alterar fator exige sessão forte/reautenticação e notificação. Recuperação de MFA sem fator restante segue procedimento excepcional de alto rigor documentado (sem permissão financeira automática até revisão).
+- Reset de senha via e-mail comprovado: resposta genérica, token forte/uso único/TTL e revogação de sessão; não deve remover MFA existente, autorizar mudança de role ou suspender regras de step-up.
+
+## Casos de segurança e risco residual
+
+Credencial roubada, refresh/token de sessão reutilizado, CSRF, XSS, phishing de TOTP, replay de challenge WebAuthn, recuperação de operador por e-mail, subdomain cookie injection, request smuggling/trust proxy, session fixation, IDOR, quebra de autorização financeira e abuso do onboarding.
+
+**Evidências futuras:** [AUTH-001–020](../09-cenarios-aceite-autenticacao.md), SA-001–004/008/009, SEC-001–011/014/022/030. Não há evidência executada no pacote.

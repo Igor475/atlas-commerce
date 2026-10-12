@@ -1,7 +1,7 @@
 # AC-ARCH-001 — Fase 03: Arquitetura de Software e Segurança
 
-> **Versão:** 0.1.0 • **Estado:** proposta para revisão — **não implementada, não homologada** • **Data:** 12/10/2026  
-> **Baseline lida:** `Igor475/atlas-commerce`, branch `main`, commit `42dcc94dcdb72eba058c16a3f9f48c65f5b34421`.
+> **Versão:** 0.3.0 • **Estado:** proposta para revisão — **não implementada, não homologada** • **Data:** 12/10/2026  
+> **Baseline lida:** `Igor475/atlas-commerce`, branch `main`, commit `608070a547f79fe0c2e9deaa226ce7a936b33600`.
 
 ## Finalidade e contratos de entrada
 
@@ -41,7 +41,9 @@ Cada `.dot` é uma **fonte editável**, com SVG e PNG derivados do mesmo arquivo
 
 **Propostas de design, não contratos implementados:** `apps/storefront`, `apps/admin`, `apps/api`; possível processo de worker; PostgreSQL como fonte de verdade; outbox relacional para efeitos recuperáveis; Redis/fila somente quando houver justificativa de processamento; object storage S3-compatible opcional por integração; observabilidade sem PII.
 
-**Fornecedor definido:** **Stripe**; Checkout hospedado para o MVP demonstrativo, ainda sem testes de integração. **Decisões abertas:** DS-004 (homologar janela Stripe 40/30/5, métodos, webhooks e refund); DA-009/DS-003 (aprovações e alçadas); DS-001/002 (sessão/MFA); DS-005/006 (storage e uploads); DS-007/008 (retenção/ambiente); DS-009 (perfil ASVS); ORM e deploy exatos.
+**Proposta de autenticação em revisão:** sessão opaca/revogável, cookie host-only por origem e MFA antes da sessão administrativa; [ADR-003](adrs/ADR-003-autenticacao-sessoes.md), [contratos](08-contratos-de-autenticacao.md), [cenários AUTH-001–020](09-cenarios-aceite-autenticacao.md) e [DFD-04](security/DFD-04-sessoes-mfa.md). Ainda não aprovada.
+
+**Fornecedor definido:** **Stripe**; Checkout hospedado para o MVP demonstrativo, ainda sem testes de integração. **Decisões abertas:** DS-004 (homologar janela Stripe 40/30/5, métodos, webhooks e refund); DA-009/DS-003 (aprovações e alçadas); DS-001/002 (aprovação da proposta de sessão/MFA, origem, TTL e recovery); DS-005/006 (storage e uploads); DS-007/008 (retenção/ambiente); DS-009 (perfil ASVS); ORM e deploy exatos.
 
 ## Critério de saída — Fase 03
 
@@ -49,9 +51,20 @@ Cada `.dot` é uma **fonte editável**, com SVG e PNG derivados do mesmo arquivo
 - [ ] Revisar desenho e ADRs com o projeto, registrar aprovações e atualizar divergências encontradas.
 - [x] Selecionar o provedor Stripe como decisão de projeto; sem declarar homologação.
 - [ ] Testar em Stripe test mode se o Checkout hospedado admite a política de expiração **absoluta**: reserva 40 min; sessão 30 min (mínimo Stripe); término >=5 min antes da reserva; sem permitir métodos incompatíveis. Consultar [plano de validação Stripe](07-validacao-stripe.md).
+- [ ] **Aprovar ADR-003 v0.3** (sessão opaca e MFA administrativo), com topologia/cookies/CSRF, limites e processo de recuperação; vincular aos testes AUTH-001–020 e à matriz DS-003.
 - [ ] Validar matriz de papéis/ações, recuperação de sessão, MFA e alçadas; definir responsáveis.
 - [ ] Formalizar autorização de uso dos ativos digitais, termos, retenção, limites operacionais e ambiente de deploy.
 - [ ] Revisar em modelador os BPMNs legados da Fase 02 e manter fontes/imagens sincronizadas se mudarem.
 - [ ] Transformar decisões aprovadas em contratos testáveis para o Codex; **sem iniciar código a partir de ADRs pendentes**.
 
 **Execução futura:** prompts do Codex serão preparados por módulo/etapa quando o usuário solicitar a implementação, baseados no GitHub atualizado, escopo preciso, alterações permitidas, testes e relatório de evidências. **Nenhum prompt de implementação nem código é entregue agora.**
+
+## Refinamento de identidade na versão 0.3
+
+- [ADR-003 aprofundada](adrs/ADR-003-autenticacao-sessoes.md)
+- [Contratos de autenticação e estado](08-contratos-de-autenticacao.md)
+- [20 casos de aceite AUTH](09-cenarios-aceite-autenticacao.md)
+- [DFD-04 de sessões/MFA](security/DFD-04-sessoes-mfa.md)
+- [SEQ-03 Login/MFA](sequences/SEQ-03-login-mfa.md) e [SEQ-04 Step-up](sequences/SEQ-04-stepup-recuperacao.md)
+
+O refinamento é **documental e condicional**; não aprova automaticamente DS-001/002/003.

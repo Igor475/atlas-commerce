@@ -1,0 +1,33 @@
+# SEQ-04 — Step-up e segregação em reembolso manual
+
+> **Status:** fluxo lógico proposto, não uma autorização de operação financeira; requer decisão DS-003 e política de alçadas.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor O as Operador
+    participant A as Backoffice /api
+    participant I as Identity/Authorization
+    participant B as PostgreSQL
+    participant P as Payments / Returns
+    O->>A: Solicitar reembolso manual
+    A->>I: Autorizar ação e recurso
+    I->>B: Validar sessão MFA, papel e recent-auth
+    alt Falta recent-auth ou permissão
+        I-->>A: Exigir step-up ou negar
+        O->>A: Executar step-up com fator permitido
+        A->>I: Prova vinculada à sessão e finalidade
+        I->>B: Validar prova e marcar autenticacao recente
+    end
+    I->>B: Validar alçada, segregação e titularidade
+    alt Autorizado e aprovador independente
+        I->>P: Comando autorizado com ID e justificativa
+        P->>B: Registrar intenção auditável e idempotente
+        P-->>A: Solicitação/estado financeiro persistido
+    else Sem alçada ou conflito de identidade
+        I-->>A: Negar e auditar sem divulgar dados
+    end
+    Note over O,B: Reset de senha nunca remove MFA nem gera step-up
+```
+
+A separação entre solicitante e aprovador permanece requisito proposto da matriz; aprovação **não significa** reembolso financeiro confirmado. O pagamento, saldo, idempotência e reconciliação ficam com o contexto Pagamentos e ADR-004, não com Identity.

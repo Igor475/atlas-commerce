@@ -1,0 +1,29 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuário
+    participant W as Next.js /api same-origin
+    participant I as NestJS Identity
+    participant B as PostgreSQL
+    participant M as WebAuthn/TOTP
+    U->>W: Enviar credenciais
+    W->>I: StartLogin (cookie/Origin protegidos)
+    I->>B: Validar conta, senha, risco e política
+    alt Credencial inválida ou conta bloqueada
+        I-->>W: Resposta genérica sem sessão
+    else Cliente elegível
+        I->>B: Criar nova sessão opaca (hash)
+        I-->>W: Cookie host-only HttpOnly e perfil seguro
+    else Operador com MFA obrigatório
+        I->>B: Desafio temporário de propósito único
+        I-->>W: MFA_REQUIRED (sem sessão staff autorizada)
+        U->>W: Informar prova MFA
+        W->>I: CompleteStaffMfa
+        I->>M: Verificar prova, UV/origin quando WebAuthn
+        M-->>I: Validado ou inválido
+        alt Prova válida, desafio não usado
+            I->>B: Consumir desafio e criar sessão staff
+            I-->>W: Cookie staff host-only HttpOnly
+        else Prova inválida, expirada ou repetida
+            I-->>W: Negar; nenhuma sessão privilegiada
+        end
+    end

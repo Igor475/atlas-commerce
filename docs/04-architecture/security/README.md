@@ -8,11 +8,13 @@ Este diretório especializa **como** aplicar SEC-001–038 ao monólito modular,
 
 - [Matriz de autorização](authorization-matrix.md): papéis, escopos e segregação financeira; proposta para DS-003.
 - [Modelo inicial de ameaças](threat-model.md): 18 cenários de abuso com STRIDE, risco e verificação vinculada.
-- [Sessão e MFA](session-and-mfa.md): opções, superfícies e fluxo de recuperação; DS-001/002 **em decisão**.
+- [Sessão e MFA](session-and-mfa.md): proposta detalhada de sessão opaca, cookies por origem, WebAuthn/TOTP, recovery e step-up; DS-001/002 **aguardam aprovação**.
 - [Webhooks, PSP e mídia](trust-boundaries.md): fronteiras de confiança, segurança de arquivos e privacidade.
 - [DFD-01 Identidade](DFD-01-identidade.md): browser/identidade/DB/email/MFA.
 - [DFD-02 Checkout](DFD-02-checkout-pagamento.md): browser → API → DB, PSP → Pagamentos e reconciliação.
 - [DFD-03 Biblioteca](DFD-03-entitlements.md): licença, objeto privado, URLs temporárias, retorno e auditoria.
+- [DFD-04 Sessões/MFA](DFD-04-sessoes-mfa.md): navegador e admin, ingress, challenge e PostgreSQL.
+- [Contrato de autenticação](../08-contratos-de-autenticacao.md) e [cenários AUTH-001–020](../09-cenarios-aceite-autenticacao.md).
 
 ## Níveis de confiabilidade
 

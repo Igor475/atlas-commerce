@@ -8,7 +8,7 @@
 | RN-032–040, SEC-017–019 | Orders/Pricing, T-01, DFD-02 | CA-002/004/007 e SA-005, request fingerprint |
 | RN-041–048, RN-077–084, SEC-020–024 | Payments/Stripe, T-02/03, DFD-02, ADR-004 | SA-007/008, CA-003/005/015–019; Stripe test mode, PSP fake e [plano de prova](07-validacao-stripe.md) |
 | RN-049–054, RN-079, RN-087, RN-091, SEC-025–027 | Library, DFD-03, ADR-005 | SA-009, CA-006/017/023/024; autorização por recurso |
-| RN-009–014, RN-064–069, SEC-001–011 | Identity/Admin, DFD-01, authorization matrix, ADR-003 | SA-001–004, sessões revogadas, MFA e recuperação |
+| RN-009–014, RN-064–069, SEC-001–011 | Identity/Admin, DFD-01, authorization matrix, ADR-003 | SA-001–004, AUTH-001–020, sessões revogadas, MFA e recuperação |
 | RN-058–063, RN-085–087 | Support/Refund, SEQ-02 e autorização | CA-008/018–021/025; segregação, CDC aplicável |
 | RN-070, SEC-016/024/030/034 | Outbox, Integration, ADR-002/007 | CA-010, replay, restart, timeout e dedup |
 | RNF-004/005/010/011, SEC-028–038 | Observabilidade e dados, [ADR-006](adrs/ADR-006-acesso-dados.md)/[ADR-008](adrs/ADR-008-controles-operacionais.md) | SA-011/012, restore e logs redigidos |
@@ -16,7 +16,7 @@
 ## Gates antes de autorizar cada prompt de implementação ao Codex
 
 1. **Diretório e contrato claros:** que arquivos/módulo o prompt pode criar/editar; não tocar demais áreas sem autorização.
-2. **ADR relevante aprovada** (ou hipótese explicitamente limitada ao spike experimental). Nenhuma decisão aberta é inferida como aprovada pelo Codex.
+2. **ADR relevante aprovada** (ou hipótese explicitamente limitada ao spike experimental), inclusive ADR-003 antes de autenticação e papéis. Nenhuma decisão aberta é inferida como aprovada pelo Codex.
 3. **Invariantes e abusos verificáveis:** cenário positivo e negativo, concorrência, idempotência, autorização, falhas e reconciliabilidade.
 4. **Plano de migrations/rollback** e de testes PostgreSQL real quando houver estado de negócio.
 5. **Prova de integração externa** por sandbox/fake contratual, sem guardar segredos ou cartão.
@@ -35,3 +35,11 @@
 - Hardening, performance, observabilidade e validações de release (Fase 07).
 
 Os prompts detalhados serão entregues **quando chegarmos a essas etapas**, com base nos ADRs aprovados e no GitHub então atualizado. Este documento não instrui a implementar nada agora.
+
+## Evidências da proposta ADR-003 (pendentes)
+
+- [Contratos de autenticação](08-contratos-de-autenticacao.md): cookie/sessão no banco, estados e autorização por recurso.
+- [Cenários AUTH-001–020](09-cenarios-aceite-autenticacao.md): login, MFA staff, CSRF, logout/revogação, recuperação e segregação.
+- [DFD-04](security/DFD-04-sessoes-mfa.md), [SEQ-03](sequences/SEQ-03-login-mfa.md), [SEQ-04](sequences/SEQ-04-stepup-recuperacao.md).
+
+**Estado:** desenho proposto; sem implementação, teste ou aceite final de DS-001/002/003.

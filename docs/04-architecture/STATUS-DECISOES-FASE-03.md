@@ -6,7 +6,7 @@
 |---|---|---|---|
 | ADR-001 Monólito modular | NestJS modular, uma API inicial | Proposta bem fundamentada | Aceite humano + teste de fronteiras quando houver código |
 | ADR-002 PostgreSQL/outbox | DB como fonte de verdade, inbox/outbox, sem efeitos externos em transação | Proposta | Escolher estratégia de locks, índice/dedup e ensaio concorrente |
-| ADR-003 Autenticação/sessões | Sessão revogável, cookies seguros, MFA privilegiado | Aberta | Definir topologia same-site/cross-site, refresh, CSRF, MFA |
+| ADR-003 Autenticação/sessões | **Sessão opaca no PostgreSQL, cookie `__Host-`, same-origin proposto, MFA antes da sessão staff** | **Proposta detalhada, não aprovada** | Validar domínio/ingress, TTLs, CSRF, WebAuthn/TOTP e recovery; AUTH-001–020 |
 | **ADR-004 Stripe** | **Stripe escolhido; Checkout hospedado test mode** | **Fornecedor definido; técnica não homologada** | [ST-001–016](07-validacao-stripe.md), especialmente sessão de 30 min e gap de 5 min |
 | ADR-005 Mídia/storage | Prévia pública e conteúdo comercial privado | Proposta, fornecedor aberto | Política de licença/upload/TTL e testes de acesso |
 | ADR-006 Acesso a dados | PostgreSQL; ORM vs SQL | Aberta | POC locks, migrations, pool e consistência |
@@ -20,7 +20,7 @@ A escolha do Stripe não autoriza implementação de cartões reais, Pix/boleto,
 ## Próxima ação recomendada
 
 1. Revisar e aceitar formalmente ADR-001 e direção ADR-002 (sem alegar testes que ainda não ocorreram).
-2. Fechar decisão documental de topologia de autenticação, perfis e gestão de sessão na ADR-003.
+2. Revisar a **proposta ADR-003 v0.3** de sessão opaca/MFA e decidir topologia, valores, recuperação e matriz de autorização; ver [contratos de auth](08-contratos-de-autenticacao.md), [DFD-04](security/DFD-04-sessoes-mfa.md) e [testes AUTH](09-cenarios-aceite-autenticacao.md).
 3. Executar spike Stripe no momento de preparação de implementação autorizado, **antes de codificar pagamentos/fulfillment**; validar ST-001–016 e rever TTL se incompatível.
 4. Decidir estratégia de dados, storage, jobs e ambiente, registrando os critérios de escolha.
 5. Só liberar um módulo ao Codex com ADR relevante aceita, limites exatos de escopo e casos CA/SA associados.

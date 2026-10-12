@@ -1,0 +1,33 @@
+digraph AuthDFD {
+  graph [label="DFD-04 — Sessões, MFA e autorização (proposta, não implementada)", labelloc=t, fontsize=19, fontname="DejaVu Sans", splines=polyline, nodesep=.42, ranksep=.68, bgcolor="white", pad=.23];
+  node [fontname="DejaVu Sans",fontsize=10,shape=box,style="rounded,filled",fillcolor="#f3f6fa",color="#65748b",margin=".16,.10"];
+  edge [fontname="DejaVu Sans",fontsize=9,color="#54657c",arrowsize=.7];
+  subgraph cluster_untrusted {label="TB-01 · Navegadores não confiáveis"; color="#c7d2e0"; style="rounded,dashed";
+    shopper [label="Browser Loja\nCookie host-only"];
+    staff [label="Browser Admin\nCookie independente"];
+  }
+  subgraph cluster_web {label="TB-02 · Ingresso por origem"; color="#c7d2e0"; style="rounded,dashed";
+    web [label="Next.js /api\nProxy controlado",fillcolor="#ebf2fc"];
+    adminweb [label="Next.js Admin /api\nProxy separado",fillcolor="#ebf2fc"];
+  }
+  subgraph cluster_api {label="TB-03 · NestJS confiável sob autorização"; color="#92b2dc"; style="rounded";
+    id [label="Identity & Access\nCredencial, sessão, MFA, CSRF",fillcolor="#e2efff"];
+    authz [label="Autorização\nRecurso + papel + step-up",fillcolor="#e2efff"];
+  }
+  subgraph cluster_persist {label="TB-04 · Persistência protegida"; color="#a6c3af"; style="rounded";
+    db [label="PostgreSQL\nHash sessão + fator + auditoria",shape=cylinder,fillcolor="#e8f6e9"];
+  }
+  ext [label="E-mail de verificação\ne recuperação",fillcolor="#fff6e6"];
+  key [label="WebAuthn\nVerificador lógico",fillcolor="#fff6e6"];
+  stripe [label="Stripe webhook\nAssinatura independente",fillcolor="#fff6e6"];
+  shopper -> web [label="credentials / sessão"];
+  staff -> adminweb [label="login / desafio MFA"];
+  web -> id [label="auth / CSRF / cookie"];
+  adminweb -> id [label="auth / MFA / CSRF"];
+  id -> db [label="sessão revogável; hashes"];
+  id -> ext [label="token de uso único"];
+  id -> key [label="challenge de origem/RP ID"];
+  id -> authz [label="sessão validada / recent-auth"];
+  authz -> db [label="role, recurso, estado, auditoria"];
+  stripe -> id [label="PROIBIDO: não usar sessão browser",style=dashed,color="#b55656",constraint=false];
+}
