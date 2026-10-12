@@ -1,32 +1,26 @@
-# Fase 03 — Quadro de decisões arquiteturais após seleção do Stripe
+# Fase 03 — Estado consolidado das decisões arquiteturais (v0.5)
 
-> **Estado documental em 12/10/2026:** fornecedor selecionado; arquitetura ainda em revisão. A conclusão desta fase exige decisão técnica explícita, não apenas publicar os ADRs.
+> **Data:** 12/10/2026 • **Escopo:** documentação e escolhas para portfólio pessoal não comercial. **Diretrizes aprovadas** conforme APP-01–19, Render Free, Supabase Free, Vercel Hobby, R2 Free e Stripe Test Mode. **Nenhuma execução, homologação de produção ou teste é afirmado neste quadro.**
 
-| Item | Direção | Estado atual | Próximo gate |
-|---|---|---|---|
-| ADR-001 Monólito modular | NestJS modular, uma API inicial | Proposta bem fundamentada | Aceite humano + teste de fronteiras quando houver código |
-| ADR-002 PostgreSQL/outbox | DB como fonte de verdade, inbox/outbox, sem efeitos externos em transação | Proposta | Escolher estratégia de locks, índice/dedup e ensaio concorrente |
-| ADR-003 Autenticação/sessões | **Sessão opaca no PostgreSQL, cookie `__Host-`, same-origin proposto, MFA antes da sessão staff** | **Proposta detalhada, não aprovada** | Validar domínio/ingress, TTLs, CSRF, WebAuthn/TOTP e recovery; AUTH-001–020 |
-| **ADR-004 Stripe** | **Stripe escolhido; Checkout hospedado test mode** | **Fornecedor definido; técnica não homologada** | [ST-001–016](07-validacao-stripe.md), especialmente sessão de 30 min e gap de 5 min |
-| ADR-005 Mídia/storage | Prévia pública e conteúdo comercial privado | Proposta, fornecedor aberto | Política de licença/upload/TTL e testes de acesso |
-| ADR-006 Acesso a dados | PostgreSQL; Prisma v7 + adapter/SQL como candidato, Drizzle/SQL alternativos | **Proposta detalhada, não aprovada** | [DB-001–028](database/DB-05-plano-de-validacao.md), locking, migrations, pool e consistência |
-| ADR-007 Jobs/worker | Outbox durável; processo próprio condicional | Aberta | Hospedagem, lease/lock, recuperação e métricas |
-| **ADR-008 Segurança operacional** | CI, segredos Stripe, TLS, backup/restore, observabilidade | **Nova proposta** | Hospedagem e plano de recuperação testável |
+| ADR | Direção/fornecedor aprovado | Detalhes e evidências ainda pendentes |
+|---|---|---|
+| [ADR-001](adrs/ADR-001-monolito-modular.md) | NestJS monólito modular + Next.js | Fronteiras e separação física das interfaces |
+| [ADR-002](adrs/ADR-002-integridade-outbox.md) | PostgreSQL autoridade transacional, inbox/outbox idempotentes | Locks, lease, retry e recuperação DB/JOB |
+| [ADR-003](adrs/ADR-003-autenticacao-sessoes.md) | Sessões opacas, TTL inicial 12h/30m cliente e 8h/15m staff, MFA WebAuthn/TOTP | Domínios Vercel/Render, CSRF, Bootstrap, recovery, AUTH-001–020 |
+| [ADR-004](adrs/ADR-004-psp-sandbox.md) | Stripe Checkout hospedado test mode | 40/30/5, webhook/assinatura, refunds e ST-001–016 |
+| [ADR-005](adrs/ADR-005-midia-e-storage.md) | Cloudflare R2 Free Tier Standard e objetos privados por entitlement | Buckets, licença, URLs assinadas, inspeção, R2-001–012 |
+| [ADR-006](adrs/ADR-006-acesso-dados.md) | PostgreSQL Supabase; Prisma v7 preferencial + SQL parametrizado | Adapter/driver/pool, transação com locking, DB-001–028 |
+| [ADR-007](adrs/ADR-007-worker-e-jobs.md) | Outbox/inbox duráveis; executor condicional | Scheduler/worker **não homologado**; JOB-001–018, operação sob suspensão dos serviços Free |
+| [ADR-008](adrs/ADR-008-controles-operacionais.md) | Vercel Hobby + Render Free + Supabase Free + R2 Free | Backup/export/restore, monitoração, TLS, segredos, ASVS |
+| [ADR-009](adrs/ADR-009-selecao-render.md) | **Render Web Service Free**, demo sem SLA | Cold start, env, health, RENDER-001–016 |
+| [ADR-010](adrs/ADR-010-postgresql-supabase.md) | **Supabase PostgreSQL Free** | 500 MB, pausing, roles/Data API/RLS, TLS, pooler e SUPABASE-001–016 |
 
-## Princípios de escopo
+## Regras de interpretação
 
-A escolha do Stripe não autoriza implementação de cartões reais, Pix/boleto, produção ou webhook sem assinatura. Também não encerra DA-009/DS-003 (alçadas), DS-001/002 (sessões/MFA) ou DS-005–009 (mídia, privacidade, operação e ASVS).
+**Aprovado** significa direção escolhida pelo responsável. **Condicionado** significa validação/decisão específica ainda necessária. **Não homologado** significa ausência de evidência real, independentemente da aprovação documental. Todos os arquivos com status históricos anteriores devem ser lidos junto à [baseline APP-01–19](BASELINE-ARQUITETURAL-APROVADA-v0.1.md) e à [consolidação v0.5](CONSOLIDACAO-FINAL-FASE-03-v0.5.md).
 
-## Próxima ação recomendada
+**Não autorizados:** cobranças reais Stripe, uso comercial do Vercel Hobby, promessa de jobs pontuais em Render Free ou PITR/backups gerenciados no Supabase Free. O cliente não acessa segredos, tabelas transacionais nem conteúdo digital privado sem autorização. Preservar BRD RN-001–094, políticas PC-01–04, SEC-001–038, SA-001–012 e todos os CA.
 
-1. Revisar e aceitar formalmente ADR-001 e direção ADR-002 (sem alegar testes que ainda não ocorreram).
-2. Revisar a **proposta ADR-003 v0.3** de sessão opaca/MFA e decidir topologia, valores, recuperação e matriz de autorização; ver [contratos de auth](08-contratos-de-autenticacao.md), [DFD-04](security/DFD-04-sessoes-mfa.md) e [testes AUTH](09-cenarios-aceite-autenticacao.md).
-3. Executar spike Stripe no momento de preparação de implementação autorizado, **antes de codificar pagamentos/fulfillment**; validar ST-001–016 e rever TTL se incompatível.
-4. Executar avaliação de ADR-006 e provas DB-001–028 quando autorizado, sem eleger ORM definitivo antes de medir; depois decidir storage, jobs e ambiente.
-5. Só liberar um módulo ao Codex com ADR relevante aceita, limites exatos de escopo e casos CA/SA associados.
+## Entrada da Fase 04
 
-Referências: [índice ADR](adrs/README.md), [matriz de autorização](security/authorization-matrix.md), [DFD-02](security/DFD-02-checkout-pagamento.md), [decisões externas](../03-business-processes/CRITERIOS-DECISOES-EXTERNAS.md).
-
-## Atualização ADR-006 v0.4
-
-[ADR-006](adrs/ADR-006-acesso-dados.md) foi aprofundada; [índice do pacote DB](database/README.md) e [plano DB-001–028](database/DB-05-plano-de-validacao.md). **Status: proposta de arquitetura, não software, migrations ou testes executados.**
+[Handoff Fase 04](HANDOFF-FASE-04.md) permite preparar o monorepo, toolchain, contratos, testes e *spikes controlados* com prompts específicos para Codex. Implementações transacionais críticas só avançam ao satisfazer seus gates: [Stripe](07-validacao-stripe.md), [dados](database/DB-05-plano-de-validacao.md), [autenticação](09-cenarios-aceite-autenticacao.md), [infra](VALIDACAO-VERCEL-R2-JOBS.md), [segurança](../07-security/security-requirements.md).

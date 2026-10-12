@@ -1,15 +1,15 @@
 # Fase 03 — Decisões posteriores: Vercel, R2 Free Tier e jobs
 
-> **Data:** 12/10/2026 • **Registro aprovado pelo responsável**: frontend **Vercel** e armazenamento de objetos **Cloudflare R2 na franquia gratuita Standard**. Render Web Service **Free** e fornecedor **Supabase PostgreSQL** permanecem confirmados. Plano Supabase ainda não escolhido.
+> **Data:** 12/10/2026 • **Registro aprovado pelo responsável**: frontend **Vercel** e armazenamento de objetos **Cloudflare R2 na franquia gratuita Standard**. Render Web Service **Free** e fornecedor **Supabase PostgreSQL** permanecem confirmados. **Plano Supabase Free escolhido posteriormente; Vercel Hobby também confirmado**.
 
 ## Decisão e limites
 
 | Área | Status | Consequência para a engenharia |
 |---|---|---|
-| Vercel | **Provedor confirmado** | `Next.js` storefront/backoffice; **Hobby é recomendação condicional, não plano explicitamente confirmado**. Uso Hobby exige projeto pessoal **não comercial**; vendas reais demandam plano compatível |
+| Vercel | **Hobby explicitamente aprovado** | `Next.js` storefront/backoffice; uso **pessoal não comercial**, sem checkout real; qualquer operação comercial exige rever elegibilidade/plano |
 | Cloudflare R2 | **Free Tier Standard confirmado** | 10 GB-mês, 1M Class A, 10M Class B gratuitos/mês, egress R2 sem cobrança. **Não confundir cota com teto financeiro**; monitorar excesso |
 | Render | **Free confirmado** | API pode adormecer; sem garantia de cron/worker 24×7. Não usar para cobrir exigência de expiração pontual de reserva |
-| Supabase | **PostgreSQL confirmado** | Plano Free **recomendado, mas ainda não aprovado**; eventual pausa e ausência de backup diário gerenciado requerem contingência |
+| Supabase | **PostgreSQL Free aprovado** | Cota de 500 MB de DB, pausa por inatividade, ausência de backups diários gerenciados; export/restore independente e limites de pool a testar |
 | Stripe | Test mode | Apenas pagamento de teste; política 40/30/5 e compensação exigem ST-001–016 |
 | Jobs | **Outbox durável aceita** | Scheduler interno não é autoridade. Supabase Cron é candidato apenas após teste de disponibilidade, privilégio, comportamento e custos; reconciliação externa requer executor adequado |
 
@@ -32,3 +32,10 @@ Arquivos anteriores que digam “storage a escolher” referem-se ao estado ante
 - https://render.com/docs/free
 - https://supabase.com/docs/guides/cron
 - https://supabase.com/docs/guides/platform/free-project-pausing
+
+
+## Adendo de ratificação 12/10/2026
+
+Escolhas finalmente confirmadas: **Vercel Hobby** e **Supabase Free**. A escolha é para o **portfólio não comercial**, compatível com o uso Hobby. A franquia do Supabase Free não deve ser extrapolada a custos, backup ou disponibilidade de produção; banco pode pausar e seu limite de 500 MB pode bloquear escritas ao ultrapassá-lo. Os demais riscos da ADR-007 e os testes JOB-001–018 continuam pendentes.
+
+Fonte de status mais recente: [Consolidação final Fase 03](CONSOLIDACAO-FINAL-FASE-03-v0.5.md). Nenhuma conta/plano foi inspecionada neste registro.

@@ -1,6 +1,6 @@
 # Fase 03 — Status consolidado após Render Free e escolha do Supabase
 
-> **Versão:** 0.3.0 • **Data:** 12/10/2026 • **Fonte:** aprovação explícita das 19 diretrizes APP-01–19 e decisão posterior Render/APP-13. **Nenhum código, teste ou deploy homologado.**
+> **Versão:** 0.5.0 • **Data:** 12/10/2026 • **Fonte:** aprovação explícita das 19 diretrizes APP-01–19 e decisão posterior Render/APP-13. **Nenhum código, teste ou deploy homologado.**
 
 ## Autoridade deste quadro
 
@@ -15,9 +15,9 @@ Este quadro é o **registro mais recente da aprovação de diretrizes**, complem
 | ADR-005 | Cloudflare R2; prévias públicas/arquivo integral privado; uploads de imagens/PDF autorizados | Buckets/ambientes, limites, inspeção, licença, TTL e SA |
 | ADR-006 | PostgreSQL + Prisma ORM v7 candidato prioritário e SQL parametrizado, fallback justificado | Spike de adapter/driver, pool, locks, migrações e DB-001–028 |
 | ADR-007 | Outbox/job recuperáveis; worker separado condicional | Em Render: plano, executor cron/worker, custo e provas de restart/lease |
-| ADR-008 | Vercel frontend, **Render Free backend**, **Supabase PostgreSQL**; backups, observabilidade e ASVS | Plano Supabase ainda não confirmado; região, TLS, domínio/proxy, retenção, restore e controles operacionais |
+| ADR-008 | **Vercel Hobby**, **Render Free**, **Supabase Free** para portfólio não comercial; backups e observabilidade | Região/TLS, domínios/proxy, retenção, restore, pausing/limites e segurança ainda sem prova |
 | **ADR-009** | **Render Web Service Free aprovado para demo inicial** | Pausa/restart, execução de jobs fora da API, e-mail HTTP, limites de rede e RENDER-001–016 |
-| **ADR-010** | **Supabase escolhido como PostgreSQL gerenciado** | Plano Supabase pendente; TLS/session pooler, Prisma adapter, credenciais, Data API, backup/export/restore e SUPABASE-001–016 |
+| **ADR-010** | **Supabase PostgreSQL Free aprovado** | TLS/session pooler, Prisma adapter, credenciais, Data API, backup/export/restore e SUPABASE-001–016 pendentes |
 
 ## Decisões não resolvidas por uma confirmação simples
 
@@ -45,3 +45,14 @@ Referências: [Baseline APP-01–19](BASELINE-ARQUITETURAL-APROVADA-v0.1.md) · 
 - **Supabase Free segue recomendação não confirmada**. Render Free continua decisão aprovada para backend de demonstração, não ambiente comercial.
 
 Documentos principais: [decisões](DECISOES-VERCEL-R2-FREE-E-JOBS.md), [ADR-007](adrs/ADR-007-worker-e-jobs.md), [testes](VALIDACAO-VERCEL-R2-JOBS.md).
+
+
+## Ratificação da escolha de planos — estado mais recente (v0.5)
+
+**Vercel Hobby e Supabase Free estão aprovados por declaração do responsável.** Frases históricas acima que tratem ambos como recomendação não confirmada têm valor apenas de histórico; este adendo substitui tal status.
+
+A infraestrutura aprovada para o **MVP de portfólio, sem venda real**, é Next.js/Vercel Hobby; NestJS/Render Free; PostgreSQL/Supabase Free; mídia privada/Cloudflare R2 Free Tier Standard; Stripe test mode. **Supabase Auth e Supabase Storage não foram escolhidos.** Jobs permanecem duráveis no PostgreSQL, mas **sem executor confiável contínuo homologado**.
+
+Status formal: **direção aprovada para ADR-001–010 no escopo apresentado**, com detalhes de implementação e ensaios ainda pendentes. Nenhuma ADR pode receber status “executada”, “homologada” ou “produção” com base somente nesta confirmação.
+
+Links: [Consolidação final da Fase 03](CONSOLIDACAO-FINAL-FASE-03-v0.5.md), [critérios Fase 04](HANDOFF-FASE-04.md), [Supabase](adrs/ADR-010-postgresql-supabase.md).

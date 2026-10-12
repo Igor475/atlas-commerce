@@ -1,6 +1,6 @@
 # AC-SUPABASE-TEST-001 — Gate Supabase PostgreSQL do Atlas Commerce
 
-> **Estado:** 16 casos SUPABASE-001–016 **PLANEJADOS, NÃO EXECUTADOS**. Provedor Supabase aprovado, plano Free **somente recomendado**. Responsável futuro: etapa de implantação e spikes Codex autorizados.
+> **Estado:** 16 casos SUPABASE-001–016 **PLANEJADOS, NÃO EXECUTADOS**. Provedor **e plano Free** aprovados documentalmente; nenhum serviço ou capacidade real verificados. Responsável futuro: etapa de implantação e spikes Codex autorizados.
 
 | ID | Teste futuro | Critério verificável |
 |---|---|---|
@@ -24,10 +24,14 @@
 ## Gates antes de afirmar prontidão
 
 - [x] Provedor PostgreSQL escolhido: **Supabase**.
-- [ ] Plano Supabase, região, limites e custos decididos.
+- [x] **Plano Supabase Free decidido**.
+- [ ] Região, limites de uso efetivos, custo excedente e configuração verificados.
 - [ ] Todos os cenários aplicáveis comprovados em ambiente real, com commit, versões do driver, logs redigidos e evidência de execução.
 - [ ] DB-001–028, SA-001–012, AUTH-001–020, ST-001–016 e RENDER-001–016 executados conforme a função implementada.
 - [ ] Backups/restore e executor externo seguro disponíveis antes de operação comercial real.
 - [ ] Provar que o banco e a API podem pausar sem corromper estoque, sessões, idempotência ou refund — **sem prometer prontidão de 24×7**.
 
 **Este pacote não cria projeto Supabase, não executa queries/migrations e não verifica credenciais, quotas ou RLS de uma conta real.**
+
+
+**Atualização de decisão em 12/10/2026:** SUPABASE-001 não foi executado; o aspecto **escolha nominal do plano Free** está resolvido. Limites, região, pausing, credenciais, integração e provas de backup/restore permanecem abertos. Consultar [ADR-010](adrs/ADR-010-postgresql-supabase.md) e [consolidação](CONSOLIDACAO-FINAL-FASE-03-v0.5.md).

@@ -1,6 +1,6 @@
 # Atlas Commerce — Registro de aprovação das 19 diretrizes arquiteturais
 
-> **ID:** AC-ARCH-APP-001 • **Versão do registro:** 0.3.0 (adendo Render Free + Supabase; nome histórico `v0.1` preservado para não quebrar links) • **Data da decisão:** 12/10/2026 (America/Sao_Paulo).  
+> **ID:** AC-ARCH-APP-001 • **Versão do registro:** 0.5.0 (ratificações posteriores; nome histórico `v0.1` preservado para não quebrar links) • **Data da decisão:** 12/10/2026 (America/Sao_Paulo).  
 > **Aprovação:** responsável pelo projeto, expressa nesta conversa após apresentação das 19 recomendações.  
 > **Repositório de referência:** `Igor475/atlas-commerce`, `main`, `0c72d73d9a234754242e1fe5a615c618ce4067b4` (consultado antes desta entrega).  
 > **Status:** **DIRETRIZES INICIAIS APROVADAS**; não equivale a implementação, testes, homologação ou aceitação irrestrita de cada ADR.
@@ -27,7 +27,7 @@ Este registro preserva os contratos RN-001–094, as políticas PC-01–04, SEC-
 | **APP-10** | Upload editorial de **imagens e PDFs autorizados**, com limites, validação e inspeção | DS-006, SEC-012/013. Extensões/MIME/tamanho exatos, malware e quarentena requerem desenho/teste. |
 | **APP-11** | Somente mídia **própria, fictícia ou licenciada**, com entitlement por titular, item e licença | DA-008/013; [ADR-005](adrs/ADR-005-midia-e-storage.md). Direitos/termos jurídicos e política de revogação permanecem sujeitos à verificação. |
 | **APP-12** | **Outbox persistente e jobs recuperáveis**; worker separado apenas se infraestrutura e volume justificarem | [ADR-002](adrs/ADR-002-integridade-outbox.md), [ADR-007](adrs/ADR-007-worker-e-jobs.md). Sem timers voláteis como única garantia; testar lease, replay e crash. |
-| **APP-13** | **Vercel para Next.js + Render Free Web Service para NestJS + Supabase PostgreSQL** (Vercel confirmado; plano Hobby apenas recomendado se não comercial) | [ADR-008](adrs/ADR-008-controles-operacionais.md), [ADR-009](adrs/ADR-009-selecao-render.md) e [ADR-010](adrs/ADR-010-postgresql-supabase.md). **Render Free e Supabase como provedor foram escolhidos explicitamente**; plano do Supabase **ainda não foi confirmado**. A disponibilidade é de demonstração, sem operação financeira real. Região, ligação TLS/pool, domínio e executor externo para jobs são gates. |
+| **APP-13** | **Vercel Hobby para Next.js + Render Free Web Service para NestJS + Supabase PostgreSQL Free** (planos escolhidos para demo não comercial) | [ADR-008](adrs/ADR-008-controles-operacionais.md), [ADR-009](adrs/ADR-009-selecao-render.md) e [ADR-010](adrs/ADR-010-postgresql-supabase.md). **Render Free e Supabase como provedor foram escolhidos explicitamente**; plano do Supabase **ainda não foi confirmado**. A disponibilidade é de demonstração, sem operação financeira real. Região, ligação TLS/pool, domínio e executor externo para jobs são gates. |
 | **APP-14** | Backups automatizados, **restore testado**, LGPD, logs redigidos e monitoramento | DS-007/008; [ADR-008](adrs/ADR-008-controles-operacionais.md). Sem SLA, RPO/RTO ou retenção numérica inventados; exigem aprovação baseada no ambiente/obrigações. |
 | **APP-15** | **OWASP ASVS 5.0** como referencial de seleção por risco, CI/CD e testes automatizados | DS-009, SEC-001–038. Não é certificação ASVS nem prova de segurança implementada. |
 | **APP-16** | **Frete simulado determinístico** e **um cupom por pedido**, com controle transacional | DA-007/011. Fórmula/cotação/limites de uso e concorrência sujeitos a cenário e validação. |
@@ -67,3 +67,12 @@ Permanece em vigor a ADR-003 para autenticação **no NestJS**, sem adoção imp
 O responsável **confirmou Vercel como provedor** e **Cloudflare R2 Free Tier Standard** como nível inicial para arquivos. A escolha de Hobby para Vercel **não foi explícita**, mas é recomendada para portfólio pessoal não comercial, observados os Termos da Vercel. Essa ratificação altera APP-09 e complementa APP-13 sem mudar a aprovação das outras diretrizes. A franquia R2 não impede cobranças excedentes. **O plano do Supabase continua pendente**.
 
 A direção APP-12 (outbox/inbox duráveis) permanece aceita. O desenho operacional [ADR-007](adrs/ADR-007-worker-e-jobs.md) foi detalhado com cron Supabase **somente como hipótese condicionada a teste**, não como executor habilitado; nenhuma execução contínua é garantida em infra Free. Ver [registro](DECISOES-VERCEL-R2-FREE-E-JOBS.md) e [plano JOB/R2/VCL](VALIDACAO-VERCEL-R2-JOBS.md).
+
+
+## Ratificação final de planos — 12/10/2026 (APP-13 / DS-008)
+
+**APROVADO EXPLICITAMENTE pelo responsável:** **Vercel Hobby** para frontend Next.js e **Supabase Free** para PostgreSQL. Permanecem **Render Free** para NestJS, **Cloudflare R2 Free Tier Standard** para mídia e **Stripe test mode** para pagamento. Esta ratificação **substitui as menções históricas deste documento** a “Hobby apenas recomendado” e “Supabase Free ainda a confirmar”. Não altera os demais APP-01–19.
+
+**Vercel Hobby** restringe uso à finalidade pessoal/não comercial e tem limites de invocações/execução; não é plano para venda real. **Supabase Free** tem limite de tamanho, possibilidade de pausar por baixa atividade, e não oferece backups diários gerenciados; preparar exportação protegida e restauração testada, sem assumir PITR. **Render Free** pode dormir; **cron/jobs financeiros não são garantidos** pela API suspensa. Não apresentar disponibilidade 24×7, SLA ou processamento pontual como homologados.
+
+**Autoridade documental atual:** [Consolidação final Fase 03](CONSOLIDACAO-FINAL-FASE-03-v0.5.md) · [status ADR-001–010](STATUS-ADR-APROVACAO-2026-10-12.md) · [gates de validação](VALIDACOES-E-PARAMETROS-PENDENTES.md) · [transição Fase 04](HANDOFF-FASE-04.md). A arquitetura está escolhida para **demonstração**, não executada/testada.

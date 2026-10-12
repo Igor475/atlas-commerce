@@ -12,7 +12,7 @@
 | **Dados / ADR-006** | PostgreSQL + Prisma v7 como preferência inicial; outbox/SQL parametrizado | Versões fixadas, adapter PostgreSQL, migrations, isolamento, índices, pool, timeouts, DB-001–028, restore e métricas |
 | **Mídia / DS-005/006** | Cloudflare R2, previews públicos e arquivos integrais privados, imagens/PDF | Buckets/credenciais por ambiente, limite de arquivo/tipo, scanner, TTL assinado, retenção, licença efetiva, custo/egress |
 | **Jobs / ADR-007** | Outbox durável, sem garantia apenas por timer | Se haverá worker separado, lock/lease e janelas de execução; depende do provedor backend e do orçamento |
-| **Hosting / DA-014/DS-008** | **Vercel frontend + Render Free backend + Supabase PostgreSQL** | Plano **Supabase** ainda a confirmar; domínio, região, orçamento, Supavisor session pooler, TLS, segregação de credenciais, backups/export/restore e limites Free. Render Free não suporta jobs confiáveis em memória. |
+| **Hosting / DA-014/DS-008** | **Vercel frontend + Render Free backend + Supabase PostgreSQL** | **Vercel Hobby, Render Free e Supabase Free decididos**; domínio, região, orçamento, Supavisor session pooler, TLS, segregação de credenciais, backups/export/restore e limites Free ainda a provar. Render Free não suporta jobs confiáveis em memória. |
 | **Legal/privacidade / DS-007** | Somente demo sem venda real; dados minimizados e backups | Inventário LGPD, prazo de retenção, política de privacidade, autorização de assets, obrigações comerciais/fiscais antes de operação real |
 | **Segurança / DS-009** | Referencial ASVS 5.0 e CI automatizado | Controles aplicáveis por risco, responsabilidade de testes, evidências e limites de release |
 | **Comercial / DA-007/011** | Frete deterministicamente simulado e um cupom | Tabela/regiões de frete, validade de cotação, reuso/cancelamento do cupom e exemplos de aceite |
@@ -66,3 +66,15 @@ Ver [ADR-010](adrs/ADR-010-postgresql-supabase.md), [guia de conexão](CONEXAO-R
 - [ ] Validar frontend VCL-001–008 e não usar Vercel Hobby Cron (1/dia) para expirar reserva de 40min.
 
 Referências: [Vercel/R2/Jobs](DECISOES-VERCEL-R2-FREE-E-JOBS.md), [ADR-005](adrs/ADR-005-midia-e-storage.md), [ADR-007](adrs/ADR-007-worker-e-jobs.md), [validação](VALIDACAO-VERCEL-R2-JOBS.md).
+
+
+## Status ratificado — planos gratuitos de 12/10/2026
+
+- [x] **Vercel Hobby** escolhido para site de portfólio estritamente **não comercial**.
+- [x] **Render Free** escolhido para backend demonstrativo.
+- [x] **Supabase PostgreSQL Free** escolhido para o banco demonstrativo.
+- [x] **Cloudflare R2 Free Tier Standard** escolhido para mídia demonstrativa.
+- [ ] Infraestrutura real criada/configurada e limites medidos; estes documentos não substituem testes.
+- [ ] Continuidade operacional, executor de jobs financeiros, backup/export/restore e elegibilidade legal para comércio real.
+
+A [consolidação da Fase 03](CONSOLIDACAO-FINAL-FASE-03-v0.5.md) tem precedência apenas quanto ao **status de escolha**; requisitos normativos permanecem inalterados.

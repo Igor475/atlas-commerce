@@ -1,12 +1,12 @@
 # ADR-010 — Supabase como provedor PostgreSQL do Atlas Commerce
 
-> **Status:** **PROVEDOR ACEITO** explicitamente em 12/10/2026; **PLANO SUPABASE A CONFIRMAR, CONECTIVIDADE/SEGURANÇA NÃO HOMOLOGADAS, SEM IMPLEMENTAÇÃO.**  
-> **Versão:** 0.1.0 • **Dependências:** APP-02/03/05/09/12/13/14/19; ADR-002/003/005/006/007/008/009; DA-014; DS-001/003/007/008; SEC-001–038.
+> **Status:** **PROVEDOR ACEITO** explicitamente em 12/10/2026; **PLANO SUPABASE FREE ACEITO, CONECTIVIDADE/SEGURANÇA NÃO HOMOLOGADAS, SEM IMPLEMENTAÇÃO.**  
+> **Versão:** 0.2.0 • **Dependências:** APP-02/03/05/09/12/13/14/19; ADR-002/003/005/006/007/008/009; DA-014; DS-001/003/007/008; SEC-001–038.
 
 ## Decisão
 
 1. **Banco gerenciado:** Supabase PostgreSQL como **fonte de verdade** dos pedidos, snapshots, estoque, pagamentos, reserva, refunds, sessões de identidade NestJS, inbox/outbox e entitlements.
-2. **Plano:** recomendado **Supabase Free para portfólio**, mas **não escolhido explicitamente ainda**; Pro/backup e limites serão decididos antes de demanda sustentada. Não criar infraestrutura automaticamente.
+2. **Plano:** **Supabase Free escolhido explicitamente** para portfólio pessoal não comercial. Upgrade e contingência de backup/limites serão avaliados antes de operação sustentada ou comercial; não criar infraestrutura automaticamente.
 3. **Autenticação humana:** NestJS Identity com sessão opaca, cookies/CSRF e WebAuthn/TOTP segundo a ADR-003. **Não adotar Supabase Auth** por esta decisão.
 4. **Arquivos digitais:** Cloudflare R2 continua escolhido pela APP-09/ADR-005. **Não adotar Supabase Storage** por inferência.
 5. **Acesso a dados:** NestJS → driver PostgreSQL + **Prisma ORM v7 + `@prisma/adapter-pg`** como baseline a homologar. SQL parametrizado crítico deve usar a mesma conexão/transação com locks e constraints. Supabase REST/Data API, Realtime, Edge Functions e pg_cron **não foram aprovados**.
@@ -37,7 +37,7 @@
 ## Critérios de aprovação técnica / gates
 
 - [x] Fornecedor PostgreSQL escolhido: **Supabase**.
-- [ ] Plano e região definitivos; Free apenas **recomendado**.
+- [x] **Plano Free aprovado** para demonstração. **Região, limites efetivos e configuração reais continuam pendentes**.
 - [ ] Conexão Render Free → Supabase via TLS, IPv4 session pooler ou IPv6 verificado e queries parametrizadas; variação de restart/cold start.
 - [ ] Prisma v7 e `@prisma/adapter-pg`, query raw na mesma transação, migrations e pool total comprovados.
 - [ ] Inventário de schema exposto, Data API/RLS/grants, separação de usuários, teste negativo sem bypass.
@@ -54,3 +54,12 @@
 - https://supabase.com/docs/guides/platform/free-project-pausing
 - https://supabase.com/docs/guides/platform/backups
 - https://render.com/docs/free
+
+
+## Adendo operacional para o plano Free aprovado
+
+A modalidade **Free** inclui banco PostgreSQL com limite anunciado de **500 MB** de dados, podendo colocar o projeto em **modo somente leitura** ao exceder a cota. É possível suspensão por baixa atividade numa janela de sete dias. **Não oferece backups diários gerenciados nem PITR** como substituto de recuperação. Planejar dump lógico independente e restore em instância segregada, sem tratar cron/serviço Free como agendador resiliente.
+
+Autenticação permanece no NestJS, armazenamento no Cloudflare R2. O pooler de sessão e as credenciais são definidos com a conexão real da Render Free; nunca expor conexão DB ao browser. Este documento não cria o projeto nem comprova a capacidade/cota consumida.
+
+**Status de decisão:** fornecedor + plano aprovados, **gates SUPABASE-001–016 não executados**. Ver [consolidação](../CONSOLIDACAO-FINAL-FASE-03-v0.5.md).

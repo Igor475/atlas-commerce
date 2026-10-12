@@ -10,7 +10,7 @@ O Atlas Commerce permanece **monólito modular NestJS**. Seu **backend será ini
 
 - **Frontend:** Next.js na Vercel (APP-13). A decisão de usar `apps/storefront` e `apps/admin` separados depende da organização final da aplicação; o modelo não exige criar dois serviços hoje.
 - **Backend:** um Web Service NestJS na **Render Free**; aceitar pausa/restart e limites de uso, sem promessas de uptime.
-- **Banco:** **Supabase PostgreSQL** escolhido para o projeto, não Render Postgres. Plano Supabase ainda a confirmar. [ADR-010](ADR-010-postgresql-supabase.md) regula conexão, segurança, backup e restauração.
+- **Banco:** **Supabase PostgreSQL** escolhido para o projeto, não Render Postgres. **Supabase Free aprovado**. [ADR-010](ADR-010-postgresql-supabase.md) regula conexão, segurança, backup e restauração.
 - **Mídia:** Cloudflare R2 com separação entre objetos públicos autorizados e privados; segredos no backend.
 - **Pagamentos:** Stripe Checkout hospedado **em modo teste**; webhook na API validado por assinatura do corpo original.
 - **Jobs:** outbox/inbox no PostgreSQL como fonte durável; cron/worker como serviço **adicional condicional**, definido pela ADR-007, e jamais dependente da continuidade de um processo Free suspenso.
@@ -47,7 +47,8 @@ A migração futura não deve exigir separar domínios em microsserviços; contr
 - [x] Render escolhida para backend inicial; Web Service como tipo de serviço proposto.
 - [x] Decidir **Render Free**, apenas demonstração tolerante a suspensão; orçamento e futuro plano sempre ativo seguem condicionados.
 - [x] Definir fornecedor banco: **Supabase PostgreSQL**.
-- [ ] Confirmar plano Supabase e região, ligação TLS e Supavisor, roles e backups/restore.
+- [x] **Plano Supabase Free escolhido.**
+- [ ] Região, ligação TLS/Supavisor, roles e política real de backup/restore seguem por validar.
 - [ ] Definir execução de expirador, replay outbox, retry Stripe/refund com job/worker independente; validar custo e frequência.
 - [ ] Exercitar [RENDER-001–016](../VALIDACAO-OPERACIONAL-RENDER.md) com CI, deploy, restart, segurança, banco e restore, e validar ST/DB/SA correlatos.
 - [ ] Validar hostname, ingress/cookie/CSRF e segredos test/live; nenhum ambiente real foi inspecionado nesta decisão.
@@ -73,3 +74,8 @@ A migração futura não deve exigir separar domínios em microsserviços; contr
 - Segurança do acesso, RLS/Data API, migrador e suporte Prisma v7 devem ser testados com ambiente real; ver [ADR-010](ADR-010-postgresql-supabase.md), [guia de conexão](../CONEXAO-RENDER-SUPABASE.md) e [SUPABASE-001–016](../VALIDACAO-OPERACIONAL-SUPABASE.md).
 
 **Referências:** https://render.com/docs/free • https://supabase.com/docs/guides/database/connecting-to-postgres • https://supabase.com/docs/guides/platform/free-project-pausing
+
+
+## Ratificação de hospedagem v0.5
+
+O frontend hospedado será **Vercel Hobby**, escolhido explicitamente para **demonstração não comercial**; o banco PostgreSQL será **Supabase Free**, explicitamente confirmado. Render Free permanece decisão firme. Isso não resolve a execução de jobs em background nem a janela 40/30/5 do Stripe. Evidências RENDER/SUPABASE/VCL continuam faltando. [Estado consolidado](../CONSOLIDACAO-FINAL-FASE-03-v0.5.md).

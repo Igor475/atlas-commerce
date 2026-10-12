@@ -62,3 +62,12 @@ Ao sincronizar os arquivos históricos no GitHub, aplicar **edições cirúrgica
 Este pacote v0.4 **substitui integralmente o arquivo consolidado v0.3**; não misturar os dois ZIPs sem `git diff`. Além das ADRs novas 009/010 da etapa anterior, contém **atualização integral de ADR-005, ADR-007 e ADR-008** baseada no conteúdo verificado na branch `main` (`0c72d73`). Os demais ADRs antigos não devem ser apagados/recriados.
 
 Quando harmonizar `docs/04-architecture/README.md`, `adrs/README.md`, `STATUS-DECISOES-FASE-03.md`, `docs/README.md`, BRD, políticas e SEC, registrar `Vercel selecionada`, `Cloudflare R2 Free Tier Standard escolhido`, `Render Free`, `Supabase PostgreSQL selecionado, plano ainda pendente`, `Supabase Cron apenas proposta`, sem dizer que houve implantação, pagamentos reais, licenças ou testes concluídos. Preservar IDs RN, CA, SA, SEC, AUTH, DB e ST. Se desejar, preparar patch editorial separado após verificar os blobs atuais no GitHub; este ZIP **não sobrescreve** esses documentos longos.
+
+
+## Complemento de sincronização de 12/10/2026 — planos fechados
+
+Atualizar editorialmente toda ocorrência remanescente de **“Supabase Free a confirmar”** para **“Supabase Free aprovado; configuração e ensaios pendentes”** e **“Vercel Hobby recomendado”** para **“Vercel Hobby aprovado para portfólio não comercial”**. NÃO trocar menções históricas sem manter o contexto de versão; registrar adendo com data quando for registro imutável.
+
+**Arquivos desta atualização v0.5 que já sincronizam:** baseline, ambos os quadros de status ADR, decisões Vercel/R2/jobs, ADR-009/010, validação Supabase e Vercel/R2/jobs, quadro de parâmetros e índice ADR. 
+
+**Arquivos ainda exigindo edição de referência pontual** após publicação: `docs/README.md`, `docs/04-architecture/README.md`, BRD/adendo e SEC no que se referir ao estado aprovado (mantendo RN/CA/SA/SEC). Esses arquivos longos **não são sobrescritos por este ZIP** para preservar todos os parágrafos normativos. Use [consolidação](CONSOLIDACAO-FINAL-FASE-03-v0.5.md) como fonte para corrigir seu índice. Nunca marcar aplicação implementada ou testes executados.

@@ -1,6 +1,6 @@
 # AC-INFRA-TEST-003 — Plano de validação: Vercel, R2 e jobs
 
-> **Estado:** **PLANEJADO — NENHUM TESTE EXECUTADO**. R2 Free Tier foi escolhido; Vercel é provedor escolhido, modalidade Hobby apenas **recomendada se elegível**; executor de jobs ainda exige prova.
+> **Estado:** **PLANEJADO — NENHUM TESTE EXECUTADO**. R2 Free Tier foi escolhido; Vercel **Hobby é plano aprovado para demo pessoal não comercial**; executor de jobs ainda exige prova.
 
 ## Vercel (VCL-001–008)
 
@@ -63,3 +63,6 @@
 - [ ] Backups offsite/restore exercitados; nenhuma inferência de SLA pela existência do documento.
 
 **Fontes:** [ADR-005](adrs/ADR-005-midia-e-storage.md), [ADR-007](adrs/ADR-007-worker-e-jobs.md), [ADR-008](adrs/ADR-008-controles-operacionais.md), [ADR-009](adrs/ADR-009-selecao-render.md), [ADR-010](adrs/ADR-010-postgresql-supabase.md).
+
+
+**Atualização de decisão em 12/10/2026:** VCL-004 continua **ensaio planejado**; porém a **escolha Hobby** foi aprovada pelo responsável, não é mais uma sugestão. Elegibilidade e comportamento concreto no deploy ainda devem ser conferidos. [Consolidação](CONSOLIDACAO-FINAL-FASE-03-v0.5.md).
