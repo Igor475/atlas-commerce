@@ -1,0 +1,31 @@
+digraph MONO01 {
+ graph [label="MONO-01 · Atlas Commerce · monorepo proposto (F04-01)", labelloc=t,fontsize=20,fontname="DejaVu Sans",bgcolor="#ffffff",rankdir=TB,splines=polyline,ranksep=.78,nodesep=.4,pad=.3];
+ node [shape=box,style="rounded,filled",fontname="DejaVu Sans",fontsize=10,margin=".20,.13",color="#9aabbc",fillcolor="#f1f5f9"];
+ edge [color="#62778d",arrowsize=.72,fontname="DejaVu Sans",fontsize=9];
+ subgraph cluster_repo {label="pnpm workspace • uma base de código • múltiplos deploys";color="#cbd5e1";style="rounded";
+  storefront [label="apps/storefront\nNext.js (Vercel Hobby)\ncliente / biblioteca",fillcolor="#e4f0ff"];
+  admin [label="apps/admin\nNext.js (Vercel Hobby)\nbackoffice / MFA",fillcolor="#e4f0ff"];
+  contract [label="packages/contracts\nDTO/transport schemas\nsem segredo ou domain entity",fillcolor="#ecfdf5"];
+  tooling [label="packages/tooling\nCI / lint / TS / teste\nopcional e mínimo",fillcolor="#ecfdf5"];
+  api [label="apps/api\nNestJS monólito modular\nRender Free",fillcolor="#ffeccc"];
+  subgraph cluster_api {label="Módulos lógicos • API única";color="#ebd6a2";style="rounded,dashed";
+   identity [label="Identity / Catalog / Pricing",fillcolor="#fff6df"];
+   order [label="Inventory / Orders / Payments",fillcolor="#fff6df"];
+   other [label="Library / Fulfillment / Returns\nBackoffice & Audit / Integration",fillcolor="#fff6df"];
+  }
+ }
+ supa [label="Supabase Free\nPostgreSQL fonte de verdade",fillcolor="#e7f7ea"];
+ stripe [label="Stripe TEST Mode\nwebhooks autenticados",fillcolor="#faf0ff"];
+ r2 [label="Cloudflare R2 Free\nprivado/público segregado",fillcolor="#e7f7ea"];
+ storefront -> contract [label="transport types"];
+ admin -> contract [label="transport types"];
+ api -> contract [label="transport types",dir=back];
+ storefront -> api [label="HTTPS /api same-origin proxy"];
+ admin -> api [label="HTTPS /api same-origin proxy"];
+ api -> identity [label="composition",style=dashed];
+ api -> order [style=dashed];api -> other [style=dashed];
+ api -> supa [label="TLS / adapter / locks"];
+ api -> stripe [label="Checkout & webhook"];
+ api -> r2 [label="signed URLs via entitlement"];
+ tooling -> api [style=dotted];tooling -> storefront [style=dotted];
+}
