@@ -1,6 +1,6 @@
 # F04-06 — Topologia Vercel↔Render e segurança de sessão
 
-> **Status:** contrato de segurança a validar no navegador real. A ADR-003 aceita sessão opaca revogável no NestJS, cookie host-only, MFA para equipe, CSRF e isolamento loja/admin. A definição física de dois Next.js segue proposta F04-01.
+> **Status:** contrato de segurança a validar no navegador real. A ADR-003 aceita sessão opaca revogável no NestJS, cookie host-only, MFA para equipe, CSRF e isolamento loja/admin. A separação física de duas apps Next.js **foi ratificada pelo responsável em 12/10/2026**. Hosts, RP ID, cookies e proxy permanecem não testados.
 
 ## Padrão recomendado para o spike
 
@@ -22,4 +22,6 @@ O padrão `rewrite` do Next.js pode encaminhar requests externamente e mascarar 
 - Dados de sessão/identidade privados e credenciais não recebem cache público Vercel/Next.js; `no-store`/cache headers validados por testes cross-user.
 - O webhook do Stripe não usa sessão humana, CSRF de browser nem proxy que transforme corpo bruto. Requer verificação de assinatura, replay e amount/currency/IDs. Testar cold start da Render no recebimento.
 
-**Pendência:** a topologia acima e separação física das duas apps devem ser ratificadas/validadas em spike. Ref.: [ADR-003](../04-architecture/adrs/ADR-003-autenticacao-sessoes.md), [AUTH](../04-architecture/09-cenarios-aceite-autenticacao.md), [F04-01](F04-01-estrutura-monorepo.md).
+**Pendência:** a separação física foi **aprovada**; a topologia real (origens, cookies, ingress e proxy) ainda exige validação de spike. Ref.: [ADR-003](../04-architecture/adrs/ADR-003-autenticacao-sessoes.md), [AUTH](../04-architecture/09-cenarios-aceite-autenticacao.md), [F04-01](F04-01-estrutura-monorepo.md).
+
+**F04-02:** [CT-04 — Auth/CSRF/Stripe](contracts/CT-04-sessoes-csrf-e-webhook.md) e [contrato OpenAPI proposto](contracts/openapi/atlas-commerce-api-v1.yaml). Os nomes das rotas não estão ainda aprovados como endpoints implementados.

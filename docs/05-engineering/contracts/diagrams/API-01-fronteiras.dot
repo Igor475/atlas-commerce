@@ -1,0 +1,30 @@
+digraph API01 {
+  graph [label="Atlas Commerce • F04-02 — Fronteiras API e eventos (PROPOSTO)",labelloc=t,rankdir=TB,fontname="DejaVu Sans",fontsize=19,pad=.35,nodesep=.45,ranksep=.85,bgcolor="white",splines=polyline];
+  node [shape=box,style="rounded,filled",fontname="DejaVu Sans",fontsize=11,margin=".22,.16",color="#607c9f",fillcolor="#eef4ff"];
+  edge [fontname="DejaVu Sans",fontsize=9,color="#597896",arrowsize=.7];
+  subgraph cluster_browser {label="Duas apps Next.js APROVADAS — Vercel Hobby";style=rounded;color="#aebfd2";
+   store [label="Storefront\nCookie cliente + CSRF",fillcolor="#e6f0ff"];
+   admin [label="Admin\nCookie staff + MFA + step-up",fillcolor="#e6f0ff"];
+  }
+  subgraph cluster_api {label="ÚNICO backend NestJS — Render Free";style=rounded;color="#aebfd2";
+   api [label="HTTP /api/v1\nOpenAPI + validação",fillcolor="#dfeafd"];
+   guards [label="Auth/autorizações por recurso\nOwnership + estado + RBAC",fillcolor="#dfeafd"];
+   modules [label="Módulos domínio\nOrders/Inventory/Payments/Library",fillcolor="#eaf3fd"];
+   inbox [label="Inbox/Outbox\nIdempotência + lease",fillcolor="#edfaee"];
+  }
+  subgraph cluster_external {label="Infra de demonstração / integrações";style=rounded;color="#b1cbb8";
+   pg [label="Supabase PostgreSQL Free\nVerdade transacional",fillcolor="#e9f6eb"];
+   stripe [label="Stripe Test Mode\nWebhook raw + assinatura",fillcolor="#fff3df"];
+   r2 [label="Cloudflare R2 Free\nObjeto privado",fillcolor="#fff3df"];
+  }
+  store -> api [label="HTTP same-origin proxy"];
+  admin -> api [label="HTTP same-origin proxy"];
+  api -> guards;
+  guards -> modules [label="Ports por módulo"];
+  modules -> pg [label="TX curta + locks"];
+  modules -> inbox [label="fatos duráveis"];
+  inbox -> pg [label="mesmo COMMIT"];
+  stripe -> api [label="webhook direto / assinatura",color="#ad7341"];
+  modules -> stripe [label="Checkout/refund após commit",color="#ad7341"];
+  modules -> r2 [label="url temporária após direito",color="#ad7341"];
+}

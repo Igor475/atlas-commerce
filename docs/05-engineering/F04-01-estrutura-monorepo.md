@@ -1,6 +1,6 @@
 # F04-01 — Estrutura física proposta do monorepo
 
-> **Status:** RECOMENDAÇÃO PARA APROVAÇÃO, não estrutura já criada no GitHub. A arquitetura **NestJS monólito modular + Next.js** está aceita; a escolha de **dois frontends fisicamente separados** é proposta para facilitar isolamento de sessões e ambientes.
+> **Status:** DIREÇÃO FÍSICA **APROVADA pelo responsável em 12/10/2026**, não estrutura já criada em código. A arquitetura **NestJS monólito modular + Next.js** e a escolha de **dois frontends fisicamente separados** foram explicitamente aceitas; isolamento de sessões e ambientes ainda depende de configuração/teste real.
 
 ## Layout projetado
 
@@ -48,10 +48,14 @@ atlas-commerce/
 
 | Opção | Prós | Custos / mitigação | Estado |
 |---|---|---|---|
-| **A — Storefront e admin separados** | Host e cookie separados, áreas de deploy/routing isoladas, segurança operacional explícita | Dois builds Vercel e manutenção de componentes separados; bibliotecas UI só após necessidade real | **Recomendada para aprovação** |
+| **A — Storefront e admin separados** | Host e cookie separados, áreas de deploy/routing isoladas, segurança operacional explícita | Dois builds Vercel e manutenção de componentes separados; bibliotecas UI só após necessidade real | **Aprovada como direção** |
 | B — Uma app Next.js com grupos de rotas | Build/deploy único, compartilhamento UI mais simples | Mesmo host/cookie por padrão e maior cuidado com escopo de sessão, cache e rotas | Alternativa se custo/manutenção real justificar |
 
 Os endereços/domínios **não** estão definidos; duas apps separadas em Vercel Hobby podem usar hosts distintos de demo, sujeitos à elegibilidade e à validação técnica. O proxy da API deve preservar origem, cookies e redirecionamentos; não pressupor que rewrites, sozinhos, resolvem todas as questões de `Set-Cookie`, CSRF, cache e OAuth/WebAuthn.
+
+## Ratificação física de monorepo — F04-02
+
+A opção **A** (`apps/storefront` e `apps/admin` separados, mais `apps/api` NestJS) e **pnpm Workspaces** foram aprovados explicitamente pelo proprietário após o commit de F04-01. Os dois Next.js compartilham contratos públicos mas **não compartilham sessão/cookie de autorização**. A localização física de `apps/` continua **planejada**: os diretórios de aplicação ainda não existem. O [contrato OpenAPI F04-02](contracts/README.md) é proposta adicional **não** homologada pela mesma aprovação.
 
 ## Convenções de pacotes
 

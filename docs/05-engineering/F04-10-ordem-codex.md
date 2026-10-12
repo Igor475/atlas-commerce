@@ -5,7 +5,7 @@
 | Ordem | Entrega por prompt próprio | O que precisa estar pronto antes |
 |---|---|---|
 | **F04-01** | **Esta documentação** do monorepo, fronteiras, contratos preliminares e QA | confirmação de Fase 03 v0.5 (feita) |
-| F04-02 | OpenAPI/DTO/eventos e decisão física storefront/admin; sem código | revisão de F04-01 e mapeamento RN/SEC/CA |
+| F04-02 | **Documentação OpenAPI/DTO/eventos agora elaborada; aprovação de detalhes pendente** | separação física `storefront/admin/api` e pnpm aprovados; [contratos](contracts/README.md) |
 | F04-03 | **Codex bootstrap** pnpm + Next storefront/admin + Nest API + contratos/tooling mínimos; sem domínio implementado | layout F04-01 aprovado, versões escolhidas |
 | F04-04 | Codex spike PostgreSQL/Prisma/Supabase Free, migrations em DB local/isolado | ADR-006, DB gates; projeto Supabase real requer autorização própria |
 | F04-05 | Codex spike proxy/sessão/MFA local e integração Vercel↔Render (somente quando disponível) | topologia, cookies, origin, recovery e AUTH gates |
@@ -26,4 +26,4 @@
 
 ## Gate para a próxima entrega
 
-Aprovar ou ajustar a divisão **storefront/admin/API** e o padrão **pnpm workspace**. Depois produzir F04-02 com contratos OpenAPI e eventos mais específicos, e só então o primeiro **prompt de bootstrap Codex**. A escolha de bibliotecas/versões deve ser acompanhada de justificativa atualizada, não hardcode documental envelhecido.
+**Separação `storefront/admin/API` e pnpm workspace aprovada**. Revisar/ratificar os [contratos detalhados F04-02](contracts/README.md) e, então, produzir o primeiro **prompt de bootstrap Codex F04-03** (sem módulos financeiros/estoque implementados). A escolha de bibliotecas/versões deve ser acompanhada de justificativa atualizada, não hardcode documental envelhecido.

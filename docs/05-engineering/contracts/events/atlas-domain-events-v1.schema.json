@@ -1,0 +1,338 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://atlas-commerce.example.invalid/schemas/domain-events/v1",
+  "title": "Atlas Commerce — DomainEvent v1 PROPOSTO, não implementado",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "eventType",
+    "schemaVersion",
+    "aggregateId",
+    "aggregateVersion",
+    "occurredAt",
+    "correlationId",
+    "payload"
+  ],
+  "properties": {
+    "eventId": {
+      "$ref": "#/$defs/uuid"
+    },
+    "eventType": {
+      "enum": [
+        "ReservationCreated",
+        "ReservationExpired",
+        "ReservationConfirmed",
+        "PaymentCapturedVerified",
+        "PaymentNeedsReview",
+        "RefundRequested",
+        "RefundCompleted",
+        "RefundNeedsReconciliation",
+        "EntitlementGranted"
+      ]
+    },
+    "schemaVersion": {
+      "const": 1
+    },
+    "aggregateId": {
+      "$ref": "#/$defs/id"
+    },
+    "aggregateVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "correlationId": {
+      "$ref": "#/$defs/uuid"
+    },
+    "causationId": {
+      "$ref": "#/$defs/uuid"
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128
+    },
+    "amountCents": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "currency": {
+      "const": "BRL"
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "eventType": {
+          "const": "ReservationCreated"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reservationId",
+            "orderId",
+            "expiresAt"
+          ],
+          "properties": {
+            "reservationId": {
+              "$ref": "#/$defs/id"
+            },
+            "orderId": {
+              "$ref": "#/$defs/id"
+            },
+            "expiresAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "eventType": {
+          "const": "ReservationExpired"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reservationId",
+            "orderId"
+          ],
+          "properties": {
+            "reservationId": {
+              "$ref": "#/$defs/id"
+            },
+            "orderId": {
+              "$ref": "#/$defs/id"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "eventType": {
+          "const": "ReservationConfirmed"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reservationId",
+            "orderId"
+          ],
+          "properties": {
+            "reservationId": {
+              "$ref": "#/$defs/id"
+            },
+            "orderId": {
+              "$ref": "#/$defs/id"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "eventType": {
+          "const": "PaymentCapturedVerified"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "orderId",
+            "paymentAttemptId",
+            "captureId",
+            "amountCents",
+            "currency"
+          ],
+          "properties": {
+            "orderId": {
+              "$ref": "#/$defs/id"
+            },
+            "paymentAttemptId": {
+              "$ref": "#/$defs/id"
+            },
+            "captureId": {
+              "$ref": "#/$defs/id"
+            },
+            "amountCents": {
+              "$ref": "#/$defs/amountCents"
+            },
+            "currency": {
+              "$ref": "#/$defs/currency"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "eventType": {
+          "const": "PaymentNeedsReview"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "orderId",
+            "paymentAttemptId",
+            "reasonCode"
+          ],
+          "properties": {
+            "orderId": {
+              "$ref": "#/$defs/id"
+            },
+            "paymentAttemptId": {
+              "$ref": "#/$defs/id"
+            },
+            "reasonCode": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "eventType": {
+          "const": "RefundRequested"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "refundOperationId",
+            "captureId",
+            "amountCents",
+            "currency"
+          ],
+          "properties": {
+            "refundOperationId": {
+              "$ref": "#/$defs/id"
+            },
+            "captureId": {
+              "$ref": "#/$defs/id"
+            },
+            "amountCents": {
+              "$ref": "#/$defs/amountCents"
+            },
+            "currency": {
+              "$ref": "#/$defs/currency"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "eventType": {
+          "const": "RefundCompleted"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "refundOperationId",
+            "captureId",
+            "amountCents",
+            "currency"
+          ],
+          "properties": {
+            "refundOperationId": {
+              "$ref": "#/$defs/id"
+            },
+            "captureId": {
+              "$ref": "#/$defs/id"
+            },
+            "amountCents": {
+              "$ref": "#/$defs/amountCents"
+            },
+            "currency": {
+              "$ref": "#/$defs/currency"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "eventType": {
+          "const": "RefundNeedsReconciliation"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "refundOperationId",
+            "captureId"
+          ],
+          "properties": {
+            "refundOperationId": {
+              "$ref": "#/$defs/id"
+            },
+            "captureId": {
+              "$ref": "#/$defs/id"
+            }
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "eventType": {
+          "const": "EntitlementGranted"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "entitlementId",
+            "accountId",
+            "orderId",
+            "componentId",
+            "licenseVersion"
+          ],
+          "properties": {
+            "entitlementId": {
+              "$ref": "#/$defs/id"
+            },
+            "accountId": {
+              "$ref": "#/$defs/id"
+            },
+            "orderId": {
+              "$ref": "#/$defs/id"
+            },
+            "componentId": {
+              "$ref": "#/$defs/id"
+            },
+            "licenseVersion": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        }
+      }
+    }
+  ]
+}

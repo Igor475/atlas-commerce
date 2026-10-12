@@ -1,6 +1,6 @@
 # Fase 04 — Engenharia, estrutura e contratos de implementação
 
-> **Identificação:** `AC-ENG-001` · **Versão documental:** `0.1.0` · **Etapa:** `F04-01` · **Data:** 12/10/2026. **Estado:** blueprint documental proposto para revisão, **nenhum código escrito ou teste executado**.
+> **Identificação:** `AC-ENG-001` · **Versão documental:** `0.2.0` · **Etapa:** `F04-02` · **Data:** 12/10/2026. **Estado:** monorepo físico **aprovado** (três apps + pnpm); contratos F04-02 **propostos** e não implementados, nenhum teste executado.
 
 ## Ponto de partida
 
@@ -23,10 +23,19 @@ A [Fase 03 v0.5](../04-architecture/CONSOLIDACAO-FINAL-FASE-03-v0.5.md) consolid
 | F04-11 | [Decisões pendentes](F04-11-decissoes-abertas.md) | O que falta antes de cada módulo e não impede planejamento |
 | MONO-01 | [Mapa do monorepo](diagrams/MONO-01-workspaces.md) | DOT, SVG e PNG editáveis/visualizáveis |
 
+## Nova entrega de contratos (F04-02)
+
+- [CT-01–09 — índice e contratos de API, DTO, eventos, autorização, testes](contracts/README.md).
+- [OpenAPI 3.1 v1, declarativo](contracts/openapi/atlas-commerce-api-v1.yaml).
+- [JSON Schema de eventos, declarativo](contracts/events/atlas-domain-events-v1.schema.json).
+- [API-01 — Diagrama das fronteiras e consumidores](contracts/diagrams/API-01-fronteiras.md).
+
+O pacote F04-02 detalha **30 testes `API-001–030` planejados**; nenhum foi executado. A aprovação da separação de apps não aprova automaticamente cada endpoint do YAML, nem autoriza implementar domínios antes dos gates.
+
 ## Estado de avanço
 
-- **F04-01**: proposta **documentada nesta entrega**; não aprovada fisicamente nem implementada.
-- **F04-02**: contratos textuais iniciais aqui, mas OpenAPI, schemas e versionamento finais ainda serão especificados/revisados.
+- **F04-01**: separação física **aprovada** (`apps/storefront`, `apps/admin`, `apps/api`, pnpm), **ainda não implementada**.
+- **F04-02**: proposta detalhada [CT-01–09](contracts/README.md), OpenAPI e JSON Schema produzidos; **detalhes precisam de revisão/ratificação, endpoints não implementados**.
 - **F04-03 em diante**: Codex deverá criar código apenas mediante prompt detalhado com arquivos permitidos, testes e autorização. Não começar cobrança real.
 
 ## Restrições invioláveis

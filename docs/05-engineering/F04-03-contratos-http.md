@@ -1,6 +1,6 @@
 # F04-03 — Convenções HTTP e inventário de contratos (pré-OpenAPI)
 
-> **Status:** design preliminar. Nenhuma rota existe. Os nomes de path abaixo **não** são API aprovada: o contrato OpenAPI real será elaborado na etapa F04-02 e revisado contra RN/CA/SA/AUTH/ST antes do Codex criá-lo.
+> **Status:** design preliminar. Nenhuma rota existe. Os nomes de path abaixo **não** são API aprovada: o contrato OpenAPI **proposto** foi elaborado na F04-02 em [YAML](contracts/openapi/atlas-commerce-api-v1.yaml) e segue sujeito a revisão contra RN/CA/SA/AUTH/ST antes do Codex criá-lo.
 
 ## Regras propostas de API
 
@@ -15,7 +15,7 @@
 9. Sem endpoints que permitam ao navegador enviar `paid`, `isAdmin`, `stockAvailable`, `hasEntitlement`, `refundSucceeded` ou `amountCaptured` como autoridades.
 10. Revisar compressão, body limits, parser raw para Stripe, CORS de origins aceitas, validação, logs com redaction e status de readiness sem divulgar segredos.
 
-## Inventário lógico para F04-02
+## Inventário lógico detalhado na F04-02
 
 | Área | Recursos / casos de uso públicos previstos | Acesso e testes vinculados |
 |---|---|---|
@@ -29,4 +29,4 @@
 | Admin | catálogo, estoque, atendimento, operações financeiras segregadas | MFA staff, matriz DS-003 |
 | Saúde | live, ready e métricas internas apropriadas | status claro, sem PII/segredos, Render cold start |
 
-**Não prescrever verbos, paths e DTOs completos até F04-02.** Esse inventário existe para não deixar o Codex inventar APIs a partir da UI. Mais: [F04-04](F04-04-eventos-e-idempotencia.md), [BRD](../02-business-requirements/REGRAS-DE-NEGOCIO.md) e [segurança](../07-security/security-requirements.md).
+**Os verbos/paths e DTOs iniciais estão propostos em [CT-01–09](contracts/README.md), mas não ratificados nem implementados.** Esse inventário existe para não deixar o Codex inventar APIs a partir da UI. Mais: [F04-04](F04-04-eventos-e-idempotencia.md), [BRD](../02-business-requirements/REGRAS-DE-NEGOCIO.md) e [segurança](../07-security/security-requirements.md).

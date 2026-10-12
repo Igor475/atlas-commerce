@@ -35,3 +35,7 @@ Evento representa **fato persistido**. `OrderPaid` só é emitido após decisão
 | `MessageDeliveryRequested` | módulos donos | Integration usa HTTP e-mail quando provedor definido |
 
 **Estado atual:** nomes exemplificativos aguardam normalização na F04-02; não são tópicos externos já registrados. Referências: [DB-02](../04-architecture/database/DB-02-invariantes-e-locking.md), [DB-05](../04-architecture/database/DB-05-plano-de-validacao.md), [ST](../04-architecture/07-validacao-stripe.md), [JOB](../04-architecture/VALIDACAO-VERCEL-R2-JOBS.md).
+
+## Complemento F04-02
+
+A proposta de envelope e eventos principais foi expandida em [CT-05](contracts/CT-05-eventos-duraveis.md) e [JSON Schema Draft 2020-12](contracts/events/atlas-domain-events-v1.schema.json). Trata-se de **contrato de documentação** a ratificar, não de evento registrado, tabela criada ou mensagem entregue.
