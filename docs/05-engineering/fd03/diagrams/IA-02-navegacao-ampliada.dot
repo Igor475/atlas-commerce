@@ -1,0 +1,17 @@
+digraph IA02 {
+ graph [rankdir=LR, bgcolor="white", label="IA-02 | Navegação ampliada (FD-03 v0.2) | Atlas Commerce", labelloc=t, fontsize=20, fontname="DejaVu Sans", pad="0.35", nodesep="0.30", ranksep="0.64", splines=ortho];
+ node [shape=box, style="rounded,filled", fillcolor="#edf5f1", color="#93b1a5", fontname="DejaVu Sans", fontsize=10, margin="0.15,0.10"];
+ edge [color="#688b7c", arrowsize=0.58];
+ atlas [label="Atlas Commerce\nStorefront", fillcolor="#d0e6dc", penwidth=2];
+ descobrir [label="Descobrir\nHome • Categorias • Ofertas\nLançamentos • Autores • Coleções"];
+ buscar [label="Buscar\nSugestões • Facetas\nResultados • Sem resultados"];
+ avaliar [label="Avaliar\nLivro • Bíblia • eBook\nRevista/preview • Kit"];
+ carrinho [label="Carrinho\nQuantidade • Cupom\nCotação"];
+ identidade [label="Identidade\nLogin • Cadastro • Verificação\nEsqueci/redefinir senha"];
+ checkout [label="Checkout no Atlas\nConta obrigatória • Endereço\nRevisão • Stripe incorporado", fillcolor="#f7ecd6", penwidth=2];
+ conta [label="Minha conta\nPerfil • Segurança\nEndereços • Preferências"];
+ pedidos [label="Pós-compra\nPedidos • Entrega • Devolução\nBiblioteca digital"];
+ ajuda [label="Ajuda e políticas\nContato • FAQ • Privacidade\nTermos • Trocas • 404"];
+ staff [label="Admin separado\nMFA • Catálogo • Estoque\nAtendimento • Financeiro", fillcolor="#f1f1f6", color="#a8a8ba"];
+ atlas -> descobrir; atlas -> buscar; descobrir -> avaliar; buscar -> avaliar; avaliar -> carrinho; carrinho -> identidade; identidade -> checkout; atlas -> conta; conta -> pedidos; atlas -> ajuda; atlas -> staff [style=dashed, label="outro app / sessão", fontname="DejaVu Sans", fontsize=9];
+}
