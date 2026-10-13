@@ -1,0 +1,11 @@
+node_modules
+.next
+dist
+coverage
+pnpm-lock.yaml
+docs
+README.md
+*.svg
+*.png
+*.bpmn
+*.dot

@@ -56,3 +56,7 @@ Documentos e diagramas são **artefatos de projeto**, não prova de controles im
 ## Sobre
 
 Projeto independente e educacional, destinado ao GitHub e LinkedIn. Não oferece pagamentos reais, não declara certificação de segurança e não representa uma solução pronta para produção.
+
+## Desenvolvimento local
+
+O bootstrap técnico usa pnpm Workspaces com `storefront`, `admin` e `api` separados. Consulte [DEVELOPMENT.md](DEVELOPMENT.md) para versões, portas, comandos e limitações atuais.
