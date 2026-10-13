@@ -1,0 +1,107 @@
+$ pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm smoke && pnpm format:check
+$ eslint apps packages --max-warnings=0
+$ pnpm -r --if-present typecheck
+apps/api typecheck$ pnpm spike:generate && tsc -p tsconfig.json --noEmit
+apps/admin typecheck$ tsc -p tsconfig.json --noEmit
+apps/storefront typecheck$ tsc -p tsconfig.json --noEmit
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+apps/api typecheck: $ prisma generate
+packages/contracts typecheck: Done
+apps/admin typecheck: Done
+apps/storefront typecheck: Done
+apps/api typecheck: Loaded Prisma config from prisma.config.ts.
+apps/api typecheck: 
+apps/api typecheck: Prisma schema loaded from prisma\schema.prisma.
+apps/api typecheck: 
+apps/api typecheck: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 394ms
+apps/api typecheck: 
+apps/api typecheck: Done
+$ pnpm -r --if-present test
+Scope: 5 of 6 workspace projects
+apps/storefront test$ vitest run
+apps/api test$ pnpm spike:generate && vitest run
+packages/contracts test$ vitest run
+apps/admin test$ vitest run
+apps/api test: $ prisma generate
+apps/storefront test: 
+apps/storefront test:  RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/storefront
+apps/storefront test: 
+packages/contracts test: 
+packages/contracts test:  RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/packages/contracts
+packages/contracts test: 
+apps/admin test: 
+apps/admin test:  RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/admin
+apps/admin test: 
+packages/contracts test: 
+packages/contracts test:  Test Files  1 passed (1)
+packages/contracts test:       Tests  1 passed (1)
+packages/contracts test:    Start at  11:34:44
+packages/contracts test:    Duration  1.71s (import 52%, transform 27%, worker 14%, tests 5%, environment 1%)
+packages/contracts test: 
+apps/admin test: 
+apps/admin test:  Test Files  1 passed (1)
+apps/admin test:       Tests  1 passed (1)
+apps/admin test:    Start at  11:34:44
+apps/admin test:    Duration  1.52s (import 57%, transform 26%, tests 10%, worker 6%)
+apps/admin test: 
+apps/storefront test: 
+apps/storefront test:  Test Files  1 passed (1)
+apps/storefront test:       Tests  1 passed (1)
+apps/storefront test:    Start at  11:34:44
+apps/storefront test:    Duration  1.83s (import 54%, transform 30%, tests 9%, worker 7%)
+apps/storefront test: 
+packages/contracts test: Done
+apps/admin test: Done
+apps/storefront test: Done
+apps/api test: Loaded Prisma config from prisma.config.ts.
+apps/api test: 
+apps/api test: Prisma schema loaded from prisma\schema.prisma.
+apps/api test: 
+apps/api test: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 315ms
+apps/api test: 
+apps/api test: 
+apps/api test:  RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+apps/api test: 
+apps/api test: 
+apps/api test:  Test Files  4 passed (4)
+apps/api test:       Tests  23 passed (23)
+apps/api test:    Start at  11:34:52
+apps/api test:    Duration  5.38s (import 76%, tests 19%, transform 5%, worker 1%)
+apps/api test: 
+apps/api test: Done
+$ pnpm -r --if-present build
+apps/admin build$ next build
+apps/api build$ pnpm spike:generate && nest build
+apps/storefront build$ next build
+packages/contracts build$ tsc -p tsconfig.build.json
+apps/api build: $ prisma generate
+packages/contracts build: Done
+apps/storefront build: ▲ Next.js 16.4.0 (Turbopack)
+apps/admin build: ▲ Next.js 16.4.0 (Turbopack)
+apps/admin build: ✓ Running next.config.ts took 175ms
+apps/storefront build: ✓ Running next.config.ts took 186ms
+apps/admin build: 
+apps/storefront build: 
+apps/admin build:   Creating an optimized production build ...
+apps/storefront build:   Creating an optimized production build ...
+apps/api build: Loaded Prisma config from prisma.config.ts.
+apps/api build: 
+apps/api build: Prisma schema loaded from prisma\schema.prisma.
+apps/api build: 
+apps/api build: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 527ms
+apps/api build: 
+apps/api build: Done
+apps/admin build: Failed
+[ELIFECYCLE] Command failed with exit code -1.
+apps/storefront build: Failed
+[ELIFECYCLE] Command failed with exit code -1.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in C:\Users\igor.ferreira\Desktop\atlas-
+  │ commerce\apps\admin
+
+[ELIFECYCLE] Command failed with exit code 1.
+[ELIFECYCLE] Command failed with exit code 1.
+EXIT=1
+
+OBSERVATION: lint/typecheck/tests completed; the build stage again remained at Creating an optimized production build for more than two minutes. Agent terminated only the two identified Next processes; pnpm check returned EXIT=1. Smoke/format steps inside check were not reached; separate commands were run. Cause not conclusively diagnosed; no frontend source modified.

@@ -1,0 +1,23 @@
+$ pnpm -r --if-present build
+apps/admin build$ next build
+apps/api build$ pnpm spike:generate && nest build
+packages/contracts build$ tsc -p tsconfig.build.json
+apps/storefront build$ next build
+apps/api build: $ prisma generate
+packages/contracts build: Done
+apps/storefront build: ▲ Next.js 16.4.0 (Turbopack)
+apps/admin build: ▲ Next.js 16.4.0 (Turbopack)
+apps/admin build: ✓ Running next.config.ts took 359ms
+apps/storefront build: ✓ Running next.config.ts took 389ms
+apps/admin build: 
+apps/admin build:   Creating an optimized production build ...
+apps/api build: Loaded Prisma config from prisma.config.ts.
+apps/api build: 
+apps/api build: Prisma schema loaded from prisma\schema.prisma.
+apps/storefront build: 
+apps/storefront build:   Creating an optimized production build ...
+apps/api build: 
+apps/api build: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 612ms
+apps/api build: 
+apps/api build: Done
+EXIT=-1

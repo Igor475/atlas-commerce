@@ -1,0 +1,68 @@
+ Volume atlas-f0404-spike-ci_spike-data Creating 
+ Volume atlas-f0404-spike-ci_spike-data Creating 
+ Network atlas-f0404-spike-ci_default Creating 
+ Network atlas-f0404-spike-ci_default Creating 
+ Volume atlas-f0404-spike-ci_spike-data Created 
+ Volume atlas-f0404-spike-ci_spike-data Created 
+ Network atlas-f0404-spike-ci_default Created 
+ Network atlas-f0404-spike-ci_default Created 
+ Container atlas-f0404-spike-ci-postgres-1 Creating 
+ Container atlas-f0404-spike-ci-postgres-1 Created 
+ Container atlas-f0404-spike-ci-postgres-1 Starting 
+ Container atlas-f0404-spike-ci-postgres-1 Started 
+ Container atlas-f0404-spike-ci-postgres-1 Waiting 
+ Container atlas-f0404-spike-ci-postgres-1 Healthy 
+$ node scripts/spike-db.mjs migrate
+Datasource: isolated fixture (details redacted)
+
+1 migration found in prisma/migrations
+
+Applying migration `202610130001_spike`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202610130001_spike/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+$ pnpm build && node scripts/spike-db.mjs test
+$ pnpm spike:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 184ms
+
+
+ RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+
+ENV {"server":"PostgreSQL 17.10 (Debian 17.10-1.pgdg12+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit","node":"v24.21.0","pids":[160,161],"poolMax":2,"connectionTimeoutMillis":500,"idleTimeoutMillis":1000,"maxLifetimeSeconds":60,"statement_timeout":5000,"lock_timeout":3000,"idle_in_transaction_session_timeout":10000,"isolation":"ReadCommitted","retries":0}
+PGSP-01 constraint SQLSTATE 23514
+PGSP-03 same transaction {"pid":160,"xid":"761","rawSeesOrm":1}
+PGSP-04 {"fulfilled":1,"rejected":1,"reserved":1,"ttlMs":2400000}
+PGSP-09 server time proof [{"xact_start":"2026-10-13T14:35:36.053Z","expires_at":"2026-10-13T14:35:37.047Z","post_lock_release":"2026-10-13T14:35:37.062Z"}]
+PGSP-11 cents {"captured":10000,"succeeded":3000,"pending":7000,"remaining":0,"accepted":1}
+PGSP-12 persisted after process crash {"fact":"408ef372-e4cd-4bb1-a725-2c6e46b5e3c9","outboxId":"50da5d10-fb42-43b0-8a20-e8a9064afc9c","replayed":"50da5d10-fb42-43b0-8a20-e8a9064afc9c"}
+PGSP-14 {"poolMax":1,"acquireFailureMs":513.2239,"connectionKilled":true,"transactionRolledBack":true,"processRestarted":true}
+BENCH {"n":30,"p50Ms":26.77049999999963,"p95Ms":111.64270000000033,"unit":"reservation TX, sequential local","includesNetwork":true}
+
+ Test Files  1 passed (1)
+      Tests  16 passed (16)
+   Start at  11:35:34
+   Duration  8.50s (tests 97%, import 2%, transform 1%)
+
+EXIT=0
+ Container atlas-f0404-spike-ci-postgres-1 Stopping 
+ Container atlas-f0404-spike-ci-postgres-1 Stopped 
+ Container atlas-f0404-spike-ci-postgres-1 Removing 
+ Container atlas-f0404-spike-ci-postgres-1 Removed 
+ Network atlas-f0404-spike-ci_default Removing 
+ Volume atlas-f0404-spike-ci_spike-data Removing 
+ Volume atlas-f0404-spike-ci_spike-data Removed 
+ Network atlas-f0404-spike-ci_default Removed 
+CLEANUP_EXIT=0

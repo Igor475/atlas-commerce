@@ -1,0 +1,18 @@
+$ node scripts/spike-db.mjs migrate
+Datasource: isolated fixture (details redacted)
+
+1 migration found in prisma/migrations
+
+Applying migration `202610130001_spike`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202610130001_spike/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+EXIT=0

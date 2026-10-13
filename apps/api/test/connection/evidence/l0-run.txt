@@ -1,0 +1,17 @@
+$ pnpm build && node scripts/connection-local.mjs
+$ pnpm spike:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 168ms
+
+LOCAL_CONNECTION_TEST_COMMAND_FAILED
+[ELIFECYCLE] Command failed with exit code 1.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in C:\Users\igor.ferreira\Desktop\atlas-
+  │ commerce\apps\api
+
+EXIT=1

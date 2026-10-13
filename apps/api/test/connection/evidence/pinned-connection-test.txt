@@ -1,0 +1,24 @@
+$ pnpm build && node scripts/connection-local.mjs
+$ pnpm spike:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 203ms
+
+
+ RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+
+SUPCON-04/05/06 cloud preparation: no sockets, no URL parameter override, no automatic remote activation
+SUPCON-06 TLS negative codes ["UNABLE_TO_VERIFY_LEAF_SIGNATURE","ERR_TLS_CERT_ALTNAME_INVALID"]
+SUPCON-07 acquisition failure ms 505.89969999999994
+SUPCON-09/12 live=200 during DB outage; ready=503 then 200; two cold processes ready; one fixture fact
+SUPCON-14 grants denial SQLSTATE ["42501","42501","42501","42501","42501","42501","42501"]
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  11:38:19
+   Duration  14.67s (tests 71%, import 28%, transform 1%)
+
+EXIT=0

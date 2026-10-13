@@ -1,0 +1,17 @@
+$ pnpm -r --if-present typecheck
+apps/api typecheck$ pnpm spike:generate && tsc -p tsconfig.json --noEmit
+apps/admin typecheck$ tsc -p tsconfig.json --noEmit
+apps/storefront typecheck$ tsc -p tsconfig.json --noEmit
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+apps/api typecheck: $ prisma generate
+packages/contracts typecheck: Done
+apps/storefront typecheck: Done
+apps/admin typecheck: Done
+apps/api typecheck: Loaded Prisma config from prisma.config.ts.
+apps/api typecheck: 
+apps/api typecheck: Prisma schema loaded from prisma\schema.prisma.
+apps/api typecheck: 
+apps/api typecheck: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 396ms
+apps/api typecheck: 
+apps/api typecheck: Done
+EXIT=0

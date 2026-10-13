@@ -1,0 +1,59 @@
+$ pnpm build && node scripts/spike-db.mjs test
+$ pnpm spike:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 216ms
+
+
+ RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+
+ENV {"server":"PostgreSQL 17.10 (Debian 17.10-1.pgdg12+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit","node":"v24.21.0","pids":[211,212],"poolMax":2,"connectionTimeoutMillis":500,"idleTimeoutMillis":1000,"maxLifetimeSeconds":60,"statement_timeout":5000,"lock_timeout":3000,"idle_in_transaction_session_timeout":10000,"isolation":"ReadCommitted","retries":0}
+PGSP-01 constraint SQLSTATE 23514
+PGSP-03 same transaction {"pid":211,"xid":"761","rawSeesOrm":1}
+PGSP-04 {"fulfilled":1,"rejected":1,"reserved":1,"ttlMs":2400000}
+PGSP-09 server time proof [{"xact_start":"2026-10-13T14:07:45.214Z","expires_at":"2026-10-13T14:07:46.201Z","post_lock_release":"2026-10-13T14:07:46.213Z"}]
+PGSP-11 cents {"captured":10000,"succeeded":3000,"pending":7000,"remaining":0,"accepted":1}
+PGSP-12 persisted after process crash {"fact":"b6b150f3-6fd5-4c1b-bf7a-878b2692020e","outboxId":"7fd264ec-7f12-41e0-96ab-29e2c2fed4bf","replayed":"7fd264ec-7f12-41e0-96ab-29e2c2fed4bf"}
+PGSP-14 {"poolMax":1,"acquireFailureMs":504.3651,"connectionKilled":true,"transactionRolledBack":true,"processRestarted":true}
+BENCH {"n":30,"p50Ms":23.899199999999837,"p95Ms":51.58740000000034,"unit":"reservation TX, sequential local","includesNetwork":true}
+ ❯ test/spike/persistence.pg.spec.ts (16 tests | 1 failed) 8556ms
+   ❯ F04-04 isolated PostgreSQL evidence (no network PSP) (16)
+     × PGSP-02 adapter generation, CRUD, independent connection and shutdown 137ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 15 passed (16)
+   Start at  11:07:42
+   Duration  9.70s (tests 93%, transform 4%, import 3%)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/spike/persistence.pg.spec.ts > F04-04 isolated PostgreSQL evidence (no network PSP) > PGSP-02 adapter generation, CRUD, independent connection and shutdown
+AssertionError: expected 1n to be 0n // Object.is equality
+
+- Expected
++ Received
+
+- 0n
++ 1n
+
+ ❯ test/spike/persistence.pg.spec.ts:113:28
+    111|       { count: bigint }[]
+    112|     >`SELECT count(*) FROM pg_stat_activity WHERE application_name='pg…
+    113|     expect(rows[0]?.count).toBe(0n);
+       |                            ^
+    114|   });
+    115|   it("PGSP-03 DB-04 same TX: parameterized lock, Prisma write, raw rea…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+[ELIFECYCLE] Command failed with exit code 1.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in C:\Users\igor.ferreira\Desktop\atlas-
+  │ commerce\apps\api
+
+EXIT=1

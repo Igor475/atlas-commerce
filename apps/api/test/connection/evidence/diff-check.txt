@@ -1,0 +1,8 @@
+warning: in the working copy of '.github/workflows/quality.yml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'DEVELOPMENT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/api/.env.example', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/api/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/api/src/health/health.controller.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/api/src/health/health.module.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/api/test/spike/persistence.pg.spec.ts', LF will be replaced by CRLF the next time Git touches it
+EXIT=0

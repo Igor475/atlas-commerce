@@ -15,7 +15,8 @@
     "spike:validate": "prisma validate",
     "spike:migrate": "node scripts/spike-db.mjs migrate",
     "spike:test": "pnpm build && node scripts/spike-db.mjs test",
-    "spike:diff": "node scripts/spike-db.mjs diff"
+    "spike:diff": "node scripts/spike-db.mjs diff",
+    "connection:test": "pnpm build && node scripts/connection-local.mjs"
   },
   "dependencies": {
     "@nestjs/common": "12.1.3",

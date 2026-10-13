@@ -107,6 +107,14 @@ describe("F04-04 isolated PostgreSQL evidence (no network PSP)", () => {
     } finally {
       await isolated.onApplicationShutdown();
     }
+    // Socket shutdown is not an acknowledgement that the server stats view was updated.
+    // Observe the real zero-backend condition; never replay CRUD or disconnect to hide a leak.
+    await until(async () => {
+      const [state] = await control.client.$queryRaw<
+        { count: bigint }[]
+      >`SELECT count(*) FROM pg_stat_activity WHERE application_name='pgsp-lifecycle'`;
+      return state?.count === 0n;
+    }, "disconnected lifecycle backend is absent");
     const rows = await control.client.$queryRaw<
       { count: bigint }[]
     >`SELECT count(*) FROM pg_stat_activity WHERE application_name='pgsp-lifecycle'`;

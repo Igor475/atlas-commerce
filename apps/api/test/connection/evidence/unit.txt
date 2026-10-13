@@ -1,0 +1,18 @@
+$ pnpm spike:generate && vitest run
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 236ms
+
+
+ RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+
+
+ Test Files  4 passed (4)
+      Tests  23 passed (23)
+   Start at  11:03:40
+   Duration  5.50s (import 67%, tests 17%, transform 15%, worker 1%)
+
+EXIT=0
