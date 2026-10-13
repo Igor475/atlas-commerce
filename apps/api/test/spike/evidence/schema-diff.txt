@@ -1,0 +1,5 @@
+$ node scripts/spike-db.mjs diff
+No difference detected.
+
+Loaded Prisma config from prisma.config.ts.
+

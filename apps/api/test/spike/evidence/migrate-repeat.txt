@@ -1,0 +1,10 @@
+$ node scripts/spike-db.mjs migrate
+Datasource: isolated fixture (details redacted)
+
+1 migration found in prisma/migrations
+
+
+No pending migrations to apply.
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.

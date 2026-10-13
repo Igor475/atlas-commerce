@@ -1,0 +1,95 @@
+Canonical LF equivalence: PASS; 23 implementation/configuration files; report/evidence excluded. Baseline from git archive HEAD.
+[
+  {
+    "file": "apps/api/.gitignore",
+    "sha256": "97815558b8d9ed006504fcf08fc34e52d6401077b93c6ba59802ba3cf7ea5983"
+  },
+  {
+    "file": "apps/api/compose.spike.yml",
+    "sha256": "26f039ab8ef9921ed3be092158eb52e85dcdeee3e34c929b60239bec4d42112d"
+  },
+  {
+    "file": "apps/api/prisma.config.ts",
+    "sha256": "d058884e74f15ab02113b378bfb6cac0a3c3a22e5523201128893c0d327d45c8"
+  },
+  {
+    "file": "apps/api/prisma/migrations/202610130001_spike/migration.sql",
+    "sha256": "b34097634bfd441dda44a7277ea4a52cc27215656a34c9a3a0b5133e726da361"
+  },
+  {
+    "file": "apps/api/prisma/migrations/migration_lock.toml",
+    "sha256": "1db17a8d051aa136110736752c5e1f8b7ed92b6ea8e803112fbbe2497047c210"
+  },
+  {
+    "file": "apps/api/prisma/schema.prisma",
+    "sha256": "44b29b445397ca996709965b05db363cb93faed9f7023cc79c233e3e5a930305"
+  },
+  {
+    "file": "apps/api/scripts/spike-db.mjs",
+    "sha256": "d63978137eeaf2f7713de9130022be881fe160ba71fcd670088712b3a6519697"
+  },
+  {
+    "file": "apps/api/scripts/spike-process.mjs",
+    "sha256": "d2cc818df1e7dae9577b3246390303a11fecbcb0b5dee2c67adf53ebbe5b54cd"
+  },
+  {
+    "file": "apps/api/src/infrastructure/persistence/spike-config.ts",
+    "sha256": "284066f6ab225b4291bb81b698e7cdf7009d17fd9c270b08daa0cedd96d876f9"
+  },
+  {
+    "file": "apps/api/src/infrastructure/persistence/spike-database.ts",
+    "sha256": "75ad4d4a5781ef278f68cd8bbec79ae69994415bbad177a7e9032af9f313a286"
+  },
+  {
+    "file": "apps/api/src/infrastructure/persistence/spike-port.ts",
+    "sha256": "0411c0a0e0445ebe39ae959d7fd67c0cc23036a60654c56ed4175f70ef73b4c5"
+  },
+  {
+    "file": "apps/api/src/infrastructure/persistence/spike-repository.ts",
+    "sha256": "d2197ae0991deeec2ce33247116840e9f41e7c1a2671ef07814cad1833b0f5c1"
+  },
+  {
+    "file": "apps/api/test/persistence-config.spec.ts",
+    "sha256": "c91dc56d7d86f0cee17beb8a0d08ecd8d58c38671c63e3c4cee49269961cda56"
+  },
+  {
+    "file": "apps/api/test/spike/harness.ts",
+    "sha256": "a1ebff35190a11bf88cce5ecdc53a238d0d4c8fbefd992c5822492508616b3f1"
+  },
+  {
+    "file": "apps/api/test/spike/persistence.pg.spec.ts",
+    "sha256": "d249bc1e3f8a92031945becd4269cfc0c7b9b942d963f500a15ab70fb3db9484"
+  },
+  {
+    "file": "apps/api/vitest.spike.config.ts",
+    "sha256": "9fd5e9ba6aadaf924ac4a66918cc65312b995e33e42b1427ff4db8cbad0605f2"
+  },
+  {
+    "file": ".prettierignore",
+    "sha256": "b871a7c9ddb13545e70ba4fd14295f28672fbd678462499080d774fa3d2e7298"
+  },
+  {
+    "file": "DEVELOPMENT.md",
+    "sha256": "4b4dd72736b1bc61507485d978aa561d3e97d8cdc533a624a44f965ae60c914c"
+  },
+  {
+    "file": "apps/api/package.json",
+    "sha256": "684040b004254e700c45f3c1d00b76face8f9717c2857c55870ee66fbd5b8528"
+  },
+  {
+    "file": "apps/api/vitest.config.ts",
+    "sha256": "4910b912aa445c0c6fa101a310403267de64a4b2baba964086b32fa3cf81d575"
+  },
+  {
+    "file": "eslint.config.mjs",
+    "sha256": "d27ad19af53518fb76e69c2d8e06056c62e1e1cdbe8a6f4ad8aaea73154c07f8"
+  },
+  {
+    "file": "pnpm-lock.yaml",
+    "sha256": "2ad5db040febf756f0fd5498ecd6d02537d2ed1bee4dd431b98f07d1a73196dd"
+  },
+  {
+    "file": "pnpm-workspace.yaml",
+    "sha256": "272601e9f8cf83b5aa7777d944fea23eda413f02d79be4f4168badfb86728c44"
+  }
+]

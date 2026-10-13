@@ -1,0 +1,140 @@
+$ pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm smoke && pnpm format:check
+$ eslint apps packages --max-warnings=0
+$ pnpm -r --if-present typecheck
+apps/admin typecheck$ tsc -p tsconfig.json --noEmit
+apps/storefront typecheck$ tsc -p tsconfig.json --noEmit
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+apps/api typecheck$ pnpm spike:generate && tsc -p tsconfig.json --noEmit
+apps/api typecheck: $ prisma generate
+packages/contracts typecheck: Done
+apps/api typecheck: Loaded Prisma config from prisma.config.ts.
+apps/api typecheck:
+apps/admin typecheck: Done
+apps/storefront typecheck: Done
+apps/api typecheck: Prisma schema loaded from prisma\schema.prisma.
+apps/api typecheck:
+apps/api typecheck: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 363ms
+apps/api typecheck:
+apps/api typecheck: Done
+$ pnpm -r --if-present test
+Scope: 5 of 6 workspace projects
+apps/admin test$ vitest run
+apps/api test$ pnpm spike:generate && vitest run
+packages/contracts test$ vitest run
+apps/storefront test$ vitest run
+apps/api test: $ prisma generate
+packages/contracts test:
+packages/contracts test:  RUN  v5.0.4 C:/Users/igor.ferreira/AppData/Local/Temp/atlas-f0404-lf-6280936f1d8e472a9ae706d99994a7d3/packages/contracts
+packages/contracts test:
+apps/admin test:
+apps/admin test:  RUN  v5.0.4 C:/Users/igor.ferreira/AppData/Local/Temp/atlas-f0404-lf-6280936f1d8e472a9ae706d99994a7d3/apps/admin
+apps/admin test:
+apps/storefront test:
+apps/storefront test:  RUN  v5.0.4 C:/Users/igor.ferreira/AppData/Local/Temp/atlas-f0404-lf-6280936f1d8e472a9ae706d99994a7d3/apps/storefront
+apps/storefront test:
+packages/contracts test:
+packages/contracts test:  Test Files  1 passed (1)
+packages/contracts test:       Tests  1 passed (1)
+packages/contracts test:    Start at  09:54:18
+packages/contracts test:    Duration  1.58s (transform 58%, import 27%, worker 7%, tests 5%, environment 3%)
+packages/contracts test:
+apps/admin test:
+apps/admin test:  Test Files  1 passed (1)
+apps/admin test:       Tests  1 passed (1)
+apps/admin test:    Start at  09:54:18
+apps/admin test:    Duration  1.62s (transform 52%, import 38%, tests 6%, worker 4%)
+apps/admin test:
+apps/storefront test:
+apps/storefront test:  Test Files  1 passed (1)
+apps/storefront test:       Tests  1 passed (1)
+apps/storefront test:    Start at  09:54:18
+apps/storefront test:    Duration  1.63s (transform 63%, import 29%, tests 5%, worker 4%)
+apps/storefront test:
+packages/contracts test: Done
+apps/admin test: Done
+apps/storefront test: Done
+apps/api test: Loaded Prisma config from prisma.config.ts.
+apps/api test:
+apps/api test: Prisma schema loaded from prisma\schema.prisma.
+apps/api test:
+apps/api test: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 338ms
+apps/api test:
+apps/api test:
+apps/api test:  RUN  v5.0.4 C:/Users/igor.ferreira/AppData/Local/Temp/atlas-f0404-lf-6280936f1d8e472a9ae706d99994a7d3/apps/api
+apps/api test:
+apps/api test:
+apps/api test:  Test Files  3 passed (3)
+apps/api test:       Tests  10 passed (10)
+apps/api test:    Start at  09:54:24
+apps/api test:    Duration  6.45s (import 61%, transform 21%, tests 18%, worker 1%)
+apps/api test:
+apps/api test: Done
+$ pnpm -r --if-present build
+packages/contracts build$ tsc -p tsconfig.build.json
+apps/admin build$ next build
+apps/storefront build$ next build
+apps/api build$ pnpm spike:generate && nest build
+apps/api build: $ prisma generate
+packages/contracts build: Done
+apps/admin build: ▲ Next.js 16.4.0 (Turbopack)
+apps/storefront build: ▲ Next.js 16.4.0 (Turbopack)
+apps/admin build: ✓ Running next.config.ts took 361ms
+apps/storefront build: ✓ Running next.config.ts took 357ms
+apps/storefront build:
+apps/admin build:
+apps/storefront build:   Creating an optimized production build ...
+apps/admin build:   Creating an optimized production build ...
+apps/api build: Loaded Prisma config from prisma.config.ts.
+apps/api build:
+apps/storefront build: ✓ Compiled successfully in 2.7s
+apps/storefront build:   Running TypeScript ...
+apps/admin build: ✓ Compiled successfully in 2.6s
+apps/admin build:   Running TypeScript ...
+apps/api build: Prisma schema loaded from prisma\schema.prisma.
+apps/api build:
+apps/api build: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 643ms
+apps/api build:
+apps/admin build:   Finished TypeScript in 12.3s ...
+apps/storefront build:   Finished TypeScript in 12.4s ...
+apps/admin build:   Collecting page data using 4 workers ...
+apps/storefront build:   Collecting page data using 4 workers ...
+apps/storefront build:   Generating static pages using 4 workers (0/3) ...
+apps/admin build:   Generating static pages using 4 workers (0/3) ...
+apps/api build: Done
+apps/storefront build: ✓ Generating static pages using 4 workers (3/3) in 3.6s
+apps/storefront build:   Finalizing page optimization ...
+apps/storefront build:
+apps/storefront build: Route (app)
+apps/storefront build: ┌ ○ /
+apps/storefront build: └ ○ /_not-found
+apps/storefront build:
+apps/storefront build:
+apps/storefront build: ○  (Static)  prerendered as static content
+apps/storefront build:
+apps/admin build: ✓ Generating static pages using 4 workers (3/3) in 3.6s
+apps/admin build:   Finalizing page optimization ...
+apps/admin build:
+apps/admin build: Route (app)
+apps/admin build: ┌ ○ /
+apps/admin build: └ ○ /_not-found
+apps/admin build:
+apps/admin build:
+apps/admin build: ○  (Static)  prerendered as static content
+apps/admin build:
+apps/storefront build: Done
+apps/admin build: Done
+$ pnpm --filter @atlas/api smoke
+$ pnpm build && node scripts/smoke.mjs
+$ pnpm spike:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 280ms
+
+Smoke API: live=200; ready=503 DEPENDENCIES_NOT_CONFIGURED
+$ prettier --check .
+Checking formatting...
+All matched files use Prettier code style!
+EXIT=0

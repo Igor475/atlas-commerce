@@ -1,0 +1,11 @@
+$ pnpm --filter @atlas/api smoke
+$ pnpm build && node scripts/smoke.mjs
+$ pnpm spike:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 234ms
+
+Smoke API: live=200; ready=503 DEPENDENCIES_NOT_CONFIGURED

@@ -1,0 +1,28 @@
+BASE_HEAD=1e5eb4434fd2e51c8f9aeb7c8a04514abc97a8a0; uncommitted F04-04 worktree; see RESULTS.md for scope and hashes
+$ pnpm build && node scripts/spike-db.mjs test
+$ pnpm spike:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 210ms
+
+
+ RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+
+ENV {"server":"PostgreSQL 17.10 (Debian 17.10-1.pgdg12+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit","node":"v24.21.0","pids":[3426,3427],"poolMax":2,"connectionTimeoutMillis":500,"idleTimeoutMillis":1000,"maxLifetimeSeconds":60,"statement_timeout":5000,"lock_timeout":3000,"idle_in_transaction_session_timeout":10000,"isolation":"ReadCommitted","retries":0}
+PGSP-01 constraint SQLSTATE 23514
+PGSP-03 same transaction {"pid":3426,"xid":"1376","rawSeesOrm":1}
+PGSP-04 {"fulfilled":1,"rejected":1,"reserved":1,"ttlMs":2400000}
+PGSP-09 server time proof [{"xact_start":"2026-10-13T12:32:37.428Z","expires_at":"2026-10-13T12:32:38.417Z","post_lock_release":"2026-10-13T12:32:38.435Z"}]
+PGSP-11 cents {"captured":10000,"succeeded":3000,"pending":7000,"remaining":0,"accepted":1}
+PGSP-12 persisted after process crash {"fact":"7fa83ba5-a7ea-47b6-a8dc-6bf43c3833ea","outboxId":"c600d884-a923-47ad-bd3d-41168c920e8c","replayed":"c600d884-a923-47ad-bd3d-41168c920e8c"}
+PGSP-14 {"poolMax":1,"acquireFailureMs":501.7611999999999,"connectionKilled":true,"transactionRolledBack":true,"processRestarted":true}
+BENCH {"n":30,"p50Ms":21.370499999999993,"p95Ms":31.598799999999756,"unit":"reservation TX, sequential local","includesNetwork":true}
+
+ Test Files  1 passed (1)
+      Tests  16 passed (16)
+   Start at  09:32:34
+   Duration  9.17s (tests 89%, import 9%, transform 2%)
+

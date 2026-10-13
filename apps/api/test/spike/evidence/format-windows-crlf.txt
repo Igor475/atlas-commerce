@@ -1,0 +1,41 @@
+$ prettier --check .
+Checking formatting...
+[warn] .github/workflows/quality.yml
+[warn] .prettierrc.json
+[warn] apps/admin/next-env.d.ts
+[warn] apps/admin/next.config.ts
+[warn] apps/admin/package.json
+[warn] apps/admin/src/app/globals.css
+[warn] apps/admin/src/app/layout.tsx
+[warn] apps/admin/src/app/page.test.tsx
+[warn] apps/admin/src/app/page.tsx
+[warn] apps/admin/tsconfig.json
+[warn] apps/api/nest-cli.json
+[warn] apps/api/scripts/smoke.mjs
+[warn] apps/api/src/app.module.ts
+[warn] apps/api/src/config.ts
+[warn] apps/api/src/health/health.controller.ts
+[warn] apps/api/src/health/health.module.ts
+[warn] apps/api/src/main.ts
+[warn] apps/api/test/config.spec.ts
+[warn] apps/api/test/health.spec.ts
+[warn] apps/api/tsconfig.build.json
+[warn] apps/api/tsconfig.json
+[warn] apps/storefront/next-env.d.ts
+[warn] apps/storefront/next.config.ts
+[warn] apps/storefront/package.json
+[warn] apps/storefront/src/app/globals.css
+[warn] apps/storefront/src/app/layout.tsx
+[warn] apps/storefront/src/app/page.test.tsx
+[warn] apps/storefront/src/app/page.tsx
+[warn] apps/storefront/tsconfig.json
+[warn] package.json
+[warn] packages/contracts/package.json
+[warn] packages/contracts/src/index.ts
+[warn] packages/contracts/test/index.spec.ts
+[warn] packages/contracts/tsconfig.build.json
+[warn] packages/contracts/tsconfig.json
+[warn] packages/tooling/package.json
+[warn] packages/tooling/typescript/base.json
+[warn] Code style issues found in 37 files. Run Prettier with --write to fix.
+[ELIFECYCLE] Command failed with exit code 1.

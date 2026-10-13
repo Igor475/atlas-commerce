@@ -1,0 +1,178 @@
+$ pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm smoke && pnpm format:check
+$ eslint apps packages --max-warnings=0
+$ pnpm -r --if-present typecheck
+apps/admin typecheck$ tsc -p tsconfig.json --noEmit
+apps/api typecheck$ pnpm spike:generate && tsc -p tsconfig.json --noEmit
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+apps/storefront typecheck$ tsc -p tsconfig.json --noEmit
+apps/api typecheck: $ prisma generate
+packages/contracts typecheck: Done
+apps/storefront typecheck: Done
+apps/admin typecheck: Done
+apps/api typecheck: Loaded Prisma config from prisma.config.ts.
+apps/api typecheck:
+apps/api typecheck: Prisma schema loaded from prisma\schema.prisma.
+apps/api typecheck:
+apps/api typecheck: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 236ms
+apps/api typecheck:
+apps/api typecheck: Done
+$ pnpm -r --if-present test
+Scope: 5 of 6 workspace projects
+apps/storefront test$ vitest run
+apps/api test$ pnpm spike:generate && vitest run
+apps/admin test$ vitest run
+packages/contracts test$ vitest run
+apps/storefront test:
+apps/storefront test:  RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/storefront
+apps/storefront test:
+packages/contracts test:
+packages/contracts test:  RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/packages/contracts
+packages/contracts test:
+apps/admin test:
+apps/admin test:  RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/admin
+apps/admin test:
+apps/api test: $ prisma generate
+packages/contracts test:
+packages/contracts test:  Test Files  1 passed (1)
+packages/contracts test:       Tests  1 passed (1)
+packages/contracts test:    Start at  09:35:27
+packages/contracts test:    Duration  991ms (import 51%, worker 22%, transform 21%, tests 6%, environment 1%)
+packages/contracts test:
+apps/admin test:
+apps/admin test:  Test Files  1 passed (1)
+apps/admin test:       Tests  1 passed (1)
+apps/admin test:    Start at  09:35:27
+apps/admin test:    Duration  1.12s (import 60%, transform 21%, tests 11%, worker 7%, environment 1%)
+apps/admin test:
+apps/storefront test:
+apps/storefront test:  Test Files  1 passed (1)
+apps/storefront test:       Tests  1 passed (1)
+apps/storefront test:    Start at  09:35:27
+apps/storefront test:    Duration  1.16s (import 61%, transform 25%, tests 8%, worker 6%)
+apps/storefront test:
+packages/contracts test: Done
+apps/admin test: Done
+apps/storefront test: Done
+apps/api test: Loaded Prisma config from prisma.config.ts.
+apps/api test:
+apps/api test: Prisma schema loaded from prisma\schema.prisma.
+apps/api test:
+apps/api test: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 184ms
+apps/api test:
+apps/api test:
+apps/api test:  RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+apps/api test:
+apps/api test:
+apps/api test:  Test Files  3 passed (3)
+apps/api test:       Tests  10 passed (10)
+apps/api test:    Start at  09:35:34
+apps/api test:    Duration  4.18s (import 75%, tests 20%, transform 5%, worker 1%)
+apps/api test:
+apps/api test: Done
+$ pnpm -r --if-present build
+apps/api build$ pnpm spike:generate && nest build
+apps/admin build$ next build
+packages/contracts build$ tsc -p tsconfig.build.json
+apps/storefront build$ next build
+apps/api build: $ prisma generate
+packages/contracts build: Done
+apps/admin build: ▲ Next.js 16.4.0 (Turbopack)
+apps/storefront build: ▲ Next.js 16.4.0 (Turbopack)
+apps/admin build: ✓ Running next.config.ts took 2.2s
+apps/storefront build: ✓ Running next.config.ts took 2.2s
+apps/storefront build:
+apps/admin build:
+apps/api build: Loaded Prisma config from prisma.config.ts.
+apps/api build:
+apps/admin build:   Creating an optimized production build ...
+apps/storefront build:   Creating an optimized production build ...
+apps/api build: Prisma schema loaded from prisma\schema.prisma.
+apps/api build:
+apps/api build: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 629ms
+apps/api build:
+apps/admin build: ✓ Compiled successfully in 2.4s
+apps/admin build:   Running TypeScript ...
+apps/storefront build: ✓ Compiled successfully in 2.4s
+apps/storefront build:   Running TypeScript ...
+apps/admin build:   Finished TypeScript in 10.8s ...
+apps/storefront build:   Finished TypeScript in 10.6s ...
+apps/admin build:   Collecting page data using 4 workers ...
+apps/storefront build:   Collecting page data using 4 workers ...
+apps/admin build:   Generating static pages using 4 workers (0/3) ...
+apps/storefront build:   Generating static pages using 4 workers (0/3) ...
+apps/admin build: ✓ Generating static pages using 4 workers (3/3) in 2.7s
+apps/storefront build: ✓ Generating static pages using 4 workers (3/3) in 2.7s
+apps/admin build:   Finalizing page optimization ...
+apps/storefront build:   Finalizing page optimization ...
+apps/admin build:
+apps/admin build: Route (app)
+apps/admin build: ┌ ○ /
+apps/admin build: └ ○ /_not-found
+apps/admin build:
+apps/admin build:
+apps/admin build: ○  (Static)  prerendered as static content
+apps/admin build:
+apps/storefront build:
+apps/storefront build: Route (app)
+apps/storefront build: ┌ ○ /
+apps/storefront build: └ ○ /_not-found
+apps/storefront build:
+apps/storefront build:
+apps/storefront build: ○  (Static)  prerendered as static content
+apps/storefront build:
+apps/admin build: Done
+apps/storefront build: Done
+apps/api build: Done
+$ pnpm --filter @atlas/api smoke
+$ pnpm build && node scripts/smoke.mjs
+$ pnpm spike:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 156ms
+
+Smoke API: live=200; ready=503 DEPENDENCIES_NOT_CONFIGURED
+$ prettier --check .
+Checking formatting...
+[warn] .github/workflows/quality.yml
+[warn] .prettierrc.json
+[warn] apps/admin/next-env.d.ts
+[warn] apps/admin/next.config.ts
+[warn] apps/admin/package.json
+[warn] apps/admin/src/app/globals.css
+[warn] apps/admin/src/app/layout.tsx
+[warn] apps/admin/src/app/page.test.tsx
+[warn] apps/admin/src/app/page.tsx
+[warn] apps/admin/tsconfig.json
+[warn] apps/api/nest-cli.json
+[warn] apps/api/scripts/smoke.mjs
+[warn] apps/api/src/app.module.ts
+[warn] apps/api/src/config.ts
+[warn] apps/api/src/health/health.controller.ts
+[warn] apps/api/src/health/health.module.ts
+[warn] apps/api/src/main.ts
+[warn] apps/api/test/config.spec.ts
+[warn] apps/api/test/health.spec.ts
+[warn] apps/api/tsconfig.build.json
+[warn] apps/api/tsconfig.json
+[warn] apps/storefront/next-env.d.ts
+[warn] apps/storefront/next.config.ts
+[warn] apps/storefront/package.json
+[warn] apps/storefront/src/app/globals.css
+[warn] apps/storefront/src/app/layout.tsx
+[warn] apps/storefront/src/app/page.test.tsx
+[warn] apps/storefront/src/app/page.tsx
+[warn] apps/storefront/tsconfig.json
+[warn] package.json
+[warn] packages/contracts/package.json
+[warn] packages/contracts/src/index.ts
+[warn] packages/contracts/test/index.spec.ts
+[warn] packages/contracts/tsconfig.build.json
+[warn] packages/contracts/tsconfig.json
+[warn] packages/tooling/package.json
+[warn] packages/tooling/typescript/base.json
+[warn] Code style issues found in 37 files. Run Prettier with --write to fix.
+[ELIFECYCLE] Command failed with exit code 1.
+[ELIFECYCLE] Command failed with exit code 1.

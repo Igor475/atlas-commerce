@@ -1,0 +1,8 @@
+warning: in the working copy of '.prettierignore', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'DEVELOPMENT.md', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/api/package.json', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'apps/api/vitest.config.ts', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'eslint.config.mjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'pnpm-lock.yaml', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'pnpm-workspace.yaml', LF will be replaced by CRLF the next time Git touches it
+EXIT=0

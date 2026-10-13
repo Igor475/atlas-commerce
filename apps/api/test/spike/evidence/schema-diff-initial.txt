@@ -1,0 +1,12 @@
+$ node scripts/spike-db.mjs diff
+
+[*] Changed the `reservation` table
+  [*] Altered column `expires_at` (default changed from `Some(DbGenerated(Some("(clock_timestamp() + '00:40:00'::interval)")))` to `Some(DbGenerated(Some("(clock_timestamp() + interval '40 minutes')")))`)
+Loaded Prisma config from prisma.config.ts.
+
+[ELIFECYCLE] Command failed with exit code 2.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in C:\Users\igor.ferreira\Desktop\atlas-
+  │ commerce\apps\api
+

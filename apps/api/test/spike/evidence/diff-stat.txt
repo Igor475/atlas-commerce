@@ -1,0 +1,25 @@
+ .prettierignore           |    2 +
+ DEVELOPMENT.md            |   72 ++-
+ apps/api/package.json     |   22 +-
+ apps/api/vitest.config.ts |    1 +
+ eslint.config.mjs         |    1 +
+ pnpm-lock.yaml            | 1212 +++++++++++++++++++++++++++++++++++++++++++--
+ pnpm-workspace.yaml       |    2 +
+ 7 files changed, 1265 insertions(+), 47 deletions(-)
+NEW +1	apps/api/.gitignore
+NEW +19	apps/api/compose.spike.yml
+NEW +16	apps/api/prisma.config.ts
+NEW +55	apps/api/prisma/migrations/202610130001_spike/migration.sql
+NEW +1	apps/api/prisma/migrations/migration_lock.toml
+NEW +100	apps/api/prisma/schema.prisma
+NEW +55	apps/api/scripts/spike-db.mjs
+NEW +37	apps/api/scripts/spike-process.mjs
+NEW +45	apps/api/src/infrastructure/persistence/spike-config.ts
+NEW +109	apps/api/src/infrastructure/persistence/spike-database.ts
+NEW +43	apps/api/src/infrastructure/persistence/spike-port.ts
+NEW +248	apps/api/src/infrastructure/persistence/spike-repository.ts
+NEW +66	apps/api/test/persistence-config.spec.ts
+NEW +146	apps/api/test/spike/RESULTS.md
+NEW +103	apps/api/test/spike/harness.ts
+NEW +598	apps/api/test/spike/persistence.pg.spec.ts
+NEW +11	apps/api/vitest.spike.config.ts

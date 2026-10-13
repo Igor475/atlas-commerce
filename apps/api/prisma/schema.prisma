@@ -1,0 +1,100 @@
+// F04-04 disposable fixtures. Not a commercial schema.
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/infrastructure/persistence/generated"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["spike"]
+}
+
+model Stock {
+  sku            String            @id
+  onHand         Int               @map("on_hand")
+  reservedActive Int               @default(0) @map("reserved_active")
+  allocated      Int               @default(0)
+  lines          ReservationLine[]
+
+  @@map("stock")
+  @@schema("spike")
+}
+
+model Reservation {
+  id          String            @id @default(uuid())
+  actor       String
+  operation   String
+  key         String
+  fingerprint String
+  status      String            @default("ACTIVE")
+  createdAt   DateTime          @default(dbgenerated("clock_timestamp()")) @map("created_at") @db.Timestamptz(6)
+  expiresAt   DateTime          @default(dbgenerated("(clock_timestamp() + '00:40:00'::interval)")) @map("expires_at") @db.Timestamptz(6)
+  lines       ReservationLine[]
+  events      SimulatedEvent[]
+
+  @@unique([actor, operation, key], map: "reservation_identity")
+  @@map("reservation")
+  @@schema("spike")
+}
+
+model ReservationLine {
+  reservationId String      @map("reservation_id")
+  sku           String
+  quantity      Int
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  stock         Stock       @relation(fields: [sku], references: [sku], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([reservationId, sku])
+  @@map("reservation_line")
+  @@schema("spike")
+}
+
+model SimulatedEvent {
+  id            String      @id
+  reservationId String      @map("reservation_id")
+  reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  outcome       String
+
+  @@map("simulated_event")
+  @@schema("spike")
+}
+
+model Outbox {
+  id         String    @id @default(uuid())
+  factId     String    @map("fact_id")
+  kind       String
+  owner      String?
+  leaseUntil DateTime? @map("lease_until") @db.Timestamptz(6)
+  createdAt  DateTime  @default(dbgenerated("clock_timestamp()")) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([factId, kind], map: "outbox_identity")
+  @@index([leaseUntil, createdAt], map: "outbox_pending")
+  @@map("outbox")
+  @@schema("spike")
+}
+
+model Capture {
+  id             String   @id
+  currency       String   @default("BRL")
+  capturedCents  Int      @map("captured_cents")
+  succeededCents Int      @default(0) @map("succeeded_cents")
+  pendingCents   Int      @default(0) @map("pending_cents")
+  refunds        Refund[]
+
+  @@map("capture")
+  @@schema("spike")
+}
+
+model Refund {
+  id        String  @id @default(uuid())
+  captureId String  @map("capture_id")
+  key       String
+  cents     Int
+  status    String  @default("PENDING")
+  capture   Capture @relation(fields: [captureId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([captureId, key], map: "refund_identity")
+  @@map("refund")
+  @@schema("spike")
+}

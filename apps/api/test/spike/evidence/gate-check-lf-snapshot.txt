@@ -1,0 +1,22 @@
+Scope: all 6 workspace projects
+✓ Lockfile passes supply-chain policies (verified 36m ago)
+Lockfile is up to date, resolution step is skipped
+Already up to date
+Error:   × installing dependencies
+  ╰─▶ Failed to create directory at "C:\\Users\\igor.ferreira\\AppData\\Local\
+      \Temp\\atlas-f0404-lf-6280936f1d8e472a9ae706d99994a7d3\\node_modules":
+      workspace hoist directory is not a real directory
+
+[WARN] The install that runs before scripts failed, so your node_modules may be out of sync with your lockfile. Set "verifyDepsBeforeRun: false" to skip this install.
+$ pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm smoke && pnpm format:check
+$ eslint apps packages --max-warnings=0
+$ pnpm -r --if-present typecheck
+Error: ERR_PNPM_UNSAFE_TASK_RUN_STATE_PATH
+
+  × Refusing to use task run state directory at C:
+  │ \Users\igor.ferreira\AppData\Local\Temp\atlas-f0404-lf-
+  │ 6280936f1d8e472a9ae706d99994a7d3\node_modules because it is a symbolic
+  │ link or not a directory
+
+[ELIFECYCLE] Command failed with exit code 1.
+[ELIFECYCLE] Command failed with exit code 1.

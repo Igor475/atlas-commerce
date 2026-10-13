@@ -1,0 +1,4 @@
+i/lf    w/mixed attr/                 	.github/workflows/quality.yml
+i/lf    w/crlf  attr/                 	.prettierrc.json
+i/lf    w/crlf  attr/                 	apps/admin/src/app/page.tsx
+i/lf    w/crlf  attr/                 	apps/api/src/main.ts

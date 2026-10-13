@@ -1,0 +1,19 @@
+name: atlas-f0404-spike
+services:
+  postgres:
+    image: postgres:17.10-bookworm@sha256:9b18b78397054fce88a9552e9d5a3ad5bb7fd258c5b3cc1c5028e46373d6ea8f
+    environment:
+      POSTGRES_USER: atlas_spike
+      POSTGRES_DB: atlas_spike_f0404
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "127.0.0.1:55434:5432"
+    volumes:
+      - spike-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U atlas_spike -d atlas_spike_f0404"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  spike-data:

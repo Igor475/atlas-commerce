@@ -9,3 +9,5 @@ README.md
 *.png
 *.bpmn
 *.dot
+
+apps/api/src/infrastructure/persistence/generated

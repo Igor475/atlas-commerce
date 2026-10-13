@@ -24,6 +24,7 @@ export default defineConfig([
     "**/dist/**",
     "**/coverage/**",
     "**/node_modules/**",
+    "apps/api/src/infrastructure/persistence/generated/**",
     "docs/**",
   ]),
   {
