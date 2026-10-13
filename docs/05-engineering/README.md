@@ -1,6 +1,6 @@
 # Fase 04 — Engenharia, estrutura e contratos de implementação
 
-> **Identificação:** `AC-ENG-001` · **Versão documental:** `0.3.0` · **Etapa:** `F04-03` · **Data:** 12/10/2026. **Estado:** monorepo físico **aprovado** (três apps + pnpm); contratos F04-02 **propostos** e não implementados, nenhum teste executado.
+> **Identificação:** `AC-ENG-001` · **Versão documental:** `0.3.0` · **Etapa:** `F04-05` · **Data:** 13/10/2026. **Estado:** bootstrap F04-03 concluído; spike F04-04 experimental; F04-05 com L0 parcialmente validado e L1 Supabase remoto pendente. CI Quality aprovado no commit publicado indicado abaixo; contratos de domínio F04-02 continuam propostos.
 
 ## Ponto de partida
 
@@ -38,17 +38,21 @@ O pacote F04-02 detalha **30 testes `API-001–030` planejados**; nenhum foi exe
 - [**FD-02 — Brief de pesquisa e benchmark**](FD-02-brief-pesquisa-benchmark.md): pesquisa formal pendente, com prioridade visual para as capturas selecionadas pelo responsável.
 - [**FD-02 — Referências iniciais (histórico)**](FD-02-referencias-iniciais.md): shortlist exploratória anterior; TASCHEN/Penguin Random House não são direção visual ativa.
 - [**FD-02 — Referências visuais do usuário**](FD-02-referencias-visuais-usuario.md): nove capturas prioritárias, catalogadas por página com restrições de negócio, segurança e originalidade; não aprovam identidade final nem implementação.
-- [**PROMPT-CODEX-F04-03 — Bootstrap técnico**](PROMPT-CODEX-F04-03-bootstrap.md): prompt completo para Codex criar os três apps, toolchain e CI sem módulos de domínio, sem deploy e sem UI comercial.
+- [**F04-03 — Registro de CI validado**](STATUS-F04-03-CI-validado.md): evidência existente do bootstrap técnico e de sua aprovação remota, sem módulos de domínio, deploy ou UI comercial. O prompt original não está disponível neste repositório; este registro não o recria nem o substitui como artefato histórico.
 
 Capturas originais por página: [Home](references/storefront/home-atlas-commerce.png), [Categoria Revistas](references/storefront/categorias-atlas-commerce.png), [Categoria Bíblias](references/storefront/categorias-2-atlas-commerce.png), [Pesquisa](references/storefront/pesquisa-atlas-commerce.png), [Produto físico](references/storefront/produto-atlas-commerce.png), [Livro físico/e-book](references/storefront/produtos-atlas-commerce.png), [Revista digital](references/storefront/produto-digital-atlas-commerce.png), [Carrinho](references/storefront/carrinho-atlas-commerce.png) e [Checkout](references/storefront/checkout-atlas-commerce.png).
 
-O **frontend** nesta etapa possui apenas placeholders técnicos neutros e acessíveis. **Não** tomar sua aparência como identidade final. O prompt é entregável documental pronto para execução futura; a presença do arquivo não prova código nem testes executados.
+O **frontend** mantém apenas placeholders técnicos neutros e acessíveis do bootstrap concluído. **Não** tomar sua aparência como identidade final. A aprovação de CI cobre os gates executados, sem aprovar design ou implementação de UI comercial.
 
 ## Estado de avanço
 
-- **F04-01**: separação física **aprovada** (`apps/storefront`, `apps/admin`, `apps/api`, pnpm), **ainda não implementada**.
-- **F04-02**: proposta detalhada [CT-01–09](contracts/README.md), OpenAPI e JSON Schema produzidos; **detalhes precisam de revisão/ratificação, endpoints não implementados**.
-- **F04-03**: prompt de bootstrap disponível nesta versão. Codex deverá criar código dentro desse escopo, com evidência de testes; **ainda não implementado**. Não iniciar UI comercial ou cobrança real.
+- **F04-01**: separação física aprovada e **implementada no bootstrap** (`apps/storefront`, `apps/admin`, `apps/api`, pnpm).
+- **F04-02**: proposta detalhada [CT-01–09](contracts/README.md), OpenAPI e JSON Schema produzidos; **detalhes precisam de revisão/ratificação, endpoints de domínio não implementados**.
+- **F04-03**: **bootstrap técnico concluído**, com três apps, toolchain, health/smoke e CI; [registro de aprovação remota](STATUS-F04-03-CI-validado.md). Nenhuma UI comercial ou cobrança real foi homologada.
+- **F04-04**: **spike experimental implementado**, PostgreSQL descartável + Prisma, com 16 casos PGSP reais; [resultados e limites](../../apps/api/test/spike/RESULTS.md). Não é persistência comercial nem homologação de produção.
+- **F04-05**: **preparação server-only implementada, L0 parcialmente validado**: 9/9 provas locais de conexão/TLS/role/pool/recovery e 16/16 PGSP; [relatório e matriz SUPCON](../../apps/api/test/connection/RESULTS.md). O relatório preserva as limitações locais Windows de build/EOL e o estado de CI pendente no momento da entrega; a aprovação remota posterior está registrada abaixo. **L1 Supabase remoto permanece pendente / BLOCKED-NO-REMOTE**, sujeito a autorização específica; nenhuma conexão, migration ou integração cloud foi homologada.
+
+**CI publicado verificado em 13/10/2026:** [Quality 38420228923](https://github.com/Igor475/atlas-commerce/actions/runs/38420228923), commit `c3dff9ec07723723c3de5d929ed54e899d1be078`, branch `main`, `completed/success`. Jobs `checks` e `postgres-integration` aprovados; logs do [job PostgreSQL](https://github.com/Igor475/atlas-commerce/actions/runs/38420228923/job/115375298603) confirmam **16/16 PGSP** em PostgreSQL 17.10 / Node 24.21.0, com cleanup aprovado. Essa execução Linux é posterior à publicação da F04-05 e das referências visuais, mas anterior a este ajuste documental; não comprova L1 Supabase, Stripe/R2, deploy, backup/restore comercial ou homologação de ADRs/produção.
 
 ## Restrições invioláveis
 

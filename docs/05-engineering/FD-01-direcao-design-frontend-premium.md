@@ -20,7 +20,9 @@ Não copiar de forma direta imagens, códigos, layouts, branding ou textos propr
 
 ### FD-02 — Pesquisa e benchmark auditáveis
 
-Analisar pelo menos seis referências reais e variadas — **como pontos de partida para investigação**, não como recomendações finais verificadas: Aesop, COS, Apple, Taschen, Penguin Random House, Bookshop.org, Shopify showcase/editorial. Verificar URLs e screenshots atuais, licenças e padrões de interação no momento da pesquisa. Examinar navegação, busca, descoberta, filtros, ficha do livro, prévias, checkout, conta, revista digital, composição de kits e estados de erro. Registrar o que funciona, o que não funciona e *por quê*. Construir matriz comparativa com evidência visual referenciada e autoria/URL/fonte.
+As **nove capturas selecionadas pelo responsável**, catalogadas por página em [FD-02 — Referências visuais do usuário](FD-02-referencias-visuais-usuario.md), são as **referências prioritárias de estilo, composição e hierarquia do storefront**. **TASCHEN e Penguin Random House deixam de ser recomendações visuais ativas**; a shortlist externa anterior é somente histórico exploratório. Preservar imagens, nomes e proporções originais. Não copiar telas pixel-perfect, implementar a identidade VerboVivo ou aprovar automaticamente paleta, fontes e marca Atlas.
+
+Analisar pelo menos seis referências reais e variadas como pesquisa complementar, sem exigir o retorno dos candidatos rejeitados nem substituir a direção prioritária escolhida. Verificar URLs e screenshots atuais, licenças e padrões de interação no momento da pesquisa. Examinar navegação, busca, descoberta, filtros, ficha do livro, prévias, checkout, conta, revista digital, composição de kits e estados de erro. Registrar o que funciona, o que não funciona e *por quê*. Construir matriz comparativa com evidência visual referenciada e autoria/URL/fonte. As nove capturas desktop não comprovam pesquisa responsiva, acessibilidade, performance ou aprovação final; os gates FD-03/04/05 e a aprovação humana permanecem obrigatórios.
 
 ### FD-03 — Estratégia e arquitetura da experiência
 
