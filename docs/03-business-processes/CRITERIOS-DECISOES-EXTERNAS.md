@@ -3,6 +3,8 @@
 > **ID:** AC-MODEL-DEC-003 | **Versão:** 0.2 | **Estado:** Stripe selecionado, integração não homologada | **Data:** 12/10/2026.  
 > Este documento registra a **seleção do Stripe para DA-006**, mas **não comprova DS-004**, validação do sandbox, alçadas financeiras nem licenciamento jurídico de produtos digitais.
 
+> **Atualização de apresentação — 13/10/2026:** o [adendo ADR-004](../04-architecture/adrs/ADR-004-ADENDO-UI-EMBEDDED.md) substitui hosted inicial por Checkout incorporado na página Atlas. As referências hosted abaixo registram a seleção de 12/10/2026 e são **histórico de apresentação**, não o fluxo ativo. Onde o registro dizia não expor link incompatível, o componente agora não recebe client secret nem é montado. Stripe/BRL/Test Mode, cartão inicial, 40/30/5, autoridades, segregação e critérios de prova permanecem iguais; integração não homologada.
+
 ## A. DA-006 / DS-004 — Stripe escolhido; integração pendente de validação
 
 **Fornecedor decidido:** **Stripe**, com **Stripe Checkout hospedado (`payment` / compras únicas)** como escolha arquitetural inicial para o MVP demonstrativo. Inicialmente, usar **modo de teste** e restringir meios aos **comprovadamente compatíveis**, com cartão como candidato prioritário; Pix/boleto/assíncronos não entram automaticamente. A documentação oficial define `expires_at` de **30 minutos a 24 horas** após criar a sessão. A seleção do fornecedor é definitiva para este planejamento; capacidades reais, configuração e comportamento da integração **ainda exigem validação**. A conta Stripe, seu país e os meios habilitados serão conferidos no sandbox.

@@ -1,17 +1,20 @@
-digraph UX01 { graph [rankdir=TB bgcolor=white pad="0.22" nodesep="0.26" ranksep="0.4" fontname="DejaVu Sans" label="UX-01  •  Checkout autenticado e Stripe Test Mode" labelloc=t fontsize=17]; node [shape=box style="rounded,filled" fillcolor="#f4f5f2" color="#a3b1aa" fontname="DejaVu Sans" fontsize=10]; edge [color="#859b92" arrowsize=.6]; a [label="Carrinho sem reserva"]; b [shape=diamond label="Conta válida?" fillcolor="#f7f0e4"]; c [label="Entrar ou cadastrar
-Retomar intenção segura"]; d [label="Cotação no backend
+digraph UX01 { graph [rankdir=TB bgcolor=white pad="0.22" nodesep="0.26" ranksep="0.4" fontname="DejaVu Sans" label="UX-01  •  Checkout incorporado autenticado • Stripe Test Mode" labelloc=t fontsize=17]; node [shape=box style="rounded,filled" fillcolor="#f4f5f2" color="#a3b1aa" fontname="DejaVu Sans" fontsize=10]; edge [color="#859b92" arrowsize=.6]; a [label="Carrinho sem reserva"]; b [shape=diamond label="Conta válida?" fillcolor="#f7f0e4"]; c [label="Login • Cadastro • Verificação • Recovery
+P16-P20 • Retomar intenção segura"]; d [label="Cotação no backend
 Preço • cupom • frete • estoque"]; e [shape=diamond label="Elegível?"]; f [label="Ajustar carrinho
 Sem nova cobrança",fillcolor="#fff0ee"]; g [label="TX PostgreSQL
 Pedido + snapshot + outbox
 Reserva 40 min se houver físicos"]; h [shape=diamond label="Stripe session
 30 min propostos (ST pendente)
 Se reserva: buffer >=5 min?"]; i [label="Intenção recuperável
-Não expor sessão incompatível",fillcolor="#fff0ee"]; j [label="Stripe Checkout HOSTED
-TEST MODE",fillcolor="#e6f2ed"]; k [label="Retorno opcional no browser
-Só consulta estado persistido"]; l [label="Payments valida evidência PSP
+202 sem client secret
+Não montar sessão incompatível",fillcolor="#fff0ee"]; j [label="P47 • Stripe Checkout incorporado no Atlas
+201 READY • client secret de sessão protegido
+API/SDK/ui_mode a provar • TEST MODE",fillcolor="#e6f2ed"]; k [label="P48 • Callback/completion/retorno condicional
+Só consulta estado persistido, nunca PAID"]; l [label="Payments valida evidência PSP
 Independente do retorno"]; m [shape=diamond label="Pago + pedido elegível?
 Reserva válida se aplicável"]; n [label="Confirmar pedido
 Alocação física se aplicável
 Kit misto: alocação integral",fillcolor="#e6f2ed"]; o [label="PENDING / expirado
 ou PAYMENT_REVIEW
-Refund idempotente quando tardio",fillcolor="#fff0ee"]; a->b;b->d [label="sim"];b->c [label="não"];c->b;d->e;e->f [label="não"];e->g [label="sim"];g->h;h->i [label="não"];h->j [label="sim"];j->k;j->l [label="webhook / consulta PSP"];k->l [style=dashed label="leitura, não confirmação"];l->m;m->n [label="sim"];m->o [label="não / incerto"]; }
+Refund idempotente quando tardio",fillcolor="#fff0ee"]; a->b;b->d [label="sim"];b->c [label="não"];c->b;d->e;e->f [label="não"];e->g [label="sim"];g->h;h->i [label="não"];h->j [label="sim"];bank [label="3DS/autenticação bancária, se necessária
+Return conforme versão; sem guest/Pix/boleto"];j->bank [style=dashed label="condicional"];bank->k;j->k;j->l [label="webhook / consulta PSP"];k->l [style=dashed label="leitura, não confirmação"];l->m;m->n [label="sim"];m->o [label="não / incerto"]; }

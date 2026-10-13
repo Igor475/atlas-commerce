@@ -15,8 +15,8 @@
 | UXA-009 | Carrinho de visitante existe sem reservar estoque | BRD / PC-01 |
 | UXA-010 | CTA checkout exige conta autenticada e preserva intenção segura | ADR-003 / CT-06 |
 | UXA-011 | Quote é recalculada no servidor e mudança é visível | Pricing / CT-01 |
-| UXA-012 | Checkout redireciona apenas a Stripe Checkout test mode válida | ADR-004 / PC-01 |
-| UXA-013 | Não existe formulário próprio de cartão/Pix/boleto | FD-02 / ADR-004 |
+| UXA-012 | Checkout monta componente oficial Stripe incorporado no Atlas apenas com sessão Test Mode elegível; sem redirect hosted inicial | ADR-004 adendo / PC-01 / CT-10 |
+| UXA-013 | PAN/CVV pertencem ao componente Stripe, sem campos próprios Atlas, Pix/boleto ou guest checkout | FD-02 / ADR-004 adendo |
 | UXA-014 | Return do Stripe não confirma pagamento | PC-02 / CT-01 |
 | UXA-015 | 40/30/5 e estado pendente não alegam SLA do plano Free | PC-01 / ADR-009/010 |
 | UXA-016 | PAYMENT_REVIEW não permite entrega e oferece status real | PC-02 |
@@ -29,10 +29,12 @@
 | UXA-023 | Teclado, foco, zoom, mensagens, contraste e leitor de tela revisados | WCAG 2.2 AA alvo |
 | UXA-024 | As nove capturas inspiram composição, mas não são copiadas/brand reaproveitada | FD-01/02 |
 
+**Extensão preservada:** [UXA-025–044](FD-03-12-criterios-aceite-complementares.md), incluindo identidade, favoritos, conta e pagamento incorporado. Os 44 casos continuam planejados/não executados; aprovação humana de arquitetura não marca testes como PASS.
+
 ## Gates de passagem para FD-04
 
-- [ ] Responsável aprova sitemap e separação storefront/admin.
-- [ ] Responsável revisa jornadas J01–J04 e o fluxo financeiro do checkout hospedado.
+- [x] Responsável aprovou arquitetura de navegação e separação storefront/admin (FD-03-R01/R02).
+- [x] Responsável escolheu Checkout incorporado como direção e aprovou jornadas conceituais; implementação/fluxo financeiro real ainda sujeito a ST e contratos (FD-03-R03).
 - [ ] Inventário de páginas e estados recebe comentários e priorização MVP/evolução.
 - [ ] Decisões de FD-03-08 classificadas como aceitas, revisáveis ou bloqueadas.
 - [ ] Pesquisa complementar FD-02 ainda aberta é explicitamente considerada, sem declarar conclusão fictícia.

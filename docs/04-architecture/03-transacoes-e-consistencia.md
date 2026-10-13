@@ -7,7 +7,7 @@
 1. Receber intenção com ator autenticado, idempotency key no escopo `(ator, operação, request fingerprint)` e cotação válida do servidor.
 2. Em **uma transação PostgreSQL**, validar catálogo/publicação, preços/cupom, kit e todas quantidades físicas; criar snapshot imutável, pedido, reserva e prazo pelo **relógio do banco**; assegurar unicidade/constraints; registrar intenção de trabalho recuperável.
 3. `COMMIT` antes de chamar PSP; PSP recebe tentativa estável. Um retry idêntico resolve o mesmo resultado. Payload conflitante com a mesma key é recusado, não tratado como compra nova.
-4. **Stripe Checkout hospedado**, em modo de teste no MVP, cria sessão **somente** se a janela absoluta satisfaz: `stripe_expires_at <= reservation.expires_at - 5 min` e, pela política MVP, `stripe_expires_at = stripe_created_at + 30 min`. A Stripe documenta mínimo de 30 min. Logo, uma sessão criada >5 min após a reserva é incompatível com a política atual; não expor URL e reconciliar/expirar a sessão aberta se necessário.
+4. **Stripe Checkout incorporado**, conforme [adendo ADR-004](adrs/ADR-004-ADENDO-UI-EMBEDDED.md), em modo de teste no MVP, cria sessão **somente** se a janela absoluta satisfaz: `stripe_expires_at <= reservation.expires_at - 5 min` e, pela política MVP, `stripe_expires_at = stripe_created_at + 30 min`. A Stripe documenta mínimo de 30 min. Logo, uma sessão criada >5 min após a reserva é incompatível com a política atual; não liberar client secret nem montar o componente e reconciliar/expirar a sessão aberta se necessário.
 5. Se a criação externa falhar ou retornar estado ambíguo, não criar nova tentativa cega: reconciliar por ID/chave estável e registrar compensação.
 
 ## T-02 Confirmação, disputa com expiração e pagamento tardio

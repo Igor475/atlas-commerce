@@ -71,6 +71,6 @@ A opção **A** (`apps/storefront` e `apps/admin` separados, mais `apps/api` Nes
 - **Render Free:** um Web Service NestJS sob `apps/api`; build/start command e Node runtime fixados após verificação; filesystem efêmero, spindown e sem worker residente confiável.
 - **Supabase Free:** PostgreSQL acessado somente pela API, TLS e pooler compatível (ADR-010); sem Supabase Auth/Storage por inferência.
 - **R2 Free Standard:** conteúdo integral privado e prévias autorizadas; SDK e secret no backend.
-- **Stripe:** Checkout hospedado *test mode*; webhook autentica raw body e não o cookie browser. Execução assíncrona independente da URL de retorno.
+- **Stripe:** Checkout incorporado à página Atlas, *Test Mode*, conforme [adendo ADR-004 de 13/10/2026](../04-architecture/adrs/ADR-004-ADENDO-UI-EMBEDDED.md), substituindo somente a apresentação hosted anterior; webhook autentica raw body e não o cookie browser. Execução assíncrona independente de callback/retorno; API/SDK e contratos ainda pendentes.
 
 Referências: [ADR-001](../04-architecture/adrs/ADR-001-monolito-modular.md), [ADR-003](../04-architecture/adrs/ADR-003-autenticacao-sessoes.md), [ADR-007](../04-architecture/adrs/ADR-007-worker-e-jobs.md), [F04-06](F04-06-topologia-identidade.md), [mapa MONO-01](diagrams/MONO-01-workspaces.md).

@@ -1,6 +1,6 @@
 # FD-03-03 — Inventário de páginas, componentes conceituais e estados
 
-> **Inventário conceitual, não layout aprovado.** Cada ID é UX (`PXX`, `AXX`) e **não** rota de API ou requisito funcional novo. A ordem abaixo é prioridade de desenho, não promessa de implementação integral do MVP.
+> **Inventário de arquitetura conceitual aprovado, não layout nem contratos finais aprovados.** Cada ID é UX (`PXX`, `AXX`) e **não** rota de API ou requisito funcional novo. A ordem abaixo é prioridade de desenho, não promessa de implementação integral do MVP.
 
 ## Storefront
 
@@ -14,7 +14,7 @@
 | P06 | Revista digital ([imagem](../references/storefront/produto-digital-atlas-commerce.png)) | sumário/preview parcial autorizado | amostra indisponível, limite de páginas, sem original público |
 | P07 | Kit comercial (sem imagem específica) | composição e elegibilidade indivisíveis | componente sem estoque, kit indisponível, preço validado |
 | P08 | Carrinho ([imagem](../references/storefront/carrinho-atlas-commerce.png)) | quantidades, tipos, subtotais, cotação antes de pagar | vazio, item removido, preço/estoque alterado, cupom inválido |
-| P09 | Identificação/checkout ([imagem](../references/storefront/checkout-atlas-commerce.png)) | login obrigatório, endereço se aplicável, revisão, redirecionamento Stripe | sem sessão, quote expirada, estoque insuficiente, timeout, revisão |
+| P09 | Identificação/checkout ([imagem](../references/storefront/checkout-atlas-commerce.png)) | login obrigatório, endereço se aplicável, revisão, Stripe incorporado P47 | sem sessão, quote expirada, estoque insuficiente, timeout, revisão |
 | P10 | Retorno do pagamento/pedido | consultar estado real e apresentar próximos passos | aguardando confirmação, pago, falhou, PAYMENT_REVIEW, expirada |
 | P11 | Conta/endereço | editar dados conforme contrato futuro | sessão revogada, sem endereço, validação, conflito |
 | P12 | Pedidos | lista e detalhes por titular | vazio, pedido alheio indisponível, loading, pedido com revisão |
@@ -34,6 +34,12 @@
 | A06 | Financeiro/refunds | solicitar, aprovar, acompanhar | MFA step-up, sem alçada, autoaprovação negada, PSP inconclusivo |
 | A07 | Auditoria/segurança | consulta por permissão, fatores de staff | acesso negado, trilha indisponível, segredo redigido |
 | A08 | Integrações/pendências de job (se autorizado) | observar fila/replay governado | atraso, lease, poison, executor ausente; sem botão perigoso padrão |
+
+## Extensão v0.2 — preservação dos IDs
+
+[FD-03-09](FD-03-09-inventario-completo-paginas.md) detalha **P16–P50 e A09–A14**, sem redefinir P01–P15/A01–A08. P15 continua família de identidade e abrange P16–P20; P11 → P29–P31/P36; P12 → P32–P34/P38; P13 → P35; P14 → P37/P39–P44/P50. P21–P28 cobrem descoberta/favoritos e evoluções; P45/P46 cobrem 404/indisponibilidade. P09/P10 são detalhados por P47/P48; P49 retoma intenção sem duplicar pedido. Todos os vazios/erro/loading do inventário estendido devem figurar na FD-05.
+
+A09 → A07, A10 → A03, A11 → A04, A12 → A05, A13 → A06, A14 → A07/A08. Nenhum ID representa endpoint implantado ou capability concedida. Campos, retenção e APIs de identidade/favoritos/conta/suporte exigem contratos próprios.
 
 ## Regras gerais de estado
 

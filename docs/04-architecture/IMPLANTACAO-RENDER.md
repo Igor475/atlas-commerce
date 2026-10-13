@@ -14,7 +14,7 @@
 | API NestJS | **Render Web Service Free — fornecedor/plano aprovados** | Módulos de domínio, autenticação/autorização, webhook validado, persistência de decisões |
 | PostgreSQL | **Supabase PostgreSQL — provedor escolhido, plano pendente** | Fonte de verdade: pedidos, saldo, reservas, sessões, inbox/outbox, refunds, auditoria |
 | Armazenamento | **Cloudflare R2 — direção aprovada** | Prévias públicas permitidas separadas dos originais privados; URL somente após entitlement |
-| PSP | **Stripe Test Mode — selecionado** | Checkout hospedado, webhook assinado, refund e reconciliação pendentes de prova |
+| PSP | **Stripe Test Mode — selecionado** | Checkout incorporado ([adendo](adrs/ADR-004-ADENDO-UI-EMBEDDED.md)), webhook assinado, refund e reconciliação pendentes de prova |
 | Job dispatcher / reconciliador | **Serviço independente pendente de escolha** (Cron/Worker pagos ou alternativa explicitamente aprovada) | Expirar reservas, reprocessar outbox, conciliar Stripe, monitorar mensagens pendentes |
 | Envio de e-mail | Fornecedor a escolher | Verificação de conta, reset e notificações, sem logar tokens |
 

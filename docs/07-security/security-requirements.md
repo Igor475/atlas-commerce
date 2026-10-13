@@ -168,7 +168,7 @@ Os testes de segurança SA-001–012 não substituem os cenários CA-011–026. 
 | DS-001 | Estratégia de sessão e refresh | Separação browser/API, cookies, rotação, revogação e CSRF conforme integração |
 | DS-002 | MFA de backoffice | TOTP/WebAuthn, recovery codes, step-up e emergência sem bypass inseguro |
 | DS-003 | Matriz de permissão | Papéis, ações, segregação financeira e riscos de acúmulo de privilégios |
-| DS-004 | Provedor e modelo de pagamento | Depende de DA-006: sandbox/checkout hospedado, validade externa até 30 min e 5 min de folga, assinatura/eventos, idempotência de refund, escopo PCI e falhas |
+| DS-004 | Provedor e modelo de pagamento | Depende de DA-006: sandbox/checkout incorporado ([adendo ADR-004](../04-architecture/adrs/ADR-004-ADENDO-UI-EMBEDDED.md)), validade externa até 30 min e 5 min de folga, assinatura/eventos, idempotência de refund, escopo PCI e falhas |
 | DS-005 | Storage e distribuição digital | Buckets, isolamento, presigned URLs e política de revogação prática |
 | DS-006 | Política de uploads | Formatos aceitos, tamanhos, inspeção, processamento e armazenamento |
 | DS-007 | Retenção e privacidade | Campos, finalidades, requisitos legais, backups e ciclo de exclusão |

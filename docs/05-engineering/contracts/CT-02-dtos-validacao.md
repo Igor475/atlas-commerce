@@ -22,18 +22,27 @@
 - `CatalogProduct`: `id`, `title`, `productType`, `publicationStatus` público quando aplicável, `price {currency, amountCents}` e `previewAvailable`; **não** inclui `storageKey`, margem, chave Stripe, custo de estoque reservado nem arquivo integral.
 - `CheckoutQuoteRequest`: `items [{productId, quantity}]`, `couponCode?`, `shippingAddressId?`; servidor resolve SKUs/kit/preço/frete e cria `quoteId`, `expiresAt` e `total {currency, amountCents}`. `quoteId` **não** garante inventário nem preço futuro sem revalidação.
 - `CreateCheckoutRequest`: `quoteId`; `Idempotency-Key` em header; backend resolve cliente da sessão e snapshot; nunca recebe `totalCents`, `paid`, `stockAvailable`.
-- `CheckoutResult`: `orderId`, `state`, `reservationExpiresAt`, `payment {sessionStatus, checkoutUrl?, sessionExpiresAt?}`. `sessionStatus` é uma projeção de prontidão da sessão externa, não estado financeiro `SM-02`. O campo `state` do pedido obedece **exatamente** à tabela `SM-01`: `PENDING_PAYMENT`, `PAYMENT_REVIEW`, `PAID`, `CANCELLED`, `IN_FULFILLMENT`, `PARTIALLY_FULFILLED`, `FULFILLED`. URL hospedada só se sessão Stripe e reserva temporalmente compatíveis; `202` quando pendente e/ou conciliando.
+- `CheckoutResult`: `orderId`, `state`, `reservationExpiresAt`, `payment {presentation: EMBEDDED, sessionStatus, clientSecret?, sessionExpiresAt?}`. `sessionStatus` é uma projeção de prontidão da sessão externa, não estado financeiro `SM-02`. O campo `state` do pedido obedece **exatamente** à tabela `SM-01`: `PENDING_PAYMENT`, `PAYMENT_REVIEW`, `PAID`, `CANCELLED`, `IN_FULFILLMENT`, `PARTIALLY_FULFILLED`, `FULFILLED`. Proposta CT-10: `201` somente READY com client secret de **Checkout Session** (não PaymentIntent/CustomerSession/API key) e expiresAt real elegível; `202` somente PENDING/RECONCILIATION_REQUIRED, sem clientSecret. Não retornar URL hosted. Sessão e titularidade/tempos são validados no backend; clientSecret não concede PAID/entitlement.
 - `OrderView`: ID opaco, itens snapshot, status e totais redigidos, vínculo de fulfillment, sem PII financeira bruta.
 - `LibraryAccess`: `temporaryUrl` de curta vida, `expiresAt`; somente após verificação server-side; no-store e redaction.
 - `RefundRequest`: `orderId`, `captureId?` (internamente resolvível), `amountCents`, `reasonCode`; **valor máximo/níveis de aprovação seguem abertos**; mesmo código com payload diferente deve conflitar.
 
+## Deltas propostos — ratificação antes de software
+
+- **UXD-16:** manter `reservationExpiresAt` obrigatório com `type: [string, null]` em OpenAPI 3.1; null significa ausência real de reserva no digital puro. String RFC 3339 somente para reserva física real. É **proposta a ratificar**, não autorização decorrente da aprovação do sitemap; não inventar +40m para digital. Alternativa campo opcional exigiria decisão contratual distinta.
+- `presentation=EMBEDDED` é enum Atlas, independente de `ui_mode` Stripe. API/SDK/enum exatos e return/3DS continuam pendentes de prova ST.
+- READY exige `clientSecret` não vazio e `sessionExpiresAt` string válida. Nos demais sessionStatus, clientSecret é proibido e sessionExpiresAt pode estar ausente/null se ainda desconhecido; `202` não é prontidão de pagamento.
+- O schema de resposta proposto rejeita campos hosted antigos por `additionalProperties: false`. Nenhum consumidor ou API implantada foi migrado nesta etapa. Mesmas rotas, segurança, idempotência, estados e códigos HTTP.
+
+[Delta CT-10](CT-10-migracao-embedded-checkout-proposta.md) e [adendo ADR-004](../../04-architecture/adrs/ADR-004-ADENDO-UI-EMBEDDED.md).
+
 ## Modelo de estado e invariantes
 
 1. Snapshot de preço/composição fixado na transação; itens e meios de pagamento válidos elegíveis não são controlados pelo client.
-2. `40min` de reserva no relógio do banco; sessão Stripe `30min`, encerra >= `5min` antes da reserva; criação tardia gera estado seguro, não URL.
+2. `40min` de reserva no relógio do banco; sessão Stripe `30min`, encerra >= `5min` antes da reserva; criação tardia gera estado seguro, sem clientSecret/montagem. Só aplicar reserva física quando houver físicos.
 3. Acessos digitais de kit misto exigem pagamento aceito e **todos** os físicos alocados; login não equivale a licença.
 4. Refund `available = captured - succeeded - pendingReserved`; origem de verdade é captura + ledger, não valor retornado pelo operador.
-5. Campos de controle interno/auditoria/segredo NUNCA entram em DTO compartilhado. Campos administrativos requerem DTOs separados por contexto e minimização por permissão.
+5. Campos internos/auditoria/chaves privadas de API/webhook NUNCA entram em DTO compartilhado. Exceção explícita de apresentação: client secret da Checkout Session somente na resposta autenticada do checkout para inicializar SDK Stripe do titular, sob TLS/no-store; sem log, URL, cache, SSR estático, analytics ou armazenamento persistente do browser. Campos administrativos continuam separados por contexto e minimizados por permissão.
 
 ## Validação sugerida
 

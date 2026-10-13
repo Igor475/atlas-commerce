@@ -7,7 +7,7 @@
 |---|---|---|---|
 | DA-004 — kits | Unidade comercial indivisível; composição imutável, reserva all-or-nothing e físicos juntos; digital por componente | Resolvida como política proposta MVP | Licenças/exceções legais; SEC-017/018/025 |
 | DA-005 / DA-012 — reserva | 40 min pelo banco, sessão externa até 30 min, encerrada pelo menos 5 min antes da reserva | Proposta condicionada | Stripe Checkout exige expiração mínima de 30 min; validar criação até 5 min após reserva com margem operacional e resposta tardia; DS-004 |
-| DA-006 — PSP | **Stripe escolhido pelo projeto**; Stripe Checkout hospedado em modo de teste é a integração-alvo, sem homologação técnica | Fornecedor definido; integração condicionada | Testar sessão 30 min mínimo, janela absoluta 40/30/5, cartões/métodos elegíveis, eventos, assinatura, refunds e idempotência; SEC-020/023 |
+| DA-006 — PSP | **Stripe escolhido pelo projeto**; Stripe Checkout incorporado em modo de teste é a integração-alvo ([adendo posterior ADR-004](../04-architecture/adrs/ADR-004-ADENDO-UI-EMBEDDED.md)), sem homologação técnica | Fornecedor definido; integração condicionada | Testar sessão 30 min mínimo, janela absoluta 40/30/5, cartões/métodos elegíveis, eventos, assinatura, refunds e idempotência; SEC-020/023 |
 | DA-007 — frete | Simulador determinístico | Aberta em detalhe | Validade da cotação e ajuste de refund |
 | DA-008 — leitura/download | Entitlement por item e titular; demonstração apenas com conteúdo próprio/autorizado | Parcial | Licença por obra/edição, prévia, duração, revogação e DS-005/006 |
 | DA-009 — reembolso | Total/parcial avulso; kit integral padrão; saldo reservado e reembolso provado no PSP | Parcial | Matriz de alçadas em proposta DS-003; revisão jurídico-fiscal |

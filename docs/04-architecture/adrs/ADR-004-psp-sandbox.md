@@ -6,7 +6,7 @@
 ## Decisão registrada
 
 - **Fornecedor:** Stripe (deixa de ser mera alternativa). A escolha de provedor fica encerrada para o escopo atual; reabertura exige nova ADR.
-- **Produto de integração proposto:** Stripe **Checkout hospedado**, `mode=payment`, em **modo de teste** para o portfólio. Não haverá captura direta de PAN/CVV pelo Atlas.
+- **Apresentação escolhida em 13/10/2026:** Stripe **Checkout incorporado à página Atlas**, Checkout Sessions `mode=payment`, em **Test Mode**, conforme [adendo aceito](ADR-004-ADENDO-UI-EMBEDDED.md). Não iniciar por redirect hosted nem construir campos PAN/CVV próprios. API/SDK/ui_mode exatos permanecem pendentes de prova. A escolha hosted de 12/10/2026 fica preservada como histórico, substituída apenas na modalidade de apresentação.
 - **Métodos no MVP inicial:** somente meios testados como compatíveis com expiração e confirmação durante a reserva, priorizando **cartão de teste**. Não ativar Pix, boleto ou outros métodos assíncronos sem política de estoque/reembolso própria e atualização da Fase 02.
 - **Moeda:** BRL representada em centavos inteiros; valor, itens e frete derivados do snapshot do pedido no servidor. Locale `pt-BR` quando adequado; não confiar em valores do frontend.
 - **Autoridade:** módulo **Payments** confirma fatos financeiros; Checkout e retorno ao navegador não concedem direitos ou reserva por si mesmos.
@@ -21,7 +21,7 @@ A API oficial de criação da Checkout Session documenta `expires_at` entre **30
 
 **Consequência matemática:** a sessão precisa ser criada **até 5 minutos após a reserva**, e o fluxo deve buscar margem operacional antes do limite. Verificar timestamps absolutos efetivamente retornados; clocks, atraso de rede, concorrência e timeout exigem testes. Não assumir que é possível reduzir a sessão Stripe para menos de 30 min quando houver atraso.
 
-**Falha de compatibilidade:** não expor URL. Persistir situação da tentativa; se sessão existe e está `open`, solicitar expiração, sem presumir que uma tentativa externa ambígua nunca cobrou. Reconciliar eventos/estado; reserva não pode ser confirmada depois de `EXPIRED`.
+**Falha de compatibilidade:** não entregar client secret nem montar o componente incorporado. Persistir situação da tentativa; se sessão existe e está `open`, solicitar expiração, sem presumir que uma tentativa externa ambígua nunca cobrou. Reconciliar eventos/estado; reserva não pode ser confirmada depois de `EXPIRED`.
 
 ## Contrato funcional e de segurança
 
@@ -32,16 +32,17 @@ A API oficial de criação da Checkout Session documenta `expires_at` entre **30
 5. Confirmação financeira não é confirmação de reserva: `Inventory` faz transição serializada `ACTIVE -> CONFIRMED` antes do TTL, e `Orders` controla `PAID`. Kit misto só gera entitlement após toda alocação física confirmada.
 6. Cobrança válida sem reserva alocável: `PAYMENT_REVIEW`, sem fulfillment nem direito digital automático do pedido misto, e **refund integral idempotente** como política padrão do MVP.
 7. Refund vinculado a captura/PaymentIntent com saldo reservado no banco; retries com chave estável, estado ambíguo conciliado. Nunca supor sucesso de devolução por `2xx` genérico; só estado financeiro confirmado encerra a devolução.
-8. Stripe guarda informações do pagamento, mas **PostgreSQL continua fonte de verdade dos estados comerciais e das obrigações de compensação**. Segredos não entram no Git, browser ou logs; acesso ao Dashboard deve ter MFA e papéis mínimos.
+8. Stripe guarda informações do pagamento, mas **PostgreSQL continua fonte de verdade dos estados comerciais e das obrigações de compensação**. Chaves privadas da API/assinatura não entram no Git, browser ou logs. O client secret de Checkout Session é a exceção de apresentação: somente para seu titular autenticado inicializar o SDK oficial, sob TLS/no-store, sem URL/log/analytics/cache/SSR estático; não autoriza domínio nem comprova pagamento. Acesso ao Dashboard deve ter MFA e papéis mínimos.
 
 ## Trade-offs e riscos residuais
 
-Vantagens: Checkout hospedado reduz superfície de captura de cartão; APIs de sessão, eventos e reembolso documentadas; sandbox/test mode permite testes de falha. Riscos: atraso entre criação de reserva e sessão, métodos assíncronos, webhooks não ordenados, replay, conciliação e custos/condições da conta Stripe. Não presumir certificação PCI, conformidade jurídica ou adequação fiscal sem avaliação concreta.
+Vantagens: componente incorporado gerenciado pela Stripe mantém PAN/CVV fora dos campos Atlas; APIs de sessão, eventos e reembolso documentadas; sandbox/test mode permite testes de falha. Riscos: atraso entre criação de reserva e sessão, métodos assíncronos, webhooks não ordenados, replay, conciliação e custos/condições da conta Stripe. Não presumir certificação PCI, conformidade jurídica ou adequação fiscal sem avaliação concreta.
 
 ## Evidência obrigatória para encerrar o gate técnico DS-004
 
 - Conta/test mode, moeda e método elegível; IDs e timestamps externos verificados.
-- Atrasos 0/4/5/6 min entre reserva e sessão; sessão recusada antes de expor URL quando incompatível.
+- Atrasos 0/4/5/6 min entre reserva e sessão; client secret/montagem recusados quando incompatíveis.
+- API/SDK/ui_mode versionados, montagem/cleanup, CSP, 3DS e completion/return validados; sem `success_url` hosted no modo incorporado escolhido.
 - Webhooks inválidos, duplicados, fora de ordem, assinatura raw body e expiração.
 - Corrida confirmação vs expiração com PostgreSQL real; pagamento tardio e refund único.
 - Refund após timeout com operação local persistida, reconciliação e saldo reservado.
@@ -56,3 +57,7 @@ Vantagens: Checkout hospedado reduz superfície de captura de cartão; APIs de s
 - https://docs.stripe.com/webhooks
 - https://docs.stripe.com/api/idempotent_requests
 - https://docs.stripe.com/api/refunds/create
+
+## Sincronização da apresentação — 13/10/2026
+
+[CT-10](../../05-engineering/contracts/CT-10-migracao-embedded-checkout-proposta.md) e [FD-03-11](../../05-engineering/fd03/FD-03-11-checkout-stripe-incorporado.md) detalham a proposta de DTO e UX; `payment.presentation=EMBEDDED` não fixa enum Stripe. Consulta atual: referência cita `embedded_page`, exemplos anteriores `embedded`; API/SDK efetivos não escolhidos/executados. `return_url`/`redirect_on_completion` são condicionais à versão e ao fluxo; 3DS pode navegar externamente. Callback, client secret e retorno não validam PAID. `reservationExpiresAt` anulável continua proposta contratual a ratificar, não nova regra de reserva. Nenhuma alteração de RN/PC/40/30/5 por trocar a apresentação.

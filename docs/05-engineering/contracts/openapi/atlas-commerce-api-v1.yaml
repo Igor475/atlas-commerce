@@ -1,11 +1,13 @@
 openapi: 3.1.0
 info:
   title: Atlas Commerce — API candidata v1
-  version: 0.2.0-proposta
+  version: 0.3.0-proposta
   description: Contrato de transporte DOCUMENTAL, não API implantada. B2C demo pessoal, Stripe Test Mode, NestJS auth,
     Vercel Hobby/Render Free/Supabase Free. Rotas/DTOs propostos sujeitos a revisão F04-02. Sem compromisso de operação
     comercial.
 x-atlas-status: PROPOSTO_NAO_IMPLEMENTADO
+x-atlas-delta: CT-10 EMBEDDED e reservationExpiresAt anulavel propostos; ratificacao pendente antes de software
+x-atlas-stripe-api-sdk-ui-mode: PENDENTE_DE_VERSAO_EXATA_E_PROVA
 servers:
 - url: /
   description: Origem relativa loja/admin ou Render, conforme proxy seguro testado
@@ -277,6 +279,8 @@ components:
     CheckoutResult:
       type: object
       additionalProperties: false
+      description: Proposta CT-10, nao implementada; forma anulavel UXD-16 exige ratificacao contratual.
+      x-atlas-ratification: PENDENTE_CT10_UXD16
       required:
       - orderId
       - state
@@ -296,28 +300,61 @@ components:
           - PARTIALLY_FULFILLED
           - FULFILLED
         reservationExpiresAt:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
+          description: Proposta a ratificar; null no digital puro, string apenas para reserva fisica real. Sem TTL fisico ficticio.
+          x-atlas-ratification: PENDENTE_UXD16
         payment:
           type: object
           additionalProperties: false
           required:
+          - presentation
           - sessionStatus
           properties:
+            presentation:
+              type: string
+              const: EMBEDDED
+              description: Enum Atlas de apresentacao; nao e o enum ui_mode Stripe, cuja versao e prova continuam pendentes.
             sessionStatus:
               type: string
               enum:
               - PENDING
               - READY
               - RECONCILIATION_REQUIRED
-              description: Projeção de prontidão da sessão Checkout, NÃO estado financeiro do SM-02.
-            checkoutUrl:
+              description: Projecao de prontidao da Checkout Session, NAO estado financeiro SM-02 nem prova de PAID.
+            clientSecret:
               type: string
-              format: uri
-              description: URL de checkout hospedado test mode; somente quando válida, sem cache/log.
+              minLength: 1
+              readOnly: true
+              x-atlas-sensitive: true
+              description: Client secret de Checkout Session exclusivamente para SDK Stripe do titular autenticado; TLS/no-store, sem log/URL/cache/SSR/analytics. Nao e chave API nem prova de pagamento.
             sessionExpiresAt:
-              type: string
+              type:
+              - string
+              - 'null'
               format: date-time
+              description: Timestamp real da sessao, obrigatorio e nao nulo em READY; ausente/null se desconhecido nos estados pendentes.
+          allOf:
+          - if:
+              properties:
+                sessionStatus:
+                  const: READY
+              required:
+              - sessionStatus
+            then:
+              required:
+              - clientSecret
+              - sessionExpiresAt
+              properties:
+                sessionExpiresAt:
+                  type: string
+                  format: date-time
+            else:
+              not:
+                required:
+                - clientSecret
     OrderView:
       type: object
       additionalProperties: false
@@ -833,17 +870,45 @@ paths:
       summary: Criar checkout idempotente
       responses:
         '201':
-          description: Sessão Stripe test pronta e prazo válido
+          description: Sessao Stripe Test Mode READY e elegivel para montagem EMBEDDED; nao confirma PAID.
+          headers:
+            Cache-Control:
+              description: Resposta autenticada sem armazenamento.
+              schema:
+                type: string
+                const: no-store
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CheckoutResult'
+                allOf:
+                - $ref: '#/components/schemas/CheckoutResult'
+                - type: object
+                  properties:
+                    payment:
+                      properties:
+                        sessionStatus:
+                          const: READY
         '202':
-          description: Checkout persistido, PSP pendente/reconciliação
+          description: Intencao persistida, PSP pendente/reconciliacao, sem clientSecret ou prontidao ficticia.
+          headers:
+            Cache-Control:
+              description: Resposta autenticada sem armazenamento.
+              schema:
+                type: string
+                const: no-store
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CheckoutResult'
+                allOf:
+                - $ref: '#/components/schemas/CheckoutResult'
+                - type: object
+                  properties:
+                    payment:
+                      properties:
+                        sessionStatus:
+                          enum:
+                          - PENDING
+                          - RECONCILIATION_REQUIRED
         '400':
           description: Erro público sem dados sensíveis
           content:
@@ -897,8 +962,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CheckoutRequest'
-      description: A API nunca confirma cobrança pelo redirect. Em 201, checkoutUrl só após session Stripe compatível
-        40/30/5. Em 202, estado PENDING sem URL obrigatória.
+      description: Proposta CT-10, nao implantada. Em 201, presentation EMBEDDED e sessionStatus READY
+        com clientSecret e sessionExpiresAt reais somente apos owner e elegibilidade; 40/30/5 quando houver reserva fisica.
+        Em 202, sessionStatus PENDING/RECONCILIATION_REQUIRED e clientSecret proibido. Estado do pedido permanece SM-01.
+        TLS/no-store, sem segredo em URL/log/cache/SSR/analytics; callback/completion/return nao confirmam PAID.
+        API/SDK/ui_mode e return_url condicionais a versao exata e prova; success_url hosted nao integra este delta.
+        reservationExpiresAt obrigatorio anulavel e PROPOSTA CT-10/UXD-16 ainda sujeita a ratificacao.
   /api/v1/me/orders/{orderId}:
     get:
       operationId: getMyOrder

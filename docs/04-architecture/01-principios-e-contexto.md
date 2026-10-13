@@ -8,7 +8,7 @@
 - Produtos físicos, e-books, revistas digitais, kits simples físicos/digitais/mistos. Estoque físico em depósito lógico único, kits com composição imutável no snapshot.
 - Preço, frete e cupons calculados no servidor; BRL em centavos; compra e pagamentos sandbox; comprovantes verdadeiros do PSP apenas em modo teste.
 - Prévia pública distinta do conteúdo integral privado; entitlement por titular/item/licença; direitos digitais de kit misto dependem de pagamento e **toda** alocação física confirmada.
-- **Stripe é o provedor escolhido**. Checkout hospedado em modo de teste será avaliado com janela absoluta, autenticação de eventos e refund. Escolha do fornecedor **não** equivale a homologação da integração, do método nem do ambiente.
+- **Stripe é o provedor escolhido**. Checkout incorporado em modo de teste, conforme [adendo ADR-004](adrs/ADR-004-ADENDO-UI-EMBEDDED.md), será avaliado com janela absoluta, autenticação de eventos e refund. Escolha do fornecedor **não** equivale a homologação da integração, do método nem do ambiente.
 
 ## Princípios de desenho
 

@@ -12,7 +12,7 @@ O Atlas Commerce permanece **monólito modular NestJS**. Seu **backend será ini
 - **Backend:** um Web Service NestJS na **Render Free**; aceitar pausa/restart e limites de uso, sem promessas de uptime.
 - **Banco:** **Supabase PostgreSQL** escolhido para o projeto, não Render Postgres. **Supabase Free aprovado**. [ADR-010](ADR-010-postgresql-supabase.md) regula conexão, segurança, backup e restauração.
 - **Mídia:** Cloudflare R2 com separação entre objetos públicos autorizados e privados; segredos no backend.
-- **Pagamentos:** Stripe Checkout hospedado **em modo teste**; webhook na API validado por assinatura do corpo original.
+- **Pagamentos:** Stripe Checkout incorporado **em modo teste**, conforme [adendo posterior ADR-004](ADR-004-ADENDO-UI-EMBEDDED.md); webhook na API validado por assinatura do corpo original.
 - **Jobs:** outbox/inbox no PostgreSQL como fonte durável; cron/worker como serviço **adicional condicional**, definido pela ADR-007, e jamais dependente da continuidade de um processo Free suspenso.
 
 ## Plano Free versus operação contínua

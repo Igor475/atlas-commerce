@@ -14,7 +14,7 @@
 | POST | `/api/v1/auth/logout` | Usuário / Identity | 204 | revogar sessão no DB mesmo com sessão antiga; CSRF |
 | GET | `/api/v1/me` | Cookie / Identity | 200 | sessão ativa, nunca exibir segredo/fatores MFA |
 | POST | `/api/v1/checkout/quotes` | Cliente / Pricing | 200 cotação recomputada | preço/discount/frete calculados no servidor |
-| POST | `/api/v1/checkouts` | Cliente / Orders | 201 URL Stripe compatível, ou 202 pendente | idempotência local, estoque transacional, Stripe só após commit |
+| POST | `/api/v1/checkouts` | Cliente / Orders | 201 EMBEDDED/READY + client secret restrito, ou 202 pendente sem secret | idempotência local, estoque transacional, Stripe só após commit; owner/TLS/no-store |
 | GET | `/api/v1/me/orders/{orderId}` | Cliente / Orders | 200/404 | BOLA: titularidade no servidor e sem prova por browser redirect |
 | GET | `/api/v1/me/library` | Cliente / Library | 200 página | entitlement por conta, licença/estado |
 | POST | `/api/v1/me/library/{entitlementId}/access` | Cliente / Library | 200 URL temporária | direito atual, validação do kit físico, nunca CDN integral público |
@@ -29,9 +29,15 @@
 
 Cadastro/verificação de e-mail, reset de senha, cadastro/rotação MFA, recovery de MFA, administração de catálogo, upload assinado/malware scan, estoque e inventário administrativo, cupons gerenciáveis, devoluções/inspeção, replay de outbox, métricas e health detalhado. Todos exigem contratos especializados antes da implementação. O Codex **não** deve completar automaticamente estes endpoints porque aparece um módulo no ERD.
 
+## Lacunas adicionais do inventário FD-03 v0.2 (sem criar endpoints)
+
+P16–P50/A09–A14 são navegação aprovada para planejamento, não nova API aprovada. Cadastro/verificação/recovery, favoritos/mesclagem/retencão, ofertas com histórico auditável, coleções/autores/facetas avançadas, atualização de perfil/endereço/segurança, lista de pedidos, suporte/devoluções e operações admin adicionais requerem inventário especializado, DTOs, ownership/CSRF/privacidade e testes negativos. Não acrescentar paths por inferência. Ver [inventário UX](../fd03/FD-03-09-inventario-completo-paginas.md).
+
+**Ratificação pendente UXD-16:** propriedade `reservationExpiresAt` obrigatória e anulável proposta no YAML/CT-02: null para digital puro, string date-time apenas para reserva física real. Solicita-se aprovação desse detalhe antes de implementar, sem fabricar prazo físico.
+
 ## Política de resultado e compatibilidade
 
-- Mutação assíncrona de checkout **não** retorna 201 com URL se sessão Stripe não estiver elegível; retornar 202 e estado `PENDING` recuperável. Nunca confirmar pedido via redirect.
+- Proposta [CT-10](CT-10-migracao-embedded-checkout-proposta.md): `201` com `payment.presentation=EMBEDDED`, `sessionStatus=READY`, `clientSecret` de Checkout Session e `sessionExpiresAt` somente se sessão elegível; `202` com `PENDING`/`RECONCILIATION_REQUIRED` sem `clientSecret`. Estado do pedido permanece SM-01 (ex.: `PENDING_PAYMENT`), separado de sessionStatus. Respostas autenticadas `Cache-Control: no-store`; sem hosted URL, segredo em log/URL/cache/analytics ou confirmação por callback/return.
 - `Idempotency-Key` é obrigatória para checkout e solicitações de refund; usar `(actor, operation, key)` com fingerprint canônico e materializar resultado. Reuso com body diferente = 409 sem segundo efeito.
 - Exceção financeira baseada em captura tardia cria obrigação de refund integral **independente** do endpoint manual; não é uma chamada que o navegador inicia. A transição depende de lock/tempo do DB.
 - `GET /me/orders/{id}` de outro usuário responde 404 ou negativa sem revelar dados; regra consistente anti-enumeração.

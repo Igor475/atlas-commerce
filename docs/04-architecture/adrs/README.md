@@ -7,7 +7,7 @@
 | [ADR-001](ADR-001-monolito-modular.md) | Monólito modular NestJS e interfaces Next.js | Mapa físico e testes de fronteira |
 | [ADR-002](ADR-002-integridade-outbox.md) | PostgreSQL, outbox/inbox duráveis, sem side effect externo em TX | Leases, ordenação, retries e DB/JOB |
 | [ADR-003](ADR-003-autenticacao-sessoes.md) | Sessão opaca revogável, cookies protegidos, MFA staff passkeys/TOTP, TTLs iniciais | Proxy/domínios, CSRF, recovery, bootstrap e AUTH |
-| [ADR-004](ADR-004-psp-sandbox.md) | Stripe Checkout hospedado em test mode (cartões elegíveis inicialmente) | Janela 40/30/5, webhook, refunds, testes ST |
+| [ADR-004](ADR-004-psp-sandbox.md) | Stripe Checkout incorporado em Test Mode, [adendo 13/10](ADR-004-ADENDO-UI-EMBEDDED.md) (cartões elegíveis inicialmente) | Janela 40/30/5, webhook, refunds, testes ST |
 | [ADR-005](ADR-005-midia-e-storage.md) | Cloudflare R2 Free Tier Standard; público/privado segregados, acesso por entitlement | Buckets, licenças, uploads, assinaturas, quotas, testes R2 |
 | [ADR-006](ADR-006-acesso-dados.md) | PostgreSQL gerenciado Supabase, Prisma v7 como preferência, SQL parametrizado na mesma TX | Adapter, locks, migrations, pool, testes DB-001–028 |
 | [ADR-007](ADR-007-worker-e-jobs.md) | Outbox persistente, jobs recuperáveis; worker/cron independente quando viável | **Render Free dorme**; Supabase Cron é hipótese, não executor homologado; testes JOB |

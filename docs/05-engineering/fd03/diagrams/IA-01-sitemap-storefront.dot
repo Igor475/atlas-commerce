@@ -1,13 +1,24 @@
-digraph IA01 { graph [rankdir=TB bgcolor="white" pad="0.22" nodesep="0.34" ranksep="0.54" fontname="DejaVu Sans" label="IA-01  •  Storefront Atlas Commerce (sitemap candidato)" labelloc=t fontsize=17]; node [shape=box style="rounded,filled" fillcolor="#f4f5f2" color="#a3b1aa" fontname="DejaVu Sans" fontsize=10 margin="0.15,0.10"]; edge [color="#859b92" arrowsize=.65]; root [label="Atlas Commerce
+digraph IA01 { graph [rankdir=TB bgcolor="white" pad="0.22" nodesep="0.34" ranksep="0.54" fontname="DejaVu Sans" label="IA-01  •  Storefront Atlas Commerce (navegação aprovada; URLs candidatas)" labelloc=t fontsize=17]; node [shape=box style="rounded,filled" fillcolor="#f4f5f2" color="#a3b1aa" fontname="DejaVu Sans" fontsize=10 margin="0.15,0.10"]; edge [color="#859b92" arrowsize=.65]; root [label="Atlas Commerce
 Storefront",fillcolor="#184b3b" fontcolor=white]; discover [label="Descobrir
-Home • Catálogo • Categorias"]; search [label="Buscar
+Home • Catálogo • Categorias
+Ofertas • Lançamentos • Coleções • Autores
+P01/P02/P22-P28 (escopo conforme inventário)"]; search [label="Buscar
 Resultados • Facetas"]; product [label="Avaliar
 Produto físico • E-book • Revista
 Kit • Prévia parcial"]; cart [label="Comprar
 Carrinho (público)"]; auth [label="Conta obrigatória
-Login/cadastro (contratos futuros)"]; checkout [label="Checkout interno
-Cotação e revisão"]; stripe [label="Stripe Checkout hospedado
-SOMENTE Test Mode",fillcolor="#e9f0ee"]; after [label="Acompanhar
-Pedido • Pagamento em revisão"]; library [label="Pós-compra
-Biblioteca com entitlement"]; help [label="Ajuda e políticas
-Conteúdo revisado"]; root->{discover search help};discover->product;search->product;product->cart;cart->auth;auth->checkout;checkout->stripe;stripe->after;after->library; }
+Login • Cadastro • Verificação • Recovery
+P15-P20 (contratos pendentes)"]; checkout [label="Checkout interno
+Cotação e revisão"]; stripe [label="Stripe Checkout incorporado no Atlas
+P47 • SOMENTE Test Mode
+API/SDK/ui_mode a provar",fillcolor="#e9f0ee"]; after [label="Acompanhar
+Conta: perfil/endereço/segurança P11/P29-P31/P36
+Pedidos/entrega/devoluções P10/P12/P32-P34/P38
+Resultado P48 • Retomada P49"]; library [label="Pós-compra
+Biblioteca com entitlement P13/P35"]; help [label="Ajuda e políticas
+Suporte • FAQ • Institucional • Políticas
+404 • Indisponibilidade • P14/P37/P39-P46/P50"]; favorites [label="Favoritos P21
+Lista distinta de carrinho
+Contrato/privacidade pendentes"]; staff [label="Admin separado A01-A14
+MFA + capabilities por recurso
+DS-003/alçadas pendentes"]; root->{discover search help favorites};root->staff [style=dashed label="outro app / sessão"];discover->product;search->product;product->cart;cart->auth;auth->checkout;checkout->stripe;stripe->after;after->library; }
