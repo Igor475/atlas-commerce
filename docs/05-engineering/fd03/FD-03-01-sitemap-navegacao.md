@@ -2,22 +2,24 @@
 
 > **PROPOSTA.** Os caminhos abaixo são **URLs candidatas do Next.js**, não rotas existentes nem endpoints HTTP da API. A confirmação em FD-04/05 exige revisão de SEO, canonical, legibilidade, idioma e contratos.
 
-## Loja (`apps/storefront`) — 5 contextos de navegação
+## Loja (`apps/storefront`) — 6 contextos de navegação
 
 | Contexto | Entrada | Páginas/funções | Permissão |
 |---|---|---|---|
 | Descobrir | `/`, `/catalogo`, `/categoria/[slug]` | Home editorial, categorias configuráveis, coleções/temas, listagem | Público |
 | Buscar | `/busca?q=...` | Resultados, filtros, ordenação, busca vazia, sugestões | Público; sem PII |
-| Avaliar | `/produto/[slug]`, `/amostra/[id]` **(candidato)** | Ficha por formato, atributos, prévia pública licenciada | Público apenas se publicado/autorizado |
+| Avaliar | `/produto/[slug]`, `/amostra/[id]` **(candidato)** | Ficha por formato, kit com composição fixa, atributos, prévia pública licenciada | Público apenas se publicado/autorizado |
 | Comprar | `/carrinho`, `/checkout` **(orquestração)** | Carrinho visitante, autenticação obrigatória, cotação e envio a Stripe hospedado | Carrinho público; checkout cliente autenticado |
 | Acompanhar | `/minha-conta`, `/meus-pedidos`, `/pedidos/[id]`, `/minha-biblioteca` | Perfil/endereço, histórico, estado PSP, downloads temporários | Titular da conta |
 | Assistência | `/ajuda`, `/privacidade`, `/termos`, `/entrega-e-devolucao` **(candidatos)** | Políticas e ajuda conforme textos reais revisados | Público; publicação legal a validar |
 
 **Busca/navegação:** no topo, oferecer acesso a catálogo e busca; menus de categorias são gerados da taxonomia publicada, sem forçar Bíblia/EBD como categorias. Sem atribuir avaliações, rankings, promoções ou descontos sem dados/decisão. Nome e hierarquia exatos de menus permanecem abertos.
 
-**Checkout:** a página própria da loja explica/resume dados, endereços, frete simulado, cupons e revisão **antes do redirecionamento ao Stripe Checkout**. Campos de cartão/Pix/boleto da referência não devem existir no app. `return/success` do Stripe sinaliza apenas retorno; a página lê `GET /me/orders/{id}` e mostra 'aguardando confirmação' se necessário.
+**Checkout:** a página própria da loja explica/resume dados, endereços, frete simulado, cupons e revisão **antes do redirecionamento ao Stripe Checkout**. Campos de cartão/Pix/boleto da referência não devem existir no app. `return/success` do Stripe sinaliza apenas retorno; a página lê `GET /api/v1/me/orders/{orderId}` e mostra 'aguardando confirmação' se necessário.
 
 **Autenticação:** entrar, criar conta, verificação de email, recuperação e MFA administrativo exigem inventário técnico próprio quando seus contratos forem aprovados; não inventar endpoints por causa do sitemap. Não compartilhar sessão de cliente com staff.
+
+**Cobertura do inventário:** Descobrir → P01/P02 (catálogo global e categoria compartilham a família de listagem); Buscar → P03; Avaliar → P04–P07 (amostra é a experiência pública parcial de P05/P06); Comprar → P08/P09; Acompanhar → P10–P13; Assistência → P14. P15 cobre a autenticação citada acima, sem fixar URLs ou criar contratos. A rota de retorno Stripe de P10 permanece candidata, vinculada ao pedido e à decisão UXD-07. Ver [inventário](FD-03-03-inventario-telas-estados.md).
 
 ## Backoffice (`apps/admin`) — navegação orientada a tarefas
 
@@ -31,6 +33,8 @@
 | Segurança & auditoria | gestão de staff/fatores, registros auditáveis, falhas críticas | security admin com limites |
 
 **Proibição:** menu visível ≠ autorização. Ações administrativas só aparecem com capability e são negadas no backend por padrão. Admin de segurança não pode aprovar reembolso por implicação de cargo.
+
+**Cobertura admin:** A01 é o acesso staff/MFA anterior às áreas; A02 corresponde à visão operacional; A03–A07 correspondem às cinco áreas restantes. A08 é observabilidade opcional associada à visão operacional, **pendente de aprovação de escopo e contrato**, sem endpoint de replay criado por inferência. Papéis, alçadas e exceções continuam propostas DS-003; ocultar menu não concede autorização.
 
 ## Diagrama
 

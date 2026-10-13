@@ -33,7 +33,7 @@ Definir **o que existe, como se encontra e como se comporta** na loja e no backo
 1. Uma única identidade editorial futura **Atlas Commerce**, sem copiar VerboVivo, suas capas ou mídias.
 2. **Conta obrigatória** ao iniciar o checkout; visitantes podem pesquisar e montar carrinho.
 3. **Stripe Checkout hospedado, apenas Test Mode**. O browser não é fonte de confirmação de pagamento.
-4. Reserva física no DB por **40 min**, sessão externa por até **30 min** e margem de **5 min**, sujeitas à prova ST. Não mostrar countdown baseado só no navegador como autoridade.
+4. Reserva física no DB por **40 min somente quando houver itens físicos**; pedido exclusivamente digital não cria reserva física (RN-079). A ADR-004 refina a sessão Stripe para **30 min propostos desde sua criação**, com término pelo menos **5 min antes** da reserva quando aplicável; compatibilidade 40/30/5 permanece condicionada à prova ST. Não reduzir a sessão abaixo de 30 min para compensar atraso nem usar countdown do browser como autoridade.
 5. Tardio após expiração: **PAYMENT_REVIEW**, sem entrega, com compensação financeira idempotente.
 6. Direito de arquivo digital nasce apenas de entitlement persistido; kit misto exige pagamento válido e alocação física integral.
 7. Operador exige sessão staff diferenciada, MFA/step-up e autorização por recurso; UI não é controle de acesso.

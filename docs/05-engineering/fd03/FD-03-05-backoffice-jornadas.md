@@ -13,12 +13,14 @@
 | Financeiro aprovador | avaliar solicitação e alçada, aprovar/recusar | **outra identidade**; limite de valor e step-up |
 | Admin de segurança | gerir sessões, papéis, fatores | não herda acesso financeiro nem editorial |
 
+**Estado da autorização:** os perfis acima são candidatos da [DS-003](../../04-architecture/security/authorization-matrix.md), não roles finais aprovadas. Nomes, concessões, alçadas, abrangência da dupla aprovação, exceções e fator/recência de MFA continuam **pendentes de aprovação**; a proposta CT-01/06 exige identidade distinta no fluxo manual inventariado. A compensação técnica RN-078 segue política própria, sem depender de clique de operador.
+
 ## Fluxo crítico de refund manual
 
 1. Operador autorizado identifica caso com motivação e transação alvo.
 2. Sistema exibe captura e reembolsos **confirmados + pendentes reservados** sem revelar meios de pagamento sensíveis.
-3. Solicitante registra intenção idempotente, sem marcar 'concluído'.
-4. Aprovador **diferente** revisa; MFA recente e alçada aplicam-se à decisão.
+3. Solicitante registra a solicitação idempotente (`REQUESTED`), sem marcar 'concluído'.
+4. Aprovador **diferente** revisa segundo o fluxo proposto; MFA recente e alçada aplicam-se à decisão. Autorizar e reservar saldo atomicamente corresponde a `APPROVED`, conforme [SM-07](../../03-business-processes/TABELAS-DE-TRANSICAO.md); não representar `REQUESTED` como devolução aprovada ou concluída.
 5. Serviço técnico executa no PSP, com retries idempotentes e reconciliação. Status `PENDING`, `RECONCILIATION_REQUIRED` e `SUCCEEDED` devem ser distintos.
 6. Auditoria liga identidades, justificativa, timestamps, operação externa e estados; não guarda segredo/token/cartão.
 

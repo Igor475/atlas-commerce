@@ -7,7 +7,7 @@
 | ID | Tela (referência) | Informação e ação fundamental | Estados obrigatórios na futura FD-05 |
 |---|---|---|---|
 | P01 | Home ([imagem](../references/storefront/home-atlas-commerce.png)) | Entradas editoriais, catálogo publicado e busca | carregando, vazio de campanha, erro, sem imagens licenciadas |
-| P02 | Categoria ([revistas](../references/storefront/categorias-atlas-commerce.png) / [outra](../references/storefront/categorias-2-atlas-commerce.png)) | taxonomia e facetas válidas | sem itens, filtro sem resultados, erro, filtro aplicado, paginação |
+| P02 | Catálogo/categoria ([revistas](../references/storefront/categorias-atlas-commerce.png) / [outra](../references/storefront/categorias-2-atlas-commerce.png)) | taxonomia e facetas válidas | sem itens, filtro sem resultados, erro, filtro aplicado, paginação |
 | P03 | Busca ([imagem](../references/storefront/pesquisa-atlas-commerce.png)) | consulta, sugestão opcional, ordenação e resultados | termo vazio, nada encontrado, loading, erro, teclado/autocomplete |
 | P04 | Produto físico ([imagem](../references/storefront/produto-atlas-commerce.png)) | capa, edição, formato, estoque, preço, CTA | indisponível, opção impossível, preço atualizado, mídia ausente |
 | P05 | Produto e-book / livro ([imagem](../references/storefront/produtos-atlas-commerce.png)) | edição/formatos específicos e direitos | licença/formato inválido, sem prévia, elegibilidade, erro |
@@ -40,5 +40,5 @@
 - `loading` não implica skeleton genérico; usar estrutura próxima do conteúdo esperado **quando o layout existir**.
 - Erros devem diferenciar **transiente**, **validação**, **negação**, **revisão financeira** e **indisponibilidade do serviço**.
 - Números de avaliações, descontos, promoções, produtos, estoques e fretes só aparecem com fonte verdadeira/teste explicitamente fictício.
-- Apresentar `AUTH_REQUIRED`, `FORBIDDEN`, `NOT_FOUND` com tratamento seguro, evitando pistas sobre objetos de outro titular.
+- Apresentar `UNAUTHENTICATED`, `FORBIDDEN`, `RESOURCE_NOT_FOUND` com tratamento seguro, evitando pistas sobre objetos de outro titular, conforme [CT-03](../contracts/CT-03-erros-e-idempotencia-http.md); não criar enums de erro próprios por conveniência de UX.
 - Toda ação irreversível exige feedback e confirmação adequada sem afirmá-la concluída antes do backend.
