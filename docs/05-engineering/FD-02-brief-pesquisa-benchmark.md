@@ -1,6 +1,6 @@
 # Atlas Commerce — FD-02: brief de pesquisa e benchmarking de design premium
 
-> **Estado:** brief e processo aprováveis; **benchmark real e imagens AINDA NÃO PRODUZIDOS**. Não equivale a identidade visual, wireframe ou design system aprovado.
+> **Estado:** nove capturas selecionadas pelo responsável disponíveis como **referências visuais prioritárias do storefront** em [FD-02 — Referências visuais do usuário](FD-02-referencias-visuais-usuario.md). **Benchmark formal/responsivo ainda pendente**. Não equivale a identidade visual, wireframe ou design system aprovado.
 
 ## Propósito
 
@@ -8,7 +8,11 @@ Conceber um e-commerce editorial fictício com sofisticação de marca, interaç
 
 ## Referências para investigação (não para cópia)
 
-Pesquisar e inspecionar versões atuais e responsivas, incluindo o URL da página exata e data de captura. Misturar referências de publicação e lojas de outras categorias para evitar clonagem: **TASCHEN**, **Phaidon**, **Bookshop.org**, **Penguin Random House**, **Aesop**, **COS**; incluir outras referências atuais que possam justificar uma hipótese melhor. **Não afirmar análise concluída sem screenshots e evidência das páginas estudadas.**
+As **nove capturas selecionadas pelo responsável** são a direção prioritária de estilo, composição e hierarquia para o storefront: [catálogo por página e restrições](FD-02-referencias-visuais-usuario.md). Preservar os arquivos originais, nomes e proporções. Não copiar telas pixel-perfect nem implementar a identidade VerboVivo; paleta, fontes e marca Atlas continuam pendentes de FD-04 e aprovação humana.
+
+**TASCHEN e Penguin Random House deixam de ser referências visuais ativas.** A [shortlist anterior](FD-02-referencias-iniciais.md), inclusive os candidatos citados em FD-01, tem caráter histórico/exploratório e não prevalece sobre a seleção do responsável. Pesquisa externa complementar, quando necessária, deve registrar página exata, URL, data, viewport e diagnóstico, sem exigir o retorno dos dois candidatos rejeitados. **Não afirmar análise concluída sem evidência das páginas estudadas.**
+
+As capturas desktop fornecidas não comprovam responsividade, acessibilidade, performance ou interações. Nove capturas não equivalem a seis sites variados verificados; os critérios de pesquisa abaixo permanecem pendentes, sem reabrir a direção visual prioritária escolhida.
 
 ## Tarefas de pesquisa
 
@@ -27,6 +31,10 @@ Pesquisar e inspecionar versões atuais e responsivas, incluindo o URL da págin
 - Mapa de oportunidades separado para **storefront** e **admin**; considerar livros, e-books, revistas digitais, kits e pós-compra.
 - Evidências de UX, limitações e critérios de qualidade; sem copiar branding, templates ou assets privados.
 - **Nenhum código de UI final antes de FD-03/04/05 e aprovação humana**; usar apenas as páginas técnicas existentes.
+
+## Fronteiras funcionais preservadas
+
+Atlas exige **conta no checkout**, **Stripe Checkout hosted (hospedado) em test mode**, confirmação por **evidência validada do PSP** e conteúdo digital integral protegido por **entitlement**; a prévia pública é separada do integral. Pix/boleto, checkout como convidado, compra em 1-clique, preços fictícios, selos e descontos presentes nas referências **não viram funcionalidades ou políticas aprovadas**. RN/SEC/ADR e [contratos](contracts/README.md) permanecem superiores às referências visuais.
 
 ## Ligações
 

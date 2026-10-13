@@ -35,7 +35,12 @@ O pacote F04-02 detalha **30 testes `API-001–030` planejados**; nenhum foi exe
 ## Preparação Codex F04-03 e direção de design profissional
 
 - [**FD-01 — Direção de design editorial premium**](FD-01-direcao-design-frontend-premium.md): regra explícita do responsável: nenhum template ou UI genérica; pesquisa, identidade e aprovação visual próprias antes de desenvolver as telas finais.
+- [**FD-02 — Brief de pesquisa e benchmark**](FD-02-brief-pesquisa-benchmark.md): pesquisa formal pendente, com prioridade visual para as capturas selecionadas pelo responsável.
+- [**FD-02 — Referências iniciais (histórico)**](FD-02-referencias-iniciais.md): shortlist exploratória anterior; TASCHEN/Penguin Random House não são direção visual ativa.
+- [**FD-02 — Referências visuais do usuário**](FD-02-referencias-visuais-usuario.md): nove capturas prioritárias, catalogadas por página com restrições de negócio, segurança e originalidade; não aprovam identidade final nem implementação.
 - [**PROMPT-CODEX-F04-03 — Bootstrap técnico**](PROMPT-CODEX-F04-03-bootstrap.md): prompt completo para Codex criar os três apps, toolchain e CI sem módulos de domínio, sem deploy e sem UI comercial.
+
+Capturas originais por página: [Home](references/storefront/home-atlas-commerce.png), [Categoria Revistas](references/storefront/categorias-atlas-commerce.png), [Categoria Bíblias](references/storefront/categorias-2-atlas-commerce.png), [Pesquisa](references/storefront/pesquisa-atlas-commerce.png), [Produto físico](references/storefront/produto-atlas-commerce.png), [Livro físico/e-book](references/storefront/produtos-atlas-commerce.png), [Revista digital](references/storefront/produto-digital-atlas-commerce.png), [Carrinho](references/storefront/carrinho-atlas-commerce.png) e [Checkout](references/storefront/checkout-atlas-commerce.png).
 
 O **frontend** nesta etapa possui apenas placeholders técnicos neutros e acessíveis. **Não** tomar sua aparência como identidade final. O prompt é entregável documental pronto para execução futura; a presença do arquivo não prova código nem testes executados.
 

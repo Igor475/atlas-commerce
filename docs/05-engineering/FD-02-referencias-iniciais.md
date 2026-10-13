@@ -1,15 +1,17 @@
 # FD-02 — Referências iniciais para pesquisa de design premium do Atlas Commerce
 
-> **Status:** shortlist e observações factuais preliminares em 13/10/2026. **NÃO** é benchmark responsivo completo, identidade visual escolhida, wireframes ou permissão de implementar UI.
+> **Status:** **HISTÓRICO — shortlist exploratória substituída como direção visual pelas nove capturas selecionadas pelo responsável em 13/10/2026**, catalogadas em [FD-02 — Referências visuais do usuário](FD-02-referencias-visuais-usuario.md). **NÃO** é benchmark responsivo completo, identidade visual escolhida, wireframes ou permissão de implementar UI.
 > Complementa [FD-01](FD-01-direcao-design-frontend-premium.md) e o [brief de pesquisa](FD-02-brief-pesquisa-benchmark.md).
 
 ## Regra principal
 
 O futuro storefront e backoffice **não podem** parecer um template de e-commerce ou um dashboard genérico gerado por IA. Precisamos de direção de arte editorial original, hierarquia visual de especialistas, uma identidade própria, descoberta e-commerce eficaz, navegação previsível, acessibilidade WCAG 2.2 AA e performance real. **Sofisticação não é excesso de efeitos.** Referências são investigadas para extrair princípios, nunca copiadas em branding/assets, CSS ou layouts literais.
 
-## Seis candidatos variados
+## Shortlist histórica — sem direcionamento visual ativo
 
-| Referência | Página de pesquisa | O que estudar | Evidência atual e o que falta |
+As entradas abaixo preservam somente a rastreabilidade da investigação anterior. **TASCHEN e Penguin Random House foram rejeitados como referências visuais ativas**; não devem orientar o design nem ser exigidos novamente. As nove capturas do responsável têm prioridade para composição e hierarquia do storefront, sem copiar VerboVivo ou aprovar automaticamente paleta, fontes e marca Atlas.
+
+| Referência histórica | Página de pesquisa | O que se pretendia estudar | Evidência preliminar e o que faltava |
 |---|---|---|---|
 | TASCHEN | https://www.taschen.com/en/books/art/ | Categorias editoriais, filtros por séries, dimensões, idioma | Página pública apresenta filtros/ordenadores; **falta** inspeção visual desktop/mobile e PDP |
 | Phaidon | https://www.phaidon.com/ | Narrativa editorial de coleções e capas | **Candidato não auditado visualmente**; localizar páginas específicas e registrar captures |
@@ -33,6 +35,10 @@ Para cada referência: URL exata, data da captura, tipo de página, viewport, na
 - Separar visualmente **prévia autorizada** e **conteúdo integral protegido**.
 - Distinguir uma experiência expressiva de **storefront** de um **backoffice denso, ergonômico e auditável**.
 - Evitar heros com gradientes gratuitos, cards padronizados em excesso, status que dependem só da cor e promoções fictícias.
+
+## Limites das referências prioritárias
+
+As capturas não autorizam transcrição pixel-perfect ou implementação de telas. Permanecem **conta obrigatória no checkout**, **Stripe Checkout hosted em test mode**, confirmação pela **evidência validada do PSP** e acesso digital integral por **entitlement**. Pix/boleto, convidado, 1-clique, preços fictícios, selos e descontos retratados não são funcionalidades aprovadas. Consultar as restrições por página no [catálogo das nove capturas](FD-02-referencias-visuais-usuario.md); RN/SEC/ADR e contratos permanecem intactos.
 
 ## Próximas entregas de design
 
