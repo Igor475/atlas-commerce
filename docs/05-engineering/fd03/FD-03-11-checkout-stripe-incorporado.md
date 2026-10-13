@@ -34,7 +34,7 @@ Referências oficiais: https://docs.stripe.com/payments/checkout/quickstarts e h
 | `return_url` | `success_url` hosted | retorno/autenticação **condicional** ao modo incorporado; `success_url` não permitido nos modos embedded modernos, verificar API versionada |
 | Revalidação | webpage de retorno consulta pedido | componente/retorno consulta pedido; webhook continua autoridade |
 | Prazo | reserva 40m / sessão 30m / buffer 5m | **mesma política** com prova na sessão embedded |
-| Digital puro | sem reserva física | **sem reserva física**; contrato `reservationExpiresAt` deve representar ausência com valor nulo/ausência explícita, a ratificar em CT-10 |
+| Digital puro | sem reserva física | **sem reserva física**; `reservationExpiresAt` sempre presente e null, [UXD-16 ratificada pelo responsável em 13/10/2026](../contracts/UXD-16-RATIFICACAO-RESPONSAVEL.md); demais CT-10/Stripe pendentes |
 
 ## Segurança e integridade: proibições
 

@@ -12,7 +12,7 @@
 
 1. ADR-004 original menciona Checkout hosted. A decisão explícita posterior de UX **substitui essa modalidade de apresentação**, mantendo Stripe, BRL, Test Mode, card inicial, regras 40/30/5 e toda a segurança. Registrar adendo agora e sincronizar documento original antes do código.
 2. CT-01/02 e OpenAPI atualmente retornam `checkoutUrl`, não apropriada ao fluxo embedded. A forma nova deve ser versionada e comprovada pelo SDK; não gerar `clientSecret` de testes fictício.
-3. **UXD-16**: pedido exclusivamente digital não possui reserva física; forma de representar `reservationExpiresAt` (nulo/ausente) ainda deve ser ratificada no contrato; proposta documentada em CT-10, sem inventar reserva ou impor prazo 40min ao digital.
+3. **UXD-16 — ratificação expressa posterior em 13/10/2026:** [registro do responsável](../contracts/UXD-16-RATIFICACAO-RESPONSAVEL.md). `reservationExpiresAt` sempre presente: string UTC/RFC 3339 da reserva real em físico/kit misto, null no exclusivamente digital/kit digital. A antiga pendência nulo/ausente foi encerrada somente para esse campo; sem prazo físico fictício e sem homologar os demais CT-10/Stripe.
 4. **DS-003** alçadas de refund, MFA/step-up e nomes de permissões continuam pendentes. Não ampliar direitos de staff por navegação.
 5. Inclusão de favoritos, ofertas, avaliações/marketing e páginas jurídicas no sitemap **não autoriza API, banco ou alegações comerciais** sem contrato e conteúdo revisado.
 6. F04-05 Supabase L1 segue não homologado; Render Free/Vercel Hobby/Supabase Free/R2 Free permanecem solução demonstrativa, não sistema comercial apto a dinheiro real.
@@ -29,7 +29,7 @@ As **nove capturas escolhidas** em `docs/05-engineering/FD-02-referencias-visuai
 | Checkout incorporado ao site | APROVADO como direção de UX/integracão |
 | Stripe embedded: SDK, enum concreto, CSP e fluxos bancários | PENDENTE DE SPIKE |
 | Stripe 40/30/5, webhooks e refunds | PENDENTE DE ST |
-| OpenAPI e resposta do checkout, digital puro | PROPOSTA CT-10 A RATIFICAR |
+| OpenAPI e resposta do checkout, digital puro | SOMENTE UXD-16 RATIFICADA EM 13/10/2026; demais CT-10 PROPOSTOS, sem implementação/homologação |
 | Fav/reviews/ofertas e endpoints de identidade | PROJETADOS / CONTRATOS PENDENTES |
 | Identidade visual, logo, design system, telas finais | FD-04/05 PENDENTES |
 

@@ -33,7 +33,7 @@ Cadastro/verificação de e-mail, reset de senha, cadastro/rotação MFA, recove
 
 P16–P50/A09–A14 são navegação aprovada para planejamento, não nova API aprovada. Cadastro/verificação/recovery, favoritos/mesclagem/retencão, ofertas com histórico auditável, coleções/autores/facetas avançadas, atualização de perfil/endereço/segurança, lista de pedidos, suporte/devoluções e operações admin adicionais requerem inventário especializado, DTOs, ownership/CSRF/privacidade e testes negativos. Não acrescentar paths por inferência. Ver [inventário UX](../fd03/FD-03-09-inventario-completo-paginas.md).
 
-**Ratificação pendente UXD-16:** propriedade `reservationExpiresAt` obrigatória e anulável proposta no YAML/CT-02: null para digital puro, string date-time apenas para reserva física real. Solicita-se aprovação desse detalhe antes de implementar, sem fabricar prazo físico.
+**UXD-16 ratificada pelo responsável em 13/10/2026:** `reservationExpiresAt` sempre presente; string UTC/RFC 3339 da reserva real quando houver componente físico (inclusive kit misto), null no exclusivamente digital. [Registro da decisão](UXD-16-RATIFICACAO-RESPONSAVEL.md). Demais detalhes CT-10/Stripe seguem propostos ou pendentes; sem implementação nem prazo físico fictício.
 
 ## Política de resultado e compatibilidade
 

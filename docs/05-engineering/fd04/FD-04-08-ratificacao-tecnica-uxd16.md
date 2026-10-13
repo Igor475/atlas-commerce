@@ -1,8 +1,8 @@
 # UXD-16 — Parecer técnico favorável ao contrato obrigatório e anulável
 
-> **Situação:** **PARECER TÉCNICO FAVORÁVEL, RATIFICAÇÃO DO RESPONSÁVEL PENDENTE**. Há parecer técnico do assistente, mas não foi identificada aprovação expressa do responsável para o campo obrigatório/anulável. **Não registrar APROVADO PELO RESPONSÁVEL nem atualizar marcadores contratuais como ratificados**. Aplica-se ao desenho do DTO `CheckoutResult`, não a migrations nem lógica comercial executável.
+> **Situação atual:** **APROVADO PELO RESPONSÁVEL EM 13/10/2026**, conforme [registro expresso UXD-16](../contracts/UXD-16-RATIFICACAO-RESPONSAVEL.md), posterior ao parecer técnico abaixo. Somente a forma obrigatória/anulável de `CheckoutResult.reservationExpiresAt` está ratificada; demais CT-10/Stripe, 40/30/5 e SDK não homologados. Não declara migrations, checkout ou lógica comercial implementados.
 
-## Forma recomendada tecnicamente — proposta contratual
+## Forma contratual ratificada — somente UXD-16
 
 O campo **`reservationExpiresAt` é obrigatório e admite `string | null`** em resposta de `POST /api/v1/checkouts`.
 
@@ -41,6 +41,14 @@ Quando a API tiver discriminante confiável de `containsPhysicalItems` ou equiva
 8. Expiração da sessão Stripe e expiração da reserva permanecem campos independentes; nenhum callback browser cria `PAID`.
 9. Sessão de pagamento para digital puro deve ter validade comercial própria; essa **política está em aberto** e não é substituída pelo `null`.
 
-## Próximo ajuste documental
+## Rastreabilidade atual e limites
+
+A ratificação encerra apenas a decisão sobre presença/tipo de `reservationExpiresAt`. CT-02/08/10, OpenAPI, índices e FD-03/04/05 registram esse aceite, sem marcar cenários como executados. Os testes de composição/origem PostgreSQL/UTC permanecem futuros, assim como a prova Stripe/40/30/5 e a definição de validade comercial do pedido digital.
+
+## Histórico — parecer anterior à ratificação expressa (13/10/2026)
+
+O status e encaminhamento anteriores ficam preservados abaixo como histórico, superado somente pela decisão expressa do campo:
+
+> **Situação:** **PARECER TÉCNICO FAVORÁVEL, RATIFICAÇÃO DO RESPONSÁVEL PENDENTE**. Há parecer técnico do assistente, mas não foi identificada aprovação expressa do responsável para o campo obrigatório/anulável. **Não registrar APROVADO PELO RESPONSÁVEL nem atualizar marcadores contratuais como ratificados**. Aplica-se ao desenho do DTO `CheckoutResult`, não a migrations nem lógica comercial executável.
 
 Os documentos [`CT-02`](../contracts/CT-02-dtos-validacao.md), [`CT-10`](../contracts/CT-10-migracao-embedded-checkout-proposta.md), OpenAPI v1, cenários CT-08, [`FD-03-08`](../fd03/FD-03-08-decisoes-abertas.md) e [`FD-03-13`](../fd03/FD-03-13-status-decisoes-v02.md) ainda podem marcar UXD-16 como pendente. Após **aceite explícito do responsável**, alterar cirurgicamente somente o status e os testes de resposta, sem mudar RN-079, TTL 40/30/5, Stripe Test Mode ou a reserva real. Fixar `ui_mode` Stripe só depois de spike compatível com API/SDK versionados.

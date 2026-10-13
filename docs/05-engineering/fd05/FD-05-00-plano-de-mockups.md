@@ -33,7 +33,7 @@ Produzir uma experiência completa e original de e-commerce editorial, orientada
 ## Gates do pagamento incorporado
 
 - Pagamento com **Stripe Checkout incorporado**, Test Mode, componente oficial; nunca inputs PAN/CVV Atlas.
-- Para físicos, reserva de estoque real 40 min e sessão Stripe de 30 min proposta com buffer 5 min, sujeita a ensaios Stripe. Para digital puro, **nenhuma reserva física**; UXD-16 `reservationExpiresAt: null` continua pendente da ratificação expressa do responsável.
+- Para físicos, reserva de estoque real 40 min e sessão Stripe de 30 min proposta com buffer 5 min, sujeita a ensaios Stripe. Para digital puro, **nenhuma reserva física**; [UXD-16 ratificada expressamente em 13/10/2026](../contracts/UXD-16-RATIFICACAO-RESPONSAVEL.md) exige campo sempre presente, string UTC/RFC 3339 com componente físico/kit misto e `null` no exclusivamente digital/kit digital. Demais CT-10/Stripe seguem propostos ou pendentes, sem prova temporal/implementação.
 - `clientSecret` da sessão Stripe é somente para inicializar SDK após validação de cliente; nunca confirmação financeira. A UI de retorno consulta status confiável do backend. 3DS pode exigir passo externo.
 - Layouts de pagamento não devem simular meios não aprovados nem inventar garantia de disponibilidade dos planos Free.
 

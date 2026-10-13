@@ -38,7 +38,7 @@
 ## Variações do delta EMBEDDED (planejadas, não executadas)
 
 - **API-010:** 201 somente sessionStatus READY, presentation EMBEDDED, clientSecret de Checkout Session e sessionExpiresAt válido, com owner/TLS/no-store; 202 não contém clientSecret nem hosted URL. Negativos: READY sem secret/prazo, 202 READY, secret no pending, campo hosted antigo e outro titular.
-- **API-005/010:** digital puro não cria reserva física; proposta UXD-16 representa `reservationExpiresAt: null` obrigatório. A ratificação desse shape permanece pendente; os cenários de domínio não são novos endpoints.
+- **API-005/010 — UXD-16 ratificada em 13/10/2026:** [registro expresso](UXD-16-RATIFICACAO-RESPONSAVEL.md). Para 201/202, exigir a propriedade: físico/kit físico/misto → string UTC/RFC 3339 da reserva PostgreSQL real; exclusivamente digital/kit digital → null. Negativos estruturais: campo ausente, string vazia, data inválida, número, boolean, array ou objeto. Negativos de domínio: físico com null após reserva criada e digital com timestamp artificial, usando snapshot persistido e nunca flag do cliente. Schema estrutural não prova composição/origem/UTC; cenários de domínio permanecem planejados, não executados, sem endpoint novo.
 - **API-020/027/028:** montagem/cleanup/3DS/retorno/expiração não geram PAID nem nova tentativa financeira; clientSecret não aparece em URL/log/cache/SSR/analytics/erro público. `success_url` hosted não integra a proposta incorporada.
 - Fixar versão da API/SDK/ui_mode no futuro ensaio ST; enum de negócio EMBEDDED não prova compatibilidade do SDK. Identidade completa/favoritos/ofertas/novas páginas precisam de contratos separados, sem ampliar API-001–030 por inferência.
 

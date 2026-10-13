@@ -17,7 +17,7 @@ A arquitetura aprovada cobre **P01–P50 e A01–A14** em [`FD-03-09`](../fd03/F
 ## Stripe incorporado: regras de apresentação
 
 1. Formulário de pagamento é **componente oficial Stripe**, dentro da página da loja; nunca colher PAN/CVV em inputs Atlas.
-2. Em pedido com físicos, `reservationExpiresAt` vem de reserva real e a sessão da Stripe deve caber na política 40/30/5. Na proposta UXD-16, **ainda sujeita à ratificação do responsável**, digital puro retorna `null`, sem prometer 40 minutos para o pedido.
+2. Em pedido com físicos, `reservationExpiresAt` vem de reserva real e a sessão da Stripe deve caber na política 40/30/5. Na [UXD-16 ratificada pelo responsável em 13/10/2026](../contracts/UXD-16-RATIFICACAO-RESPONSAVEL.md), o campo é sempre presente: string UTC/RFC 3339 com componente físico, `null` no exclusivamente digital, sem prometer 40 minutos para o pedido. Demais CT-10/Stripe continuam não homologados.
 3. `payment.sessionExpiresAt` é informação própria da sessão Stripe, não substitui `reservationExpiresAt`.
 4. Cartão/integrador pode acionar 3DS ou navegação autorizada. O sistema volta a consultar estado do pedido pelo backend, nunca inferindo `PAID` pelo browser.
 5. As telas mobile devem comportar iframe/componente oficial sem cortar campos, cobrir erros ou expor client secret em links, URL ou logs.

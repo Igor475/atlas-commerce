@@ -13,7 +13,8 @@
 | [CT-07](CT-07-versionamento-e-compatibilidade.md) | API/events/JSON Schema, mudanças, contrato e implementadores |
 | [CT-08](CT-08-cenarios-validacao-api.md) | Testes `API-001–030` planejados, positivos/negativos |
 | [CT-09](CT-09-decissoes-gates-codex.md) | O que aprovar antes de escrever código e sequência de implementação |
-| [CT-10](CT-10-migracao-embedded-checkout-proposta.md) | Delta de apresentacao EMBEDDED e reservationExpiresAt anulavel, propostos para ratificacao |
+| [CT-10](CT-10-migracao-embedded-checkout-proposta.md) | Delta EMBEDDED proposto; somente forma obrigatória/anulável UXD-16 ratificada em 13/10/2026 |
+| [Ratificação UXD-16](UXD-16-RATIFICACAO-RESPONSAVEL.md) | Decisão expressa do responsável sobre reservationExpiresAt; não homologa demais CT-10/Stripe |
 | [OpenAPI v1 (YAML)](openapi/atlas-commerce-api-v1.yaml) | Especificação declarativa OpenAPI 3.1 *proposta* |
 | [Eventos (JSON Schema)](events/atlas-domain-events-v1.schema.json) | Contrato declarativo de eventos principais, não SQL |
 | [API-01](diagrams/API-01-fronteiras.md) | Fluxos de interface e fronteira de confiança em DOT + SVG + PNG |

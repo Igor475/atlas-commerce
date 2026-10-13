@@ -21,12 +21,14 @@ Em `POST /api/v1/checkouts`, devolver resposta do checkout **sem URL hosted**. A
 
 Para `payment.sessionStatus=READY`, substituir campos do status pendente por `sessionExpiresAt` e o **client secret de Checkout Session** obtido do Stripe de modo seguro. A entrega do segredo de cliente ao navegador tem finalidade de inicializar o componente oficial, e **não** equivale a `sk_test` nem a conceder autorização de pedido a qualquer browser. Guardas de sessão/titularidade, `no-store`, expiração, segregação de ambiente e não log obrigatórios. URL externa hosted deixa de ser dado principal da resposta. Se o SDK exigir uma chamada de recuperação exclusiva, avaliar endpoint adicional **antes** de criá-lo e inserir em CT/OpenAPI.
 
-### Digital puro: divergência contratual UXD-16
+### Digital puro: UXD-16 ratificada em 13/10/2026
 
 - **Regra de domínio existente:** sem reserva física para pedido exclusivamente digital.
 - **Contrato antigo:** `reservationExpiresAt` obrigatório como string date-time, incompatível.
-- **Proposta recomendada:** manter a propriedade obrigatória com union `type: [string, 'null']`, `format: date-time` somente no valor string, e devolver `null` no digital puro. Isso torna a ausência explícita. **Depende de ratificação do contrato**, não está automaticamente aprovada só por FD-03. Outra alternativa é campo opcional, a avaliar em versionamento.
+- **APROVADO PELO RESPONSÁVEL EM 13/10/2026:** [ratificação expressa UXD-16](UXD-16-RATIFICACAO-RESPONSAVEL.md). Propriedade sempre presente com union `type: [string, 'null']`, `format: date-time` somente em string: timestamp UTC/RFC 3339 da reserva real em físico/kit físico/misto, null no exclusivamente digital/kit digital. Campo opcional não é a decisão aprovada. Os demais detalhes deste delta CT-10 e da Stripe continuam propostos ou pendentes; esta ratificação não homologa schema inteiro, implementação ou política temporal.
 - **Não** criar `reservationExpiresAt = orderCreatedAt + 40m` para casos exclusivamente digitais.
+
+**Precedência histórica limitada a UXD-16:** as menções desse campo como "a ratificar" na [ADR-004](../../04-architecture/adrs/ADR-004-psp-sandbox.md) e no [plano ST](../../04-architecture/07-validacao-stripe.md) registram o estado anterior à decisão expressa de 13/10/2026. Esses arquivos permanecem preservados por escopo; a ratificação posterior vale somente para presença/tipo do campo, sem encerrar ST, aprovar outros detalhes CT-10 ou homologar Stripe/40/30/5.
 
 ### Indicador `payment.presentation`
 

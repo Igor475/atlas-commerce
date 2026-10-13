@@ -27,9 +27,9 @@
 - `LibraryAccess`: `temporaryUrl` de curta vida, `expiresAt`; somente após verificação server-side; no-store e redaction.
 - `RefundRequest`: `orderId`, `captureId?` (internamente resolvível), `amountCents`, `reasonCode`; **valor máximo/níveis de aprovação seguem abertos**; mesmo código com payload diferente deve conflitar.
 
-## Deltas propostos — ratificação antes de software
+## UXD-16 ratificada e demais deltas propostos
 
-- **UXD-16:** manter `reservationExpiresAt` obrigatório com `type: [string, null]` em OpenAPI 3.1; null significa ausência real de reserva no digital puro. String RFC 3339 somente para reserva física real. É **proposta a ratificar**, não autorização decorrente da aprovação do sitemap; não inventar +40m para digital. Alternativa campo opcional exigiria decisão contratual distinta.
+- **UXD-16 — APROVADO PELO RESPONSÁVEL EM 13/10/2026:** `reservationExpiresAt` sempre presente, com `type: [string, null]` em OpenAPI 3.1. String UTC/RFC 3339 da reserva física real se houver componente físico, inclusive kit físico/misto; null no exclusivamente digital, inclusive kit digital. [Ratificação expressa](UXD-16-RATIFICACAO-RESPONSAVEL.md). Não omitir, não inventar +40m para digital. A correspondência depende do snapshot persistido, não de flag do cliente; não implica implementação, aprovação dos demais deltas CT-10 ou homologação Stripe.
 - `presentation=EMBEDDED` é enum Atlas, independente de `ui_mode` Stripe. API/SDK/enum exatos e return/3DS continuam pendentes de prova ST.
 - READY exige `clientSecret` não vazio e `sessionExpiresAt` string válida. Nos demais sessionStatus, clientSecret é proibido e sessionExpiresAt pode estar ausente/null se ainda desconhecido; `202` não é prontidão de pagamento.
 - O schema de resposta proposto rejeita campos hosted antigos por `additionalProperties: false`. Nenhum consumidor ou API implantada foi migrado nesta etapa. Mesmas rotas, segurança, idempotência, estados e códigos HTTP.

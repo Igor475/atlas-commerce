@@ -6,7 +6,7 @@ info:
     Vercel Hobby/Render Free/Supabase Free. Rotas/DTOs propostos sujeitos a revisão F04-02. Sem compromisso de operação
     comercial.
 x-atlas-status: PROPOSTO_NAO_IMPLEMENTADO
-x-atlas-delta: CT-10 EMBEDDED e reservationExpiresAt anulavel propostos; ratificacao pendente antes de software
+x-atlas-delta: UXD-16 obrigatorio/anulavel ratificado pelo responsavel em 2026-10-13; demais CT-10/Stripe propostos ou pendentes, sem implementacao
 x-atlas-stripe-api-sdk-ui-mode: PENDENTE_DE_VERSAO_EXATA_E_PROVA
 servers:
 - url: /
@@ -279,8 +279,8 @@ components:
     CheckoutResult:
       type: object
       additionalProperties: false
-      description: Proposta CT-10, nao implementada; forma anulavel UXD-16 exige ratificacao contratual.
-      x-atlas-ratification: PENDENTE_CT10_UXD16
+      description: UXD-16 obrigatorio/anulavel aprovado pelo responsavel em 2026-10-13; demais CT-10 propostos, nao implementados ou homologados.
+      x-atlas-ratification: UXD16_APROVADO_RESPONSAVEL_2026_10_13_DEMAIS_CT10_PROPOSTOS
       required:
       - orderId
       - state
@@ -304,8 +304,8 @@ components:
           - string
           - 'null'
           format: date-time
-          description: Proposta a ratificar; null no digital puro, string apenas para reserva fisica real. Sem TTL fisico ficticio.
-          x-atlas-ratification: PENDENTE_UXD16
+          description: UXD-16 aprovado em 2026-10-13; campo sempre presente, string UTC/RFC3339 da reserva real com componente fisico (inclusive kit misto), null no exclusivamente digital. Sem TTL fisico ficticio; correspondencia deve ser validada pelo snapshot persistido.
+          x-atlas-ratification: APROVADO_RESPONSAVEL_2026_10_13
         payment:
           type: object
           additionalProperties: false
@@ -967,7 +967,7 @@ paths:
         Em 202, sessionStatus PENDING/RECONCILIATION_REQUIRED e clientSecret proibido. Estado do pedido permanece SM-01.
         TLS/no-store, sem segredo em URL/log/cache/SSR/analytics; callback/completion/return nao confirmam PAID.
         API/SDK/ui_mode e return_url condicionais a versao exata e prova; success_url hosted nao integra este delta.
-        reservationExpiresAt obrigatorio anulavel e PROPOSTA CT-10/UXD-16 ainda sujeita a ratificacao.
+        Somente reservationExpiresAt obrigatorio/anulavel (UXD-16) ratificado pelo responsavel em 2026-10-13; demais CT-10/Stripe seguem propostos ou pendentes.
   /api/v1/me/orders/{orderId}:
     get:
       operationId: getMyOrder

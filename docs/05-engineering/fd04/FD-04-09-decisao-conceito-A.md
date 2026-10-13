@@ -32,7 +32,7 @@ A referência de paleta em [Conceito A](FD-04-02-conceito-A-colecao-viva.md) con
 | FD-04 direção A — Coleção Viva | **APROVADA PELO RESPONSÁVEL** |
 | FD-04 tokens/identidade final | **PENDENTES** |
 | FD-05 wireframes/mockups/protótipos | **PENDENTES** |
-| UXD-16 `reservationExpiresAt` obrigatório/anulável | **PARECER TÉCNICO FAVORÁVEL; ACEITE EXPRESSO DO RESPONSÁVEL PENDENTE** |
+| UXD-16 `reservationExpiresAt` obrigatório/anulável | Na escolha de A havia apenas parecer técnico; **RATIFICADO por decisão expressa posterior em 13/10/2026**, [registro próprio](../contracts/UXD-16-RATIFICACAO-RESPONSAVEL.md); demais CT-10/Stripe pendentes |
 | Stripe `ui_mode` concreto, 40/30/5, webhooks, refunds | **PENDENTES DE SPIKE** |
 | F04-05 Supabase remoto L1 | **PENDENTE** |
 

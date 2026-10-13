@@ -17,12 +17,12 @@
 | UXD-13 | Mobile/tab | fluxos ainda sem visual responsivo auditado | wireframes/estados e ensaios FD-05 |
 | UXD-14 | Auditoria/preço/descontos | nenhum selo, promessa ou promoção sem fonte | revisão de copy honesta e teste mode visualmente identificado |
 
-## Lacunas contratuais e divergências — pendentes de aprovação
+## Lacunas contratuais — ratificação UXD-16 e pendências de aprovação
 
 | ID | Evidência / lacuna | Proposta de encaminhamento, sem alterar normas ou API |
 |---|---|---|
 | UXD-15 | CT-01 não inventaria listagem de pedidos, atualização de conta/endereço, cadastro/recovery completos, administração editorial/estoque, auditoria nem observabilidade/replay de A08. Autocomplete/facetas detalhadas também não estão contratados. | Aprovar escopo, operações, DTOs, privacidade e negativos antes de implementar P11/P12/P15/A03–A08 ou busca avançada. Manter páginas conceituais, sem inventar endpoints. |
-| UXD-16 | RN-079/PC-02/04 dispensam reserva física no digital puro. O antigo campo obrigatório não nulo foi substituído documentalmente pela proposta CT-10: propriedade obrigatória `type: [string, null]`, null no digital puro. | **Ratificação contratual ainda solicitada antes de código**: confirmar forma anulável obrigatória, sem criar TTL/reserva física fictícios; validade comercial digital permanece decisão própria. A edição do YAML proposto não ratifica o contrato. |
+| UXD-16 | RN-079/PC-02/04 dispensam reserva física no digital puro. Forma obrigatória `type: [string, null]` **ratificada pelo responsável em 13/10/2026**: string UTC/RFC 3339 da reserva real com componente físico/kit misto, null no exclusivamente digital. | [Ratificação expressa](../contracts/UXD-16-RATIFICACAO-RESPONSAVEL.md), posterior aos registros históricos abaixo. Não omitir nem criar TTL físico fictício; validade comercial digital permanece decisão própria. Demais CT-10/Stripe e implementação não homologados. |
 | UXD-17 | DS-003 declara nomes de roles, alçadas, abrangência da dupla aprovação e exceções em aberto; CT-01/06 propõem aprovador distinto no refund manual. | Ratificar DS-003/DA-009 e mapear capabilities por recurso; preservar MFA e negar ações sem política autorizada. ADM-01 continua proposta, sem aprovar poderes ou limites numéricos. |
 | UXD-18 | RN-072/PC-01 expressam teto <=30 min; ADR-004 e CT-02 refinam a sessão Stripe para 30 min, compatibilidade temporal ainda não homologada. | Ler o teto em conjunto com o refinamento de 30 min; manter 40/30/5 condicionado a ST. Se a integração provar incompatibilidade, encaminhar decisão normativa versionada, sem encurtar sessão ou mudar RN/PC/ADR nesta revisão. |
 
