@@ -1,0 +1,11 @@
+digraph UX02 { graph [rankdir=TB bgcolor=white pad="0.22" nodesep="0.30" ranksep="0.49" fontname="DejaVu Sans" label="UX-02  •  Biblioteca e preview protegido" labelloc=t fontsize=17]; node [shape=box style="rounded,filled" fillcolor="#f4f5f2" color="#a3b1aa" fontname="DejaVu Sans" fontsize=10]; edge [color="#859b92" arrowsize=.65]; p [label="Página pública de revista
+Somente prévia licenciada"]; x [label="Compra no Stripe hospedado
+PSP validado no backend"]; q [shape=diamond label="Pedido elegível?"]; r [label="Sem acesso integral
+PENDING / PAYMENT_REVIEW",fillcolor="#fff0ee"]; s [shape=diamond label="Kit misto?
+Físico totalmente alocado?"]; t [label="Aguardar alocação física
+Sem entitlement ainda",fillcolor="#fff0ee"]; u [label="Conceder entitlement
+idempotente, por titular"]; v [label="Cliente autentica e abre
+Minha biblioteca"]; w [shape=diamond label="Titular + licença +
+estado válidos?"]; y [label="Negar sem vazar objeto
+Acesso expirado -> revalidar",fillcolor="#fff0ee"]; z [label="URL temporária / proxy autorizado
+R2 privado • Sem URL pública integral",fillcolor="#e6f2ed"];p->x;x->q;q->r [label="não"];q->s [label="sim"];s->t [label="misto sem alocação"];s->u [label="elegível"];u->v;v->w;w->y [label="não"];w->z [label="sim"]; }

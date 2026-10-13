@@ -1,0 +1,12 @@
+digraph ADM01 { graph [rankdir=TB bgcolor=white pad="0.22" nodesep="0.32" ranksep="0.52" fontname="DejaVu Sans" label="ADM-01  •  Refund administrativo com segregação" labelloc=t fontsize=17]; node [shape=box style="rounded,filled" fillcolor="#f4f5f2" color="#a3b1aa" fontname="DejaVu Sans" fontsize=10]; edge [color="#859b92" arrowsize=.65]; a [label="Staff autenticado
+Classe admin + MFA"]; b [label="Financeiro solicitante
+Caso + motivo + captura"]; c [label="Criar intenção idempotente
+Reservar saldo em TX"]; d [shape=diamond label="Aprovador diferente?
+MFA recente e alçada?"]; e [label="Negar e auditar
+Sem executar PSP",fillcolor="#fff0ee"]; f [label="Aprovar sem marcar pago
+Intenção durável",fillcolor="#e6f2ed"]; g [label="Serviço técnico
+Stripe test mode + mesma chave"]; h [shape=diamond label="Resultado remoto
+comprovado?"]; i [label="RECONCILIATION_REQUIRED
+Manter saldo comprometido",fillcolor="#fff0ee"]; j [label="SUCCEEDED ou FAILED
+com prova do PSP
+Atualizar ledger + auditoria",fillcolor="#e6f2ed"]; a->b;b->c;c->d;d->e [label="não"];d->f [label="sim"];f->g;g->h;h->i [label="incerto"];h->j [label="sim"]; }

@@ -1,0 +1,13 @@
+digraph IA01 { graph [rankdir=TB bgcolor="white" pad="0.22" nodesep="0.34" ranksep="0.54" fontname="DejaVu Sans" label="IA-01  •  Storefront Atlas Commerce (sitemap candidato)" labelloc=t fontsize=17]; node [shape=box style="rounded,filled" fillcolor="#f4f5f2" color="#a3b1aa" fontname="DejaVu Sans" fontsize=10 margin="0.15,0.10"]; edge [color="#859b92" arrowsize=.65]; root [label="Atlas Commerce
+Storefront",fillcolor="#184b3b" fontcolor=white]; discover [label="Descobrir
+Home • Catálogo • Categorias"]; search [label="Buscar
+Resultados • Facetas"]; product [label="Avaliar
+Produto físico • E-book • Revista
+Kit • Prévia parcial"]; cart [label="Comprar
+Carrinho (público)"]; auth [label="Conta obrigatória
+Login/cadastro (contratos futuros)"]; checkout [label="Checkout interno
+Cotação e revisão"]; stripe [label="Stripe Checkout hospedado
+SOMENTE Test Mode",fillcolor="#e9f0ee"]; after [label="Acompanhar
+Pedido • Pagamento em revisão"]; library [label="Pós-compra
+Biblioteca com entitlement"]; help [label="Ajuda e políticas
+Conteúdo revisado"]; root->{discover search help};discover->product;search->product;product->cart;cart->auth;auth->checkout;checkout->stripe;stripe->after;after->library; }
