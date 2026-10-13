@@ -19,7 +19,7 @@ A matriz é **qualitativa e propositiva**. Não se trata de teste de usuário, c
 
 ## Ficha de decisão (preencher após aprovação explícita)
 
-- Direção escolhida: **PENDENTE**.
+- Direção escolhida: **A — Coleção Viva, decisão do responsável em 13/10/2026** (somente direção criativa; B/C permanecem alternativas históricas não escolhidas).
 - Elementos das demais direções a considerar: **PENDENTE**.
 - Marca/monograma Atlas: **PENDENTE**, deve ser original.
 - Fontes (licenças e pesos): **PENDENTE**.

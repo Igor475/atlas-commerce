@@ -1,6 +1,6 @@
 # Conceito A — Coleção Viva
 
-> **Hipótese:** opção mais próxima da personalidade geral das nove capturas, mas com grids, linguagem, marca e elementos completamente autorais. **Não é aprovação nem reprodução do VerboVivo.**
+> **Status: CONCEITO A APROVADO PELO RESPONSÁVEL COMO DIREÇÃO CRIATIVA EM 13/10/2026.** Opção mais próxima da personalidade geral das nove capturas, mas com grids, linguagem, marca e elementos completamente autorais. **Não aprova identidade final, logo, fontes, cores/tokens definitivos, design system final, mockups, código, integração Stripe ou UXD-16; não autoriza reprodução do VerboVivo.**
 
 ## Assinatura visual
 

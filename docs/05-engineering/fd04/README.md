@@ -1,6 +1,6 @@
 # FD-04 — Direção de arte original e fundações do design system
 
-> **Versão:** 0.1 · **Status:** TRÊS CONCEITOS EM AVALIAÇÃO, ESCOLHA DO RESPONSÁVEL PENDENTE, NENHUM APROVADO COMO IDENTIDADE FINAL · **Data:** 13/10/2026.
+> **Versão:** 0.1 · **Status:** CONCEITO A — COLEÇÃO VIVA ESCOLHIDO PELO RESPONSÁVEL COMO DIREÇÃO CRIATIVA EM 13/10/2026; IDENTIDADE FINAL E FD-05 PENDENTES · **Data:** 13/10/2026.
 
 ## O que já foi aprovado
 
@@ -21,12 +21,17 @@
 | [Fundações](FD-04-06-fundacoes-design-system.md) | Tokens e componentes propostos, sem código |
 | [Telas](FD-04-07-padroes-por-tela.md) | Aplicação conceitual nas páginas-chave e no admin |
 | [UXD-16](FD-04-08-ratificacao-tecnica-uxd16.md) | PARECER TÉCNICO FAVORÁVEL, RATIFICAÇÃO DO RESPONSÁVEL PENDENTE para contrato obrigatório/anulável |
+| [FD-04-09](FD-04-09-decisao-conceito-A.md) | Decisão expressa de A como direção criativa; B/C históricos não escolhidos |
+| [FD-04-10](FD-04-10-refinamento-criativo-colecao-viva.md) | Brief direcional de Coleção Viva, sem mockup aprovado |
+| [FD-04-11](FD-04-11-tokens-candidatos.md) | Tokens candidatos exploratórios, sem aprovação definitiva |
+| [Plano FD-05](../fd05/FD-05-00-plano-de-mockups.md) | Wireframes/mockups/protótipos planejados, não executados |
+| [Roteiro FD-05](../fd05/FD-05-01-roteiro-telas-piloto.md) | Telas-piloto propostas para revisão futura |
 
 O prompt original `PROMPT-CODEX-FD04-SINCRONIZACAO.md` não está disponível neste pacote; não foi recriado nem listado como artefato existente.
 
 ## Limites
 
-Não há logo, fonte final licenciada, identidade visual final, mockup, protótipo, implementação CSS, garantia de contraste real de todas as combinações, benchmark formal concluído ou prova Stripe. A FD-05 só começa **após escolher uma direção**. A FD-02 externa/responsiva segue pendente; as nove imagens são capturas fornecidas, não benchmark acessível executado.
+Não há logo, fonte final licenciada, identidade visual final, mockup, protótipo, implementação CSS, garantia de contraste real de todas as combinações, benchmark formal concluído ou prova Stripe. A direção A foi escolhida; **FD-05 permanece planejada, não executada**, e UXD-16 continua pendente de ratificação expressa. A FD-02 externa/responsiva segue pendente; as nove imagens são capturas fornecidas, não benchmark acessível executado.
 
 ## Precedência
 
