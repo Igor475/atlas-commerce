@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/atlas-identity-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["identity"]
+}
+
+model CustomerAccount {
+  id         String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email      String              @unique
+  status     String              @default("PENDING_VERIFICATION")
+  createdAt  DateTime            @default(dbgenerated("clock_timestamp()")) @map("created_at") @db.Timestamptz(6)
+  credential PasswordCredential?
+  sessions   AuthSession[]
+  tokens     AccountToken[]
+
+  @@map("customer_account")
+  @@schema("identity")
+}
+
+model PasswordCredential {
+  accountId String          @id @map("account_id") @db.Uuid
+  hash      String
+  version   Int             @default(1)
+  account   CustomerAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@map("password_credential")
+  @@schema("identity")
+}
+
+model AuthSession {
+  id                String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountId         String          @map("account_id") @db.Uuid
+  tokenHash         String          @unique @map("token_hash")
+  sessionClass      String          @default("CUSTOMER") @map("session_class")
+  credentialVersion Int             @map("credential_version")
+  origin            String
+  createdAt         DateTime        @default(dbgenerated("clock_timestamp()")) @map("created_at") @db.Timestamptz(6)
+  lastSeenAt        DateTime        @default(dbgenerated("clock_timestamp()")) @map("last_seen_at") @db.Timestamptz(6)
+  expiresAt         DateTime        @map("expires_at") @db.Timestamptz(6)
+  revokedAt         DateTime?       @map("revoked_at") @db.Timestamptz(6)
+  account           CustomerAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, revokedAt])
+  @@map("auth_session")
+  @@schema("identity")
+}
+
+model AccountToken {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  accountId     String          @map("account_id") @db.Uuid
+  tokenHash     String          @unique @map("token_hash")
+  purpose       String
+  createdAt     DateTime        @default(dbgenerated("clock_timestamp()")) @map("created_at") @db.Timestamptz(6)
+  expiresAt     DateTime        @map("expires_at") @db.Timestamptz(6)
+  consumedAt    DateTime?       @map("consumed_at") @db.Timestamptz(6)
+  invalidatedAt DateTime?       @map("invalidated_at") @db.Timestamptz(6)
+  account       CustomerAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  email         EmailOutbox?
+
+  @@index([accountId, purpose, createdAt])
+  @@map("account_token")
+  @@schema("identity")
+}
+
+model EmailOutbox {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tokenId    String       @unique @map("token_id") @db.Uuid
+  token      AccountToken @relation(fields: [tokenId], references: [id], onDelete: Cascade)
+  payload    String
+  status     String       @default("PENDING")
+  attempts   Int          @default(0)
+  createdAt  DateTime     @default(dbgenerated("clock_timestamp()")) @map("created_at") @db.Timestamptz(6)
+  expiresAt  DateTime     @map("expires_at") @db.Timestamptz(6)
+  leaseUntil DateTime?    @map("lease_until") @db.Timestamptz(6)
+
+  @@index([status, leaseUntil])
+  @@map("email_outbox")
+  @@schema("identity")
+}
+
+model AuthSecurityEvent {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectId String?  @map("subject_id") @db.Uuid
+  action    String
+  requestId String   @map("request_id") @db.Uuid
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @map("created_at") @db.Timestamptz(6)
+
+  @@index([createdAt])
+  @@map("auth_security_event")
+  @@schema("identity")
+}
+
+model AuthAbuseWindow {
+  key       String
+  bucket    BigInt
+  hits      Int
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+
+  @@id([key, bucket])
+  @@index([expiresAt])
+  @@map("auth_abuse_window")
+  @@schema("identity")
+}

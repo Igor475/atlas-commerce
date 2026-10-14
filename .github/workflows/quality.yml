@@ -64,3 +64,32 @@ jobs:
       - name: Cleanup this integration project only
         if: always()
         run: docker compose -p atlas-f0404-spike-ci -f apps/api/compose.spike.yml down --volumes
+
+  identity-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24.21.0
+          package-manager-cache: false
+      - name: Enable pinned pnpm
+        run: |
+          corepack enable
+          corepack install
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Start disposable Identity PostgreSQL
+        run: docker compose -p atlas-id01-identity-ci -f apps/api/compose.identity.yml up -d --wait
+      - name: Apply isolated Identity migration
+        run: pnpm --filter @atlas/api identity:migrate
+      - name: Verify repeatable migration
+        run: pnpm --filter @atlas/api identity:migrate
+      - name: Run Identity HTTP and PostgreSQL gates
+        run: pnpm --filter @atlas/api identity:test
+      - name: Cleanup this Identity project only
+        if: always()
+        run: docker compose -p atlas-id01-identity-ci -f apps/api/compose.identity.yml down --volumes

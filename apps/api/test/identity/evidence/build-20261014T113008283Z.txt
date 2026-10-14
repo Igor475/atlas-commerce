@@ -1,0 +1,35 @@
+COMMAND: pnpm build
+apps/admin build$ next build
+apps/storefront build$ next build
+apps/api build$ pnpm spike:generate && pnpm identity:generate && nest build
+packages/contracts build$ tsc -p tsconfig.build.json
+apps/api build: $ prisma generate
+packages/contracts build: Done
+apps/admin build: ▲ Next.js 16.4.0 (Turbopack)
+apps/storefront build: ▲ Next.js 16.4.0 (Turbopack)
+apps/storefront build: ✓ Running next.config.ts took 380ms
+apps/admin build: ✓ Running next.config.ts took 382ms
+apps/storefront build: 
+apps/admin build: 
+apps/storefront build:   Creating an optimized production build ...
+apps/admin build:   Creating an optimized production build ...
+apps/api build: Loaded Prisma config from prisma.config.ts.
+apps/api build: 
+apps/api build: Prisma schema loaded from prisma\schema.prisma.
+apps/api build: 
+apps/api build: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 615ms
+apps/api build: 
+apps/api build: $ prisma generate --config identity.prisma.config.ts
+apps/api build: Loaded Prisma config from identity.prisma.config.ts.
+apps/api build: 
+apps/api build: Prisma schema loaded from prisma-identity\schema.prisma.
+apps/api build: 
+apps/api build: ✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-identity-client in 526ms
+apps/api build: 
+apps/api build: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+apps/api build: 
+apps/api build: 
+apps/api build: Done
+$ pnpm -r --if-present build
+TIMEOUT_180_SECONDS_OWN_PROCESS_TREE_ONLY
+EXIT_CODE=124

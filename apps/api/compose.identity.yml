@@ -1,0 +1,24 @@
+name: atlas-id01-identity
+services:
+  postgres:
+    image: postgres:17.10-bookworm@sha256:9b18b78397054fce88a9552e9d5a3ad5bb7fd258c5b3cc1c5028e46373d6ea8f
+    command: ["postgres", "-c", "atlas.identity_fixture=atlas-id01-disposable"]
+    environment:
+      POSTGRES_USER: atlas_identity_migrator
+      POSTGRES_DB: atlas_identity_id01
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "127.0.0.1:55436:5432"
+    volumes:
+      - identity-data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U atlas_identity_migrator -d atlas_identity_id01",
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  identity-data:

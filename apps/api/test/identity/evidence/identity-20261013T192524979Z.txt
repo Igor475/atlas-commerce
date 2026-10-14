@@ -1,0 +1,3 @@
+COMMAND: pnpm --filter @atlas/api identity:test
+
+HARNESS_ERROR=Initial Tee-Object parameter failure; no validated command result.

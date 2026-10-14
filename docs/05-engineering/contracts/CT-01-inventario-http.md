@@ -1,6 +1,10 @@
 # CT-01 — Inventário proposto de API HTTP v1
 
-> **Estado:** proposta de rotas explícitas para evitar invenções do Codex. Caminhos sob `/api/v1` expostos pelo NestJS ou via proxy da origem correspondente. Nenhum controller existe. Os dois sites Next.js **estão aprovados como apps separadas**; hosts/domínios não definidos.
+> **Estado:** proposta de rotas explícitas para evitar invenções do Codex. Caminhos sob `/api/v1` expostos pelo NestJS ou via proxy da origem correspondente. Controllers Identity Customer existem somente na fatia local/CI ID-01, fechada por padrão; os demais controllers deste inventário permanecem propostos. Os dois sites Next.js **estão aprovados como apps separadas**; hosts/domínios não definidos.
+
+## Delta Identity Customer — PROPOSTA / ID-01
+
+[CT-ID-01](CT-ID-01-identity-customer.md) especifica as dez rotas de cliente, cookies/CSRF, estados, negativos e limites locais antes de controllers. Cadastro/verificação/reenvio/logout-all/recovery passam a ter contrato candidato somente nesta fatia; não aprova perfil/endereço/staff ou domínio comercial. Login STAFF é negado com 403, não emite desafio/sessão no ID-01. Proposta anterior de MFA permanece futura. E-mail real, host público e Supabase L1 fechados; sem alteração do checkout ratificado.
 
 ## Recursos prioritários da especificação OpenAPI
 

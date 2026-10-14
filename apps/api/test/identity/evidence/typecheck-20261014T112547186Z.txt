@@ -1,0 +1,36 @@
+COMMAND: pnpm typecheck
+$ pnpm -r --if-present typecheck
+apps/api typecheck$ pnpm spike:generate && pnpm identity:generate && tsc -p tsconfig.json --noEmit
+apps/admin typecheck$ tsc -p tsconfig.json --noEmit
+apps/storefront typecheck$ tsc -p tsconfig.json --noEmit
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+apps/api typecheck: $ prisma generate
+packages/contracts typecheck: Done
+apps/storefront typecheck: Done
+apps/admin typecheck: Done
+apps/api typecheck: Loaded Prisma config from prisma.config.ts.
+apps/api typecheck: 
+apps/api typecheck: Prisma schema loaded from prisma\schema.prisma.
+apps/api typecheck: 
+apps/api typecheck: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 357ms
+apps/api typecheck: 
+apps/api typecheck: $ prisma generate --config identity.prisma.config.ts
+apps/api typecheck: Loaded Prisma config from identity.prisma.config.ts.
+apps/api typecheck: 
+apps/api typecheck: Prisma schema loaded from prisma-identity\schema.prisma.
+apps/api typecheck: 
+apps/api typecheck: ✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-identity-client in 329ms
+apps/api typecheck: 
+apps/api typecheck: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+apps/api typecheck: 
+apps/api typecheck: 
+apps/api typecheck: test/identity/identity.pg.ts(559,7): error TS2532: Object is possibly 'undefined'.
+apps/api typecheck: Failed
+[ELIFECYCLE] Command failed with exit code 2.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in C:\Users\igor.ferreira\Desktop\atlas-
+  │ commerce\apps\api
+
+[ELIFECYCLE] Command failed with exit code 1.
+EXIT_CODE=1

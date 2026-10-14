@@ -1,0 +1,56 @@
+COMMAND: pnpm --filter @atlas/api identity:test
+$ pnpm build && node scripts/identity-db.mjs test
+$ pnpm spike:generate && pnpm identity:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 341ms
+
+$ prisma generate --config identity.prisma.config.ts
+Loaded Prisma config from identity.prisma.config.ts.
+
+Prisma schema loaded from prisma-identity\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\.atlas-identity-client in 440ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+
+ RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+
+ ❯ test/identity/identity.pg.ts (21 tests | 1 failed) 12371ms
+   ❯ ID-01 real HTTP + independent PostgreSQL connections (21)
+     × ID-026: concurrent persistent abuse counters survive fresh client lifecycle 771ms
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  08:06:07
+   Duration  15.80s (tests 81%, import 18%, transform 2%)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/identity/identity.pg.ts > ID-01 real HTTP + independent PostgreSQL connections > ID-026: concurrent persistent abuse counters survive fresh client lifecycle
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/identity/identity.pg.ts:495:25
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+[ELIFECYCLE] Command failed with exit code 1.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in C:\Users\igor.ferreira\Desktop\atlas-
+  │ commerce\apps\api
+
+EXIT_CODE=1

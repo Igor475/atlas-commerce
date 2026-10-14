@@ -1,0 +1,10 @@
+COMMAND: pnpm --filter @atlas/api identity:migrate
+$ node scripts/identity-db.mjs migrate
+IDENTITY_DISPOSABLE_FIXTURE_REQUIRED
+[ELIFECYCLE] Command failed with exit code 1.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in C:\Users\igor.ferreira\Desktop\atlas-
+  │ commerce\apps\api
+
+EXIT_CODE=1

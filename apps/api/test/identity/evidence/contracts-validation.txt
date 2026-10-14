@@ -1,0 +1,9 @@
+OpenAPI 3.1 parse PASS
+Internal refs: 182 resolved
+Identity schemas: 10 compiled with existing Ajv 8.20.0 + ajv-formats 3.0.1
+Positive/negative instances: 15 PASS
+Business paths and CheckoutResult deep-equal HEAD baseline: PASS
+Existing workflow jobs byte-normalized preserved; quality.yml YAML parse: PASS
+EXIT_CODE=0
+Final YAML after Identity metadata clarification: PASS; refs=182; schemas=10; instances=15
+Markdown relative file links checked=118; missing=0

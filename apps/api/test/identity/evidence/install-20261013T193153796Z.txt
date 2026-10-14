@@ -1,0 +1,10 @@
+COMMAND: pnpm install --frozen-lockfile
+Scope: all 6 workspace projects
+Error: ERR_PNPM_STORE_DIR_OPEN_OPERATION_LOCK
+
+  × installing dependencies
+  ╰─▶ Failed to open the store operation lock at "C:\\Users\\igor.ferreira\
+      \AppData\\Local\\pnpm-store-operation-locks\\all-stores.lock": Acesso
+      negado. (os error 5)
+
+EXIT_CODE=1

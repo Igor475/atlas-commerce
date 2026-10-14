@@ -1,0 +1,8 @@
+COMMAND: pnpm lint
+Error: ERR_PNPM_RECURSIVE_EXEC_FIRST_FAIL
+
+  × Command "l" not found
+
+EXIT_CODE=1
+
+HARNESS_ERROR=Single-argument expansion; lint was not executed by this attempt.

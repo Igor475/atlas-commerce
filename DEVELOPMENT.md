@@ -1,6 +1,6 @@
 # Desenvolvimento local
 
-Este repositório contém o **bootstrap técnico** do Atlas Commerce e um **spike F04-04 isolado de persistência**. Não há domínio comercial, banco de produção, autenticação, Stripe, R2, filas, checkout ou interface final implementados.
+Este repositório contém o **bootstrap técnico** do Atlas Commerce e um **spike F04-04 isolado de persistência**. A fatia ID-01 de identidade de clientes possui implementação restrita a teste local/CI, fechada por padrão. Não há banco de produção, autenticação pública homologada, Stripe, R2, checkout ou interface final implementados.
 
 ## Toolchain fixada
 
@@ -196,3 +196,24 @@ A documentação atual confirma session pooler IPv4 para backend persistente, re
 O changelog anuncia mudanças de exposição Data API (default novo desde 30/05/2026, enforcement geral previsto em 30/10/2026): inventariar o estado real, sem alterar o projeto por suposição. Também registra atualização PostgreSQL 15.19/17.11 com correções de CVEs. A imagem **17.10 fixada pelo escopo** permanece apenas no teste descartável; aplicabilidade de cada CVE à imagem não foi auditada e atualização requer avaliação separada, não homologação de produção. O anúncio de ciphers em novembro refere-se às APIs HTTP, não prova mudança na conexão PostgreSQL deste spike.
 
 Relatório completo SUPCON-01..22 e evidências: [F04-05 RESULTS](apps/api/test/connection/RESULTS.md). Nenhum provedor real é modificado, e ADR-006/010/Atlas não são homologados para produção.
+
+## ID-01 — Identity Customer local/CI (sem rollout público)
+
+Contrato candidato e limites em [CT-ID-01](docs/05-engineering/contracts/CT-ID-01-identity-customer.md); evidências em [Identity RESULTS](apps/api/test/identity/RESULTS.md). Cliente Prisma/migrations ficam em prisma-identity, separados da fixture spike; geração JS em node_modules/atlas-identity-client. A dependência já transitiva @prisma/client-runtime-utils 7.10.0 tornou-se direta para resolver esse runtime sob pnpm estrito; não houve atualização de versão. Node 24.21.0 é obrigatório para Argon2id nativo. O runner nunca carrega .env nem aceita URL remota.
+
+```powershell
+pnpm install --frozen-lockfile
+docker compose -p atlas-id01-identity-local -f apps/api/compose.identity.yml up -d --wait
+pnpm --filter @atlas/api identity:migrate
+pnpm --filter @atlas/api identity:migrate
+pnpm --filter @atlas/api identity:test
+docker compose -p atlas-id01-identity-local -f apps/api/compose.identity.yml down --volumes
+```
+
+Executar cleanup em finally, somente desse projeto. Porta 55436 loopback, banco atlas_identity_id01; role migrator separada da runtime sem superuser/CREATE/TEMP. Não reaproveitar containers, volumes ou schema do spike. O job CI identity-integration tem cleanup always() próprio e preserva checks/postgres-integration.
+
+Auth disabled por padrão; produção recusa habilitação, origem local exata e proxy não confiável recusado. Sem transporte de e-mail aprovado, register/login/recovery retornam 503 e readiness não anuncia autenticação disponível. Fake de e-mail é injetado exclusivamente no processo Vitest, sem HTTP/outbox/log de tokens. Local HTTP usa atlas_identity_local HttpOnly/SameSite=Strict, explicitamente sem promessa HTTPS; __Host-atlas_session Secure continua contrato candidato para teste futuro do host real, nunca os dois nomes juntos.
+
+Sessões são CUSTOMER opacas de 256 bits, HMAC persistido, TTL máximo 12h/30min idle no DB, revogação em logout/logout-all/recovery. CSRF assinado é vinculado à origem/contexto e à sessão; após login obter novo /auth/csrf. Argon2id mínimo 19MiB/2/1 parametrizado e medido, sem composição artificial; senha 15–128 caracteres NFC e blocklist local mínima demonstrativa. Provedor e lista completa de credenciais comprometidas, host/TLS/proxy público, staff/MFA, retenção legal, backup/restore e Supabase L1 continuam pendentes.
+
+Nenhuma sessão/grant de staff, rota de perfil/endereço, checkout, Stripe, frontend ou tela FD-05 é criada pelo ID-01. Não expor esses fluxos à Internet nem aplicar migrations no Supabase.

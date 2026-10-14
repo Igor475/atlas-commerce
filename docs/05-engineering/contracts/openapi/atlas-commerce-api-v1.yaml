@@ -6,6 +6,7 @@ info:
     Vercel Hobby/Render Free/Supabase Free. Rotas/DTOs propostos sujeitos a revisão F04-02. Sem compromisso de operação
     comercial.
 x-atlas-status: PROPOSTO_NAO_IMPLEMENTADO
+x-atlas-identity-id01: CUSTOMER_IMPLEMENTADO_LOCAL_CI_REMOTO_PENDENTE_PUBLICO_BLOQUEADO
 x-atlas-delta: UXD-16 obrigatorio/anulavel ratificado pelo responsavel em 2026-10-13; demais CT-10/Stripe propostos ou pendentes, sem implementacao
 x-atlas-stripe-api-sdk-ui-mode: PENDENTE_DE_VERSAO_EXATA_E_PROVA
 servers:
@@ -133,22 +134,22 @@ components:
           - string
           - 'null'
     Me:
-      type: object
-      additionalProperties: false
-      required:
-      - id
-      - displayName
-      - sessionClass
-      properties:
-        id:
-          $ref: '#/components/schemas/OpaqueId'
-        displayName:
-          type: string
-        sessionClass:
-          type: string
-          enum:
-          - CUSTOMER
-          - STAFF
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "id"
+        - "email"
+        - "sessionClass"
+      "properties":
+        "id":
+          "$ref": "#/components/schemas/OpaqueId"
+        "email":
+          "type": "string"
+          "format": "email"
+          "maxLength": 254
+        "sessionClass":
+          "type": "string"
+          "const": "CUSTOMER"
     CsrfResponse:
       type: object
       additionalProperties: false
@@ -159,39 +160,37 @@ components:
           type: string
           minLength: 16
     LoginRequest:
-      type: object
-      additionalProperties: false
-      required:
-      - email
-      - password
-      - context
-      properties:
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        password:
-          type: string
-          minLength: 1
-          maxLength: 1024
-        context:
-          type: string
-          enum:
-          - CUSTOMER
-          - STAFF
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "email"
+        - "password"
+        - "context"
+      "properties":
+        "email":
+          "type": "string"
+          "format": "email"
+          "maxLength": 254
+        "password":
+          "type": "string"
+          "minLength": 1
+          "maxLength": 128
+          "x-normalization": "NFC"
+        "context":
+          "type": "string"
+          "enum":
+            - "CUSTOMER"
+            - "STAFF"
+          "description": "ID-01 aceita CUSTOMER; STAFF e negado com 403, sem MFA/sessao."
     LoginResult:
-      type: object
-      additionalProperties: false
-      required:
-      - state
-      properties:
-        state:
-          type: string
-          enum:
-          - AUTHENTICATED
-          - MFA_REQUIRED
-        challengeId:
-          $ref: '#/components/schemas/OpaqueId'
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "state"
+      "properties":
+        "state":
+          "type": "string"
+          "const": "AUTHENTICATED"
     MfaVerifyRequest:
       type: object
       additionalProperties: false
@@ -220,6 +219,70 @@ components:
       - required:
         - webauthnAssertion
       description: Um único método, purpose-bound, válido antes de sessão de equipe.
+    IdentityRegisterRequest:
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "email"
+        - "password"
+      "properties":
+        "email":
+          "type": "string"
+          "format": "email"
+          "maxLength": 254
+        "password":
+          "type": "string"
+          "minLength": 15
+          "maxLength": 128
+          "x-normalization": "NFC"
+    IdentityEmailRequest:
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "email"
+      "properties":
+        "email":
+          "type": "string"
+          "format": "email"
+          "maxLength": 254
+    IdentityTokenRequest:
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "token"
+      "properties":
+        "token":
+          "type": "string"
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+    IdentityRecoveryCompleteRequest:
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "token"
+        - "password"
+      "properties":
+        "token":
+          "type": "string"
+          "pattern": "^[A-Za-z0-9_-]{43}$"
+        "password":
+          "type": "string"
+          "minLength": 15
+          "maxLength": 128
+          "x-normalization": "NFC"
+    IdentityEmptyRequest:
+      "type": "object"
+      "additionalProperties": false
+      "required": []
+      "properties": {}
+    IdentityAccepted:
+      "type": "object"
+      "additionalProperties": false
+      "required":
+        - "state"
+      "properties":
+        "state":
+          "type": "string"
+          "const": "ACCEPTED"
     QuoteLineRequest:
       type: object
       additionalProperties: false
@@ -601,96 +664,148 @@ paths:
       parameters:
       - $ref: '#/components/parameters/ProductId'
   /api/v1/auth/csrf:
-    get:
-      operationId: getCsrfBootstrap
-      tags:
-      - Identity
-      summary: Solicitar token antifalsificação
-      responses:
-        '200':
-          description: CSRF bootstrap
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CsrfResponse'
-        '429':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-      security: []
-      description: O valor pertence ao contexto/origem do browser e não deve ser publicamente cacheado.
+    "get":
+      "tags":
+        - "Identity"
+      "operationId": "id01auth_csrf"
+      "summary": "PROPOSTA ID-01: GET /api/v1/auth/csrf"
+      "x-id01-status": "LOCAL_CI_SOMENTE_CUSTOMER_NAO_HOMOLOGADO"
+      "description": "CT-ID-01: disabled por padrao; e-mail fake somente no processo de teste, publico bloqueado. Origin/Referer, JSON-only 4KiB, CSRF vinculado para mutacoes, limites persistentes, no-store. Sem concessao STAFF, sem mudanca de checkout/UXD-16. localhost nao homologa HTTPS/proxy publico."
+      "security": []
+      "parameters":
+        -
+          "name": "Origin"
+          "in": "header"
+          "required": true
+          "schema":
+            "type": "string"
+          "description": "ID-01: origem loopback exata configurada; hosts publicos/proxy pendentes."
+      "responses":
+        "200":
+          "description": "Resultado Identity Customer ID-01"
+          "headers":
+            "Cache-Control":
+              "schema":
+                "type": "string"
+                "const": "no-store"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/CsrfResponse"
+        "400":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "401":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "403":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "429":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+          "headers":
+            "Retry-After":
+              "schema":
+                "type": "integer"
+                "minimum": 1
+        "503":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
   /api/v1/auth/login:
-    post:
-      operationId: login
-      tags:
-      - Identity
-      summary: Autenticar cliente ou iniciar desafio MFA staff
-      responses:
-        '200':
-          description: Sessão cliente criada ou resultado autorizado
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoginResult'
-        '202':
-          description: Desafio MFA pendente
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoginResult'
-        '400':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '429':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-      security: []
-      parameters:
-      - $ref: '#/components/parameters/CsrfToken'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
+    "post":
+      "tags":
+        - "Identity"
+      "operationId": "id01auth_login"
+      "summary": "PROPOSTA ID-01: POST /api/v1/auth/login"
+      "x-id01-status": "LOCAL_CI_SOMENTE_CUSTOMER_NAO_HOMOLOGADO"
+      "description": "CT-ID-01: disabled por padrao; e-mail fake somente no processo de teste, publico bloqueado. Origin/Referer, JSON-only 4KiB, CSRF vinculado para mutacoes, limites persistentes, no-store. Sem concessao STAFF, sem mudanca de checkout/UXD-16. localhost nao homologa HTTPS/proxy publico."
+      "security": []
+      "parameters":
+        -
+          "name": "Origin"
+          "in": "header"
+          "required": true
+          "schema":
+            "type": "string"
+          "description": "ID-01: origem loopback exata configurada; hosts publicos/proxy pendentes."
+        -
+          "$ref": "#/components/parameters/CsrfToken"
+      "responses":
+        "200":
+          "description": "Resultado Identity Customer ID-01"
+          "headers":
+            "Cache-Control":
+              "schema":
+                "type": "string"
+                "const": "no-store"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/LoginResult"
+        "400":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "401":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "403":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "429":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+          "headers":
+            "Retry-After":
+              "schema":
+                "type": "integer"
+                "minimum": 1
+        "503":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/LoginRequest"
   /api/v1/auth/mfa/verify:
     post:
       operationId: verifyMfaChallenge
       tags:
       - Identity
       summary: Concluir desafio MFA antes de sessão de equipe
+      x-id01-status: BLOQUEADO_NAO_IMPLEMENTADO
       responses:
         '204':
           description: Sessão staff criada e cookie definido
@@ -740,69 +855,141 @@ paths:
             schema:
               $ref: '#/components/schemas/MfaVerifyRequest'
   /api/v1/auth/logout:
-    post:
-      operationId: logout
-      tags:
-      - Identity
-      summary: Revogar sessão ativa
-      responses:
-        '204':
-          description: Sessão invalidada
-        '401':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-      security:
-      - sessionCookie: []
-      parameters:
-      - $ref: '#/components/parameters/CsrfToken'
+    "post":
+      "tags":
+        - "Identity"
+      "operationId": "id01auth_logout"
+      "summary": "PROPOSTA ID-01: POST /api/v1/auth/logout"
+      "x-id01-status": "LOCAL_CI_SOMENTE_CUSTOMER_NAO_HOMOLOGADO"
+      "description": "CT-ID-01: disabled por padrao; e-mail fake somente no processo de teste, publico bloqueado. Origin/Referer, JSON-only 4KiB, CSRF vinculado para mutacoes, limites persistentes, no-store. Sem concessao STAFF, sem mudanca de checkout/UXD-16. localhost nao homologa HTTPS/proxy publico."
+      "security":
+        -
+          "sessionCookie": []
+      "parameters":
+        -
+          "name": "Origin"
+          "in": "header"
+          "required": true
+          "schema":
+            "type": "string"
+          "description": "ID-01: origem loopback exata configurada; hosts publicos/proxy pendentes."
+        -
+          "$ref": "#/components/parameters/CsrfToken"
+      "responses":
+        "204":
+          "description": "Resultado Identity Customer ID-01"
+          "headers":
+            "Cache-Control":
+              "schema":
+                "type": "string"
+                "const": "no-store"
+        "400":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "401":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "403":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "429":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+          "headers":
+            "Retry-After":
+              "schema":
+                "type": "integer"
+                "minimum": 1
+        "503":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/IdentityEmptyRequest"
   /api/v1/me:
-    get:
-      operationId: getMe
-      tags:
-      - Identity
-      summary: Sessão atual
-      responses:
-        '200':
-          description: Perfil mínimo
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Me'
-        '401':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '503':
-          description: Erro público sem dados sensíveis
-          content:
-            application/problem+json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-      security:
-      - sessionCookie: []
+    "get":
+      "tags":
+        - "Identity"
+      "operationId": "id01me"
+      "summary": "PROPOSTA ID-01: GET /api/v1/me"
+      "x-id01-status": "LOCAL_CI_SOMENTE_CUSTOMER_NAO_HOMOLOGADO"
+      "description": "CT-ID-01: disabled por padrao; e-mail fake somente no processo de teste, publico bloqueado. Origin/Referer, JSON-only 4KiB, CSRF vinculado para mutacoes, limites persistentes, no-store. Sem concessao STAFF, sem mudanca de checkout/UXD-16. localhost nao homologa HTTPS/proxy publico."
+      "security":
+        -
+          "sessionCookie": []
+      "parameters":
+        -
+          "name": "Origin"
+          "in": "header"
+          "required": true
+          "schema":
+            "type": "string"
+          "description": "ID-01: origem loopback exata configurada; hosts publicos/proxy pendentes."
+      "responses":
+        "200":
+          "description": "Resultado Identity Customer ID-01"
+          "headers":
+            "Cache-Control":
+              "schema":
+                "type": "string"
+                "const": "no-store"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/Me"
+        "400":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "401":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "403":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "429":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+          "headers":
+            "Retry-After":
+              "schema":
+                "type": "integer"
+                "minimum": 1
+        "503":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
   /api/v1/checkout/quotes:
     post:
       operationId: createQuote
@@ -1335,3 +1522,425 @@ paths:
       security: []
       description: Liveness é interna e leve; readiness depende das dependências mandatórias, sem revelar erros de
         conectividade ou secret.
+  /api/v1/auth/register:
+    "post":
+      "tags":
+        - "Identity"
+      "operationId": "id01auth_register"
+      "summary": "PROPOSTA ID-01: POST /api/v1/auth/register"
+      "x-id01-status": "LOCAL_CI_SOMENTE_CUSTOMER_NAO_HOMOLOGADO"
+      "description": "CT-ID-01: disabled por padrao; e-mail fake somente no processo de teste, publico bloqueado. Origin/Referer, JSON-only 4KiB, CSRF vinculado para mutacoes, limites persistentes, no-store. Sem concessao STAFF, sem mudanca de checkout/UXD-16. localhost nao homologa HTTPS/proxy publico."
+      "security": []
+      "parameters":
+        -
+          "name": "Origin"
+          "in": "header"
+          "required": true
+          "schema":
+            "type": "string"
+          "description": "ID-01: origem loopback exata configurada; hosts publicos/proxy pendentes."
+        -
+          "$ref": "#/components/parameters/CsrfToken"
+      "responses":
+        "202":
+          "description": "Solicitacao aceita com resposta neutra; nao afirma envio de email"
+          "headers":
+            "Cache-Control":
+              "schema":
+                "type": "string"
+                "const": "no-store"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/IdentityAccepted"
+        "400":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "401":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "403":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "429":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+          "headers":
+            "Retry-After":
+              "schema":
+                "type": "integer"
+                "minimum": 1
+        "503":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/IdentityRegisterRequest"
+  /api/v1/auth/verify-email:
+    "post":
+      "tags":
+        - "Identity"
+      "operationId": "id01auth_verify_email"
+      "summary": "PROPOSTA ID-01: POST /api/v1/auth/verify-email"
+      "x-id01-status": "LOCAL_CI_SOMENTE_CUSTOMER_NAO_HOMOLOGADO"
+      "description": "CT-ID-01: disabled por padrao; e-mail fake somente no processo de teste, publico bloqueado. Origin/Referer, JSON-only 4KiB, CSRF vinculado para mutacoes, limites persistentes, no-store. Sem concessao STAFF, sem mudanca de checkout/UXD-16. localhost nao homologa HTTPS/proxy publico."
+      "security": []
+      "parameters":
+        -
+          "name": "Origin"
+          "in": "header"
+          "required": true
+          "schema":
+            "type": "string"
+          "description": "ID-01: origem loopback exata configurada; hosts publicos/proxy pendentes."
+        -
+          "$ref": "#/components/parameters/CsrfToken"
+      "responses":
+        "204":
+          "description": "Resultado Identity Customer ID-01"
+          "headers":
+            "Cache-Control":
+              "schema":
+                "type": "string"
+                "const": "no-store"
+        "400":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "401":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "403":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "429":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+          "headers":
+            "Retry-After":
+              "schema":
+                "type": "integer"
+                "minimum": 1
+        "503":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/IdentityTokenRequest"
+  /api/v1/auth/verify-email/resend:
+    "post":
+      "tags":
+        - "Identity"
+      "operationId": "id01auth_verify_email_resend"
+      "summary": "PROPOSTA ID-01: POST /api/v1/auth/verify-email/resend"
+      "x-id01-status": "LOCAL_CI_SOMENTE_CUSTOMER_NAO_HOMOLOGADO"
+      "description": "CT-ID-01: disabled por padrao; e-mail fake somente no processo de teste, publico bloqueado. Origin/Referer, JSON-only 4KiB, CSRF vinculado para mutacoes, limites persistentes, no-store. Sem concessao STAFF, sem mudanca de checkout/UXD-16. localhost nao homologa HTTPS/proxy publico."
+      "security": []
+      "parameters":
+        -
+          "name": "Origin"
+          "in": "header"
+          "required": true
+          "schema":
+            "type": "string"
+          "description": "ID-01: origem loopback exata configurada; hosts publicos/proxy pendentes."
+        -
+          "$ref": "#/components/parameters/CsrfToken"
+      "responses":
+        "202":
+          "description": "Solicitacao aceita com resposta neutra; nao afirma envio de email"
+          "headers":
+            "Cache-Control":
+              "schema":
+                "type": "string"
+                "const": "no-store"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/IdentityAccepted"
+        "400":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "401":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "403":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "429":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+          "headers":
+            "Retry-After":
+              "schema":
+                "type": "integer"
+                "minimum": 1
+        "503":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/IdentityEmailRequest"
+  /api/v1/auth/logout-all:
+    "post":
+      "tags":
+        - "Identity"
+      "operationId": "id01auth_logout_all"
+      "summary": "PROPOSTA ID-01: POST /api/v1/auth/logout-all"
+      "x-id01-status": "LOCAL_CI_SOMENTE_CUSTOMER_NAO_HOMOLOGADO"
+      "description": "CT-ID-01: disabled por padrao; e-mail fake somente no processo de teste, publico bloqueado. Origin/Referer, JSON-only 4KiB, CSRF vinculado para mutacoes, limites persistentes, no-store. Sem concessao STAFF, sem mudanca de checkout/UXD-16. localhost nao homologa HTTPS/proxy publico."
+      "security":
+        -
+          "sessionCookie": []
+      "parameters":
+        -
+          "name": "Origin"
+          "in": "header"
+          "required": true
+          "schema":
+            "type": "string"
+          "description": "ID-01: origem loopback exata configurada; hosts publicos/proxy pendentes."
+        -
+          "$ref": "#/components/parameters/CsrfToken"
+      "responses":
+        "204":
+          "description": "Resultado Identity Customer ID-01"
+          "headers":
+            "Cache-Control":
+              "schema":
+                "type": "string"
+                "const": "no-store"
+        "400":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "401":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "403":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "429":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+          "headers":
+            "Retry-After":
+              "schema":
+                "type": "integer"
+                "minimum": 1
+        "503":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/IdentityEmptyRequest"
+  /api/v1/auth/recovery/request:
+    "post":
+      "tags":
+        - "Identity"
+      "operationId": "id01auth_recovery_request"
+      "summary": "PROPOSTA ID-01: POST /api/v1/auth/recovery/request"
+      "x-id01-status": "LOCAL_CI_SOMENTE_CUSTOMER_NAO_HOMOLOGADO"
+      "description": "CT-ID-01: disabled por padrao; e-mail fake somente no processo de teste, publico bloqueado. Origin/Referer, JSON-only 4KiB, CSRF vinculado para mutacoes, limites persistentes, no-store. Sem concessao STAFF, sem mudanca de checkout/UXD-16. localhost nao homologa HTTPS/proxy publico."
+      "security": []
+      "parameters":
+        -
+          "name": "Origin"
+          "in": "header"
+          "required": true
+          "schema":
+            "type": "string"
+          "description": "ID-01: origem loopback exata configurada; hosts publicos/proxy pendentes."
+        -
+          "$ref": "#/components/parameters/CsrfToken"
+      "responses":
+        "202":
+          "description": "Solicitacao aceita com resposta neutra; nao afirma envio de email"
+          "headers":
+            "Cache-Control":
+              "schema":
+                "type": "string"
+                "const": "no-store"
+          "content":
+            "application/json":
+              "schema":
+                "$ref": "#/components/schemas/IdentityAccepted"
+        "400":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "401":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "403":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "429":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+          "headers":
+            "Retry-After":
+              "schema":
+                "type": "integer"
+                "minimum": 1
+        "503":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/IdentityEmailRequest"
+  /api/v1/auth/recovery/complete:
+    "post":
+      "tags":
+        - "Identity"
+      "operationId": "id01auth_recovery_complete"
+      "summary": "PROPOSTA ID-01: POST /api/v1/auth/recovery/complete"
+      "x-id01-status": "LOCAL_CI_SOMENTE_CUSTOMER_NAO_HOMOLOGADO"
+      "description": "CT-ID-01: disabled por padrao; e-mail fake somente no processo de teste, publico bloqueado. Origin/Referer, JSON-only 4KiB, CSRF vinculado para mutacoes, limites persistentes, no-store. Sem concessao STAFF, sem mudanca de checkout/UXD-16. localhost nao homologa HTTPS/proxy publico."
+      "security": []
+      "parameters":
+        -
+          "name": "Origin"
+          "in": "header"
+          "required": true
+          "schema":
+            "type": "string"
+          "description": "ID-01: origem loopback exata configurada; hosts publicos/proxy pendentes."
+        -
+          "$ref": "#/components/parameters/CsrfToken"
+      "responses":
+        "204":
+          "description": "Resultado Identity Customer ID-01"
+          "headers":
+            "Cache-Control":
+              "schema":
+                "type": "string"
+                "const": "no-store"
+        "400":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "401":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "403":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+        "429":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+          "headers":
+            "Retry-After":
+              "schema":
+                "type": "integer"
+                "minimum": 1
+        "503":
+          "description": "Erro publico RFC9457 sem dados sensiveis"
+          "content":
+            "application/problem+json":
+              "schema":
+                "$ref": "#/components/schemas/ProblemDetails"
+      "requestBody":
+        "required": true
+        "content":
+          "application/json":
+            "schema":
+              "$ref": "#/components/schemas/IdentityRecoveryCompleteRequest"

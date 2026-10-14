@@ -1,0 +1,5 @@
+$ pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm smoke && pnpm format:check
+$ eslint apps packages --max-warnings=0
+$ pnpm -r --if-present typecheck
+$ pnpm -r --if-present test
+$ pnpm -r --if-present build

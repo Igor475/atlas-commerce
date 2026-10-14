@@ -1,0 +1,10 @@
+COMMAND: pnpm lint
+$ eslint apps packages --max-warnings=0
+
+C:\Users\igor.ferreira\Desktop\atlas-commerce\apps\api\src\modules\identity\presentation\identity-http.ts
+  1:10  error  'HttpException' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 1 problem (1 error, 0 warnings)
+
+[ELIFECYCLE] Command failed with exit code 1.
+EXIT_CODE=1

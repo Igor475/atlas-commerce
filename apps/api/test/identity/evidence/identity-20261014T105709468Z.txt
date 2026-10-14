@@ -1,0 +1,83 @@
+COMMAND: pnpm --filter @atlas/api identity:test
+$ pnpm build && node scripts/identity-db.mjs test
+$ pnpm spike:generate && pnpm identity:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 280ms
+
+$ prisma generate --config identity.prisma.config.ts
+Loaded Prisma config from identity.prisma.config.ts.
+
+Prisma schema loaded from prisma-identity\schema.prisma.
+┌─────────────────────────────────────────────────────────┐
+│  Update available 7.10.0 -> 8.0.0-rc.22                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\.atlas-identity-client in 322ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+
+ RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+
+ ❯ test/identity/identity.pg.ts (21 tests | 2 failed) 10555ms
+   ❯ ID-01 real HTTP + independent PostgreSQL connections (21)
+     × ID-020/021: CSRF pre-auth, session binding, Origin/Referer/content type and CORS 436ms
+     × ID-029: role/status mass assignment, oversized and malformed JSON rejected 482ms
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 19 passed (21)
+   Start at  07:57:35
+   Duration  13.91s (tests 78%, import 18%, transform 4%)
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/identity/identity.pg.ts > ID-01 real HTTP + independent PostgreSQL connections > ID-020/021: CSRF pre-auth, session binding, Origin/Referer/content type and CORS
+TypeError: The "string" argument must be of type string or an instance of Buffer or ArrayBuffer. Received an instance of Object
+ ❯ byteLength ../../node_modules/.pnpm/superagent@10.4.1_supports-color@7.2.0/node_modules/superagent/src/node/index.js:1336:56
+ ❯ _end ../../node_modules/.pnpm/superagent@10.4.1_supports-color@7.2.0/node_modules/superagent/src/node/index.js:1297:8
+ ❯ dispatch ../../node_modules/.pnpm/supertest@7.3.1_supports-color@7.2.0/node_modules/supertest/lib/test.js:243:15
+ ❯ Test.end ../../node_modules/.pnpm/supertest@7.3.1_supports-color@7.2.0/node_modules/supertest/lib/test.js:263:7
+ ❯ end ../../node_modules/.pnpm/superagent@10.4.1_supports-color@7.2.0/node_modules/superagent/src/request-base.js:285:12
+ ❯ RequestBase.then ../../node_modules/.pnpm/superagent@10.4.1_supports-color@7.2.0/node_modules/superagent/src/request-base.js:265:31
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/identity/identity.pg.ts > ID-01 real HTTP + independent PostgreSQL connections > ID-029: role/status mass assignment, oversized and malformed JSON rejected
+AssertionError: expected 503 to be 400 // Object.is equality
+
+- Expected
++ Received
+
+- 400
++ 503
+
+ ❯ test/identity/identity.pg.ts:569:30
+    567|       .set("Content-Type", "application/json")
+    568|       .send("{bad");
+    569|     expect(malformed.status).toBe(400);
+       |                              ^
+    570|     expect(malformed.body.code).toBe("INVALID_REQUEST");
+    571|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+[ELIFECYCLE] Command failed with exit code 1.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in C:\Users\igor.ferreira\Desktop\atlas-
+  │ commerce\apps\api
+
+EXIT_CODE=1

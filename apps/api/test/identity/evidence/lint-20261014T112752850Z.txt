@@ -1,0 +1,3 @@
+COMMAND: pnpm lint
+$ eslint apps packages --max-warnings=0
+EXIT_CODE=0

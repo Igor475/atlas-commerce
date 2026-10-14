@@ -1,0 +1,7 @@
+COMMAND: pnpm install --frozen-lockfile
+Scope: all 6 workspace projects
+? Verifying lockfile against supply-chain policies (566 entries)...
+✓ Lockfile passes supply-chain policies (566 entries in 9.3s)
+Lockfile is up to date, resolution step is skipped
+Done in 10.2s using pnpm v12.11.2
+EXIT_CODE=0

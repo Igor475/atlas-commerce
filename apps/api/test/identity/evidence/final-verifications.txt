@@ -1,0 +1,16 @@
+2026-10-14; base HEAD 07002dd7be89ad2f0d124179fc972c1e48a02319; main
+pnpm exec prettier --check (only changed supported source/config files): EXIT_CODE=0
+git diff --check: EXIT_CODE=0 (Git warns about future LF-to-CRLF conversion; no whitespace errors)
+Prisma format --schema prisma-identity/schema.prisma: EXIT_CODE=0
+Argon2id native Node v24.21.0, 19MiB/2/1, 5 serial local hashes: [42,42,39,37,41] ms; min=37,max=42; not production capacity proof
+docker compose -p atlas-id01-pgsp-regression -f apps/api/compose.spike.yml up -d --wait: EXIT_CODE=0
+pnpm --filter @atlas/api spike:migrate: EXIT_CODE=0; applied 202610130001_spike to new local fixture
+docker compose -p atlas-id01-pgsp-regression -f apps/api/compose.spike.yml down --volumes: EXIT_CODE=0
+docker compose -p atlas-id01-identity-local -f apps/api/compose.identity.yml down --volumes: EXIT_CODE=0
+connection:test runner cleanup: EXIT_CODE=0
+docker ps -a filtered by each of the above compose projects and atlas-f0404-spike-f0405: EXIT_CODE=0; no matching containers
+No branch, commit, push, deployment or remote migration performed.
+Final scope allowlist: 70 files; out-of-scope=0
+Credential signature scan (private key/Stripe/GitHub token patterns): matches=0; no claim of exhaustive secret detection
+Non-evidence new/changed text trailing whitespace: 0
+Markdown affected relative links: 118 checked, missing=0
