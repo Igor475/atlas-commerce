@@ -1,5 +1,10 @@
 # INT-02 — Preparação Supabase L1 somente leitura
 
+> Registro original preservado abaixo. Para o estado atualizado do projeto,
+> a política publicada e o job dedicado, consultar
+> [INT-02.1 — PostgreSQL, CI e plano não executado](INT-02-1-postgresql-ci.md).
+> L1 remoto permanece PENDENTE; a fixture local endurecida não prova os defaults Supabase.
+
 **Estado remoto: `BLOCKED_NO_PROJECT_OR_READONLY_ROLE`.** Baseline
 `fd0b16e4a4f89fa2a64c76a132807c2d913c9913`, branch `main`, inicialmente limpa.
 Em 14/10/2026 o responsável informou o nome **Atlas Commerce** e o identificador

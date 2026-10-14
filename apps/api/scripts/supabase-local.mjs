@@ -6,6 +6,7 @@ import {
   existsSync,
   rmSync,
   lstatSync,
+  appendFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { resolve, join, dirname, basename } from "node:path";
@@ -92,6 +93,7 @@ for (const signal of ["SIGINT", "SIGTERM"])
     process.exit(130);
   });
 try {
+  if (process.argv.length !== 2) throw new Error("LOCAL_ARGUMENTS_NOT_ALLOWED");
   if (
     env.DOCKER_HOST &&
     !env.DOCKER_HOST.startsWith("unix://") &&
@@ -111,13 +113,29 @@ try {
     "--filter",
     "publish=55434",
     "--format",
-    '{{.Label "com.docker.compose.project"}}',
+    "{{.ID}}",
   ])
     .trim()
     .split(/\r?\n/)
     .filter(Boolean);
-  if (occupants.some((name) => name !== project))
+  if (occupants.length)
     throw new Error("DISPOSABLE_PORT_OCCUPIED_BY_ANOTHER_PROJECT");
+  // Never adopt or remove resources left by another invocation.
+  for (const resource of ["container", "network", "volume"]) {
+    if (
+      command("docker", [
+        resource,
+        "ls",
+        ...(resource === "container" ? ["--all"] : []),
+        "--filter",
+        "label=com.docker.compose.project=" + project,
+        "--quiet",
+      ]).trim()
+    )
+      throw new Error("LOCAL_PROJECT_ALREADY_EXISTS");
+  }
+  if (process.env.GITHUB_ACTIONS === "true" && process.env.GITHUB_OUTPUT)
+    appendFileSync(process.env.GITHUB_OUTPUT, "owned=true\n");
   owned = true;
   compose("up", "-d", "--wait");
   const container = compose("ps", "-q", "postgres").trim();
