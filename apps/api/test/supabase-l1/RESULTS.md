@@ -13,19 +13,19 @@ Supabase nem consulta em projeto ERP. Nenhum SQL remoto foi executado.
 
 Node 24.21.0, pnpm 12.11.2, PostgreSQL 17.10 local Docker com imagem fixada.
 
-| Comando / prova | Resultado real |
-|---|---|
-| `node apps/api/scripts/supabase-local.mjs` | **25/25 PASS**, PostgreSQL e TLS reais locais |
-| `pnpm test` | **34 API + 3 demais workspaces PASS**; primeira tentativa sandbox bloqueou workers com EPERM, repetição autorizada passou |
-| `pnpm --filter @atlas/api identity:migrate` + `identity:test` | Migration somente fixture loopback; **22 Identity + 12 Resend mock = 34/34 PASS** |
-| `pnpm --filter @atlas/api connection:test` | **9/9 L0 PASS**, inclusive interrupção/recovery; aquisição saturada observada em 513,23 ms |
-| `pnpm --filter @atlas/api spike:migrate` + `spike:test` | Migration apenas fixture loopback; **16/16 PGSP PASS**, cleanup concluído |
-| `pnpm lint` | PASS |
-| `pnpm typecheck` | PASS em todos os workspaces, ambos clientes Prisma gerados |
-| `pnpm build` | PASS no monorepo, sem timeout nessa execução Windows |
-| `pnpm smoke` | PASS: live 200, ready 503 `DEPENDENCIES_NOT_CONFIGURED`, perfil padrão preservado |
-| `pnpm audit` | **No known vulnerabilities found**; primeira tentativa sandbox falhou na rede, repetição autorizada passou |
-| `pnpm format:check` | **FAIL preexistente em 32 arquivos**, preservados; nenhuma exclusão/configuração alterada |
+| Comando / prova                                               | Resultado real                                                                                                            |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `node apps/api/scripts/supabase-local.mjs`                    | **25/25 PASS**, PostgreSQL e TLS reais locais                                                                             |
+| `pnpm test`                                                   | **34 API + 3 demais workspaces PASS**; primeira tentativa sandbox bloqueou workers com EPERM, repetição autorizada passou |
+| `pnpm --filter @atlas/api identity:migrate` + `identity:test` | Migration somente fixture loopback; **22 Identity + 12 Resend mock = 34/34 PASS**                                         |
+| `pnpm --filter @atlas/api connection:test`                    | **9/9 L0 PASS**, inclusive interrupção/recovery; aquisição saturada observada em 513,23 ms                                |
+| `pnpm --filter @atlas/api spike:migrate` + `spike:test`       | Migration apenas fixture loopback; **16/16 PGSP PASS**, cleanup concluído                                                 |
+| `pnpm lint`                                                   | PASS                                                                                                                      |
+| `pnpm typecheck`                                              | PASS em todos os workspaces, ambos clientes Prisma gerados                                                                |
+| `pnpm build`                                                  | PASS no monorepo, sem timeout nessa execução Windows                                                                      |
+| `pnpm smoke`                                                  | PASS: live 200, ready 503 `DEPENDENCIES_NOT_CONFIGURED`, perfil padrão preservado                                         |
+| `pnpm audit`                                                  | **No known vulnerabilities found**; primeira tentativa sandbox falhou na rede, repetição autorizada passou                |
+| `pnpm format:check`                                           | **FAIL preexistente em 32 arquivos**, preservados; nenhuma exclusão/configuração alterada                                 |
 
 Formatação dirigida dos novos TS/MJS: PASS. `git diff --check`: PASS.
 Não interpretar uma execução passada no GitHub como CI desta mudança.
