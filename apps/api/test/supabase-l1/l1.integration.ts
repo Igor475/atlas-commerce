@@ -180,7 +180,145 @@ describe("INT-02 local PostgreSQL; no remote sockets", () => {
       }
     }
   });
+  it("native pg_settings PUBLIC UPDATE changes only allowed session settings", async () => {
+    const pool = new pg.Pool(options);
+    const client = await pool.connect();
+    try {
+      expect(
+        (
+          await client.query(
+            "SELECT has_table_privilege('pg_catalog.pg_settings','SELECT,UPDATE') AS allowed",
+          )
+        ).rows,
+      ).toEqual([{ allowed: true }]);
+      await client.query("SET default_transaction_read_only=off");
+      await client.query(
+        "UPDATE pg_catalog.pg_settings SET setting='1000' WHERE name='statement_timeout'",
+      );
+      expect(
+        (
+          await client.query(
+            "SELECT current_setting('statement_timeout') AS value",
+          )
+        ).rows,
+      ).toEqual([{ value: "1s" }]);
+      for (const sql of [
+        "UPDATE pg_catalog.pg_settings SET setting='replica' WHERE name='session_replication_role'",
+        "SELECT pg_catalog.set_config('session_replication_role','replica',false)",
+        "ALTER ROLE atlas_l1_readonly SUPERUSER",
+        "CREATE ROLE atlas_l1_unauthorized",
+        "ALTER SYSTEM SET session_replication_role='replica'",
+      ])
+        await expect(client.query(sql)).rejects.toMatchObject({
+          code: "42501",
+        });
+      await expect(
+        client.query("UPDATE identity.empty_fixture SET value=2"),
+      ).rejects.toMatchObject({ code: "42501" });
+    } finally {
+      client.release(true);
+      await pool.end();
+    }
+    const probe = diagnostic();
+    try {
+      expect((await probe.check()).ready).toBe(true);
+    } finally {
+      await probe.close();
+    }
+  });
+  it("same-named application view is never the native pg_settings exception", async () => {
+    await admin.query(
+      "CREATE VIEW identity.pg_settings AS SELECT id,value FROM identity.empty_fixture; GRANT UPDATE ON identity.pg_settings TO atlas_l1_readonly",
+    );
+    const probe = diagnostic();
+    try {
+      expect(await probe.check()).toMatchObject({
+        ready: false,
+        code: "ROLE_UNSAFE",
+      });
+    } finally {
+      await admin.query("DROP VIEW identity.pg_settings");
+      await probe.close();
+    }
+  });
+  it("same-named function in pg_catalog cannot inherit the native set_config exception", async () => {
+    await admin.query(
+      "CREATE FUNCTION pg_catalog.set_config(text) RETURNS text LANGUAGE sql VOLATILE AS 'SELECT $1'",
+    );
+    const probe = diagnostic();
+    try {
+      expect(await probe.check()).toMatchObject({
+        ready: false,
+        code: "ROLE_UNSAFE",
+      });
+    } finally {
+      await admin.query("DROP FUNCTION pg_catalog.set_config(text)");
+      await probe.close();
+    }
+  });
+  it("stable SECURITY DEFINER in pg_catalog remains unsafe", async () => {
+    await admin.query(
+      "CREATE FUNCTION pg_catalog.atlas_l1_privileged_fixture() RETURNS integer LANGUAGE sql STABLE SECURITY DEFINER AS 'SELECT 1'",
+    );
+    const probe = diagnostic();
+    try {
+      expect(await probe.check()).toMatchObject({
+        ready: false,
+        code: "ROLE_UNSAFE",
+      });
+    } finally {
+      await admin.query(
+        "DROP FUNCTION pg_catalog.atlas_l1_privileged_fixture()",
+      );
+      await probe.close();
+    }
+  });
   it.each([
+    [
+      "replication",
+      "ALTER ROLE atlas_l1_readonly REPLICATION",
+      "ALTER ROLE atlas_l1_readonly NOREPLICATION",
+    ],
+    [
+      "PUBLIC TEMP",
+      "GRANT TEMP ON DATABASE atlas_spike_f0404 TO PUBLIC",
+      "REVOKE TEMP ON DATABASE atlas_spike_f0404 FROM PUBLIC",
+    ],
+    [
+      "SELECT grant option",
+      "GRANT SELECT ON identity.empty_fixture TO atlas_l1_readonly WITH GRANT OPTION",
+      "REVOKE GRANT OPTION FOR SELECT ON identity.empty_fixture FROM atlas_l1_readonly",
+    ],
+    [
+      "column SELECT grant option",
+      "GRANT SELECT(value) ON identity.empty_fixture TO atlas_l1_readonly WITH GRANT OPTION",
+      "REVOKE GRANT OPTION FOR SELECT(value) ON identity.empty_fixture FROM atlas_l1_readonly",
+    ],
+    [
+      "schema USAGE grant option",
+      "GRANT USAGE ON SCHEMA identity TO atlas_l1_readonly WITH GRANT OPTION",
+      "REVOKE GRANT OPTION FOR USAGE ON SCHEMA identity FROM atlas_l1_readonly",
+    ],
+    [
+      "CONNECT grant option",
+      "GRANT CONNECT ON DATABASE atlas_spike_f0404 TO atlas_l1_readonly WITH GRANT OPTION",
+      "REVOKE GRANT OPTION FOR CONNECT ON DATABASE atlas_spike_f0404 FROM atlas_l1_readonly",
+    ],
+    [
+      "set_config grant option",
+      "GRANT EXECUTE ON FUNCTION pg_catalog.set_config(text,text,boolean) TO atlas_l1_readonly WITH GRANT OPTION",
+      "REVOKE GRANT OPTION FOR EXECUTE ON FUNCTION pg_catalog.set_config(text,text,boolean) FROM atlas_l1_readonly",
+    ],
+    [
+      "pg_settings INSERT",
+      "GRANT INSERT ON pg_catalog.pg_settings TO atlas_l1_readonly",
+      "REVOKE INSERT ON pg_catalog.pg_settings FROM atlas_l1_readonly",
+    ],
+    [
+      "pg_settings DELETE",
+      "GRANT DELETE ON pg_catalog.pg_settings TO atlas_l1_readonly",
+      "REVOKE DELETE ON pg_catalog.pg_settings FROM atlas_l1_readonly",
+    ],
     [
       "DML",
       "GRANT UPDATE ON identity.empty_fixture TO atlas_l1_readonly",

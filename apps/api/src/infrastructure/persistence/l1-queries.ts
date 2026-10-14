@@ -1,4 +1,6 @@
 // Complete diagnostic allowlist. No caller-supplied SQL or application data.
+// PG17 pg_settings UPDATE and its native set_config are session SET interfaces.
+// Only their bootstrap-owned builtins qualify; elevated SET ACLs remain denied.
 export const l1Queries = Object.freeze({
   server: `SELECT current_user AS role, session_user AS login,
     pg_catalog.current_database() AS database, pg_catalog.current_setting('server_version') AS version,
@@ -10,17 +12,26 @@ export const l1Queries = Object.freeze({
     (r.rolsuper OR r.rolcreatedb OR r.rolcreaterole OR r.rolbypassrls OR r.rolreplication
     OR EXISTS (SELECT 1 FROM pg_catalog.pg_auth_members m WHERE m.member=r.oid OR m.roleid=r.oid)
     OR EXISTS (SELECT 1 FROM pg_catalog.pg_shdepend d WHERE d.refobjid=r.oid AND d.deptype='o')
-    OR pg_catalog.has_database_privilege(pg_catalog.current_database(),'CREATE,TEMP')
-    OR EXISTS (SELECT 1 FROM pg_catalog.pg_namespace n WHERE pg_catalog.has_schema_privilege(n.oid,'CREATE'))
+    OR pg_catalog.has_database_privilege(pg_catalog.current_database(),'CREATE,TEMP,CONNECT WITH GRANT OPTION')
+    OR EXISTS (SELECT 1 FROM pg_catalog.pg_namespace n WHERE pg_catalog.has_schema_privilege(n.oid,'CREATE,USAGE WITH GRANT OPTION'))
     OR EXISTS (SELECT 1 FROM pg_catalog.pg_class c WHERE c.relkind IN ('r','p','v','m','f')
-      AND (pg_catalog.has_table_privilege(c.oid,'INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER')
-        OR pg_catalog.has_any_column_privilege(c.oid,'INSERT,UPDATE,REFERENCES')))
+      AND (pg_catalog.has_table_privilege(c.oid,'INSERT,DELETE,TRUNCATE,REFERENCES,TRIGGER,SELECT WITH GRANT OPTION')
+        OR pg_catalog.has_any_column_privilege(c.oid,'INSERT,REFERENCES,SELECT WITH GRANT OPTION')
+        OR ((pg_catalog.has_table_privilege(c.oid,'UPDATE')
+          OR pg_catalog.has_any_column_privilege(c.oid,'UPDATE'))
+          AND NOT (c.oid='pg_catalog.pg_settings'::pg_catalog.regclass
+            AND c.oid < 16384 AND c.relkind='v' AND c.relowner=10
+            AND pg_catalog.current_setting('server_version_num')::integer / 10000 = 17))))
     OR EXISTS (SELECT 1 FROM pg_catalog.pg_class c WHERE CASE WHEN c.relkind='S'
       THEN pg_catalog.has_sequence_privilege(c.oid,'SELECT,USAGE,UPDATE') ELSE false END)
     OR EXISTS (SELECT 1 FROM pg_catalog.pg_proc p JOIN pg_catalog.pg_namespace n ON n.oid=p.pronamespace
       WHERE pg_catalog.has_function_privilege(p.oid,'EXECUTE')
       AND (n.nspname NOT IN ('pg_catalog','information_schema') OR p.prosecdef
-        OR (n.nspname='pg_catalog' AND p.provolatile='v' AND p.proname NOT IN ('pg_backend_pid'))))
+        OR pg_catalog.has_function_privilege(p.oid,'EXECUTE WITH GRANT OPTION')
+        OR (n.nspname='pg_catalog' AND p.provolatile='v'
+          AND NOT (p.oid='pg_catalog.set_config(text,text,boolean)'::pg_catalog.regprocedure
+            AND p.oid < 16384 AND p.proowner=10 AND p.prolang=12
+            AND pg_catalog.current_setting('server_version_num')::integer / 10000 = 17))))
     OR EXISTS (SELECT 1 FROM pg_catalog.pg_default_acl d,
       LATERAL pg_catalog.aclexplode(d.defaclacl) a WHERE a.grantee IN (0,r.oid)
       AND a.privilege_type <> 'SELECT')
