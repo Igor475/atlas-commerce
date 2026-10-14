@@ -1,0 +1,11 @@
+COMMAND: pnpm --filter @atlas/api exec vitest run test/identity/resend.spec.ts
+
+ RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  10:48:54
+   Duration  4.86s (import 69%, tests 23%, transform 8%)
+
+EXIT_CODE=0

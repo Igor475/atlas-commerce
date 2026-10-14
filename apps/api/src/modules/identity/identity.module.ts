@@ -1,6 +1,5 @@
 import { Global, Module } from "@nestjs/common";
-import { IDENTITY_RUNTIME, IdentityRuntime } from "./identity-runtime.js";
-import { readIdentityConfig } from "./infrastructure/identity-config.js";
+import { IDENTITY_RUNTIME, composeIdentity } from "./identity-runtime.js";
 import { IdentityController } from "./presentation/identity.controller.js";
 @Global()
 @Module({
@@ -8,7 +7,7 @@ import { IdentityController } from "./presentation/identity.controller.js";
   providers: [
     {
       provide: IDENTITY_RUNTIME,
-      useFactory: () => new IdentityRuntime(readIdentityConfig(process.env)),
+      useFactory: () => composeIdentity(process.env),
     },
   ],
   exports: [IDENTITY_RUNTIME],

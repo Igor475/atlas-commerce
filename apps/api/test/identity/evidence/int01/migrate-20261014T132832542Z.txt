@@ -1,0 +1,19 @@
+COMMAND: pnpm --filter @atlas/api identity:migrate
+$ node scripts/identity-db.mjs migrate
+Datasource "db": PostgreSQL database "atlas_identity_id01", schemas "identity" at "127.0.0.1:55436"
+
+1 migration found in prisma/migrations
+
+Applying migration `20261013000000_identity`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20261013000000_identity/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+Loaded Prisma config from identity.prisma.config.ts.
+
+Prisma schema loaded from prisma-identity\schema.prisma.
+EXIT_CODE=0

@@ -63,6 +63,7 @@ export class CustomerIdentity {
     private readonly crypto: IdentityCrypto,
     private readonly mail: IdentityMail,
     private readonly policy: CustomerPolicy,
+    private readonly inlineTestMail = true,
   ) {}
   async limit(ip: string, operation: string, email?: string): Promise<void> {
     let retry = await this.repository.limit(
@@ -104,7 +105,7 @@ export class CustomerIdentity {
       this.token(email, "VERIFY_EMAIL"),
       requestId,
     );
-    await this.deliverPending();
+    if (this.inlineTestMail) await this.deliverPending();
   }
   async requestToken(
     email: string,
@@ -112,7 +113,7 @@ export class CustomerIdentity {
     requestId: string,
   ): Promise<void> {
     await this.repository.issue(email, this.token(email, purpose), requestId);
-    await this.deliverPending();
+    if (this.inlineTestMail) await this.deliverPending();
   }
   async verify(token: string, requestId: string): Promise<void> {
     if (
@@ -193,14 +194,20 @@ export class CustomerIdentity {
     }
   }
   async deliverPending(): Promise<void> {
+    if (!this.inlineTestMail) throw new IdentityError("DEPENDENCY_UNAVAILABLE");
     // No network or email inside a database transaction; bounded work only.
     for (let i = 0; i < 3; i++) {
       const intent = await this.repository.claimMail();
       if (!intent) return;
       let delivered = false;
       try {
-        await this.mail.send(intent.id, this.crypto.open(intent.payload));
-        delivered = true;
+        // Only the legacy in-process mailbox has a void result. A provider
+        // acceptance/result must never be converted into DELIVERED here.
+        delivered =
+          (await this.mail.send(
+            intent.id,
+            this.crypto.open(intent.payload),
+          )) === undefined;
       } catch {
         /* Persist failure below, never claim delivery. */
       }

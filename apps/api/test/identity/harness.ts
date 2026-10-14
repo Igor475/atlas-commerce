@@ -72,7 +72,7 @@ export class Browser {
     return response;
   }
 }
-export async function fixture() {
+export async function fixture(options?: { queued?: boolean }) {
   if (process.env.IDENTITY_DISPOSABLE !== "1")
     throw new Error("TEST_DISPOSABLE_REQUIRED");
   const control = new pg.Pool({
@@ -94,7 +94,7 @@ export async function fixture() {
   )
     throw new Error("TEST_DATABASE_INVALID");
   const config = readIdentityConfig({
-    IDENTITY_PROFILE: "local-disposable",
+    IDENTITY_PROFILE: options?.queued ? "local-resend" : "local-disposable",
     IDENTITY_DISPOSABLE: "1",
     IDENTITY_SECRET: randomBytes(32).toString("hex"),
     NODE_ENV: "test",

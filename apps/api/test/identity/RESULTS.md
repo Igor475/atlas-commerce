@@ -152,3 +152,75 @@ OpenAPI 3.1 parseado; 182 refs internos resolvidos; 10 schemas Identity compilad
 Bloqueios de aceite: audit transitivo; build/check Next Windows e EOL global; run Linux/GitHub Actions após publicação autorizada. Pendências de rollout: serviço real de e-mail, host/TLS/origins/proxy/cookies/cache cross-user e proteção contra abuso em Internet, lista completa de credenciais comprometidas, retenção legal, backup/restore; Identity Staff/MFA/RBAC/DS-003; Supabase L1. Stripe Embedded Checkout Test Mode, compatibilidade temporal/SDK e prova 40/30/5 **não homologados**, sem mudanças.
 
 Projetos Docker próprios Identity e PGSP foram removidos com seus volumes; runner de probes limpou seu projeto; confirmação por labels não encontrou containers restantes. Nenhum Docker externo foi alterado. Nenhum .env real lido, segredo/provedor configurado, branch/commit/push/deploy executado. **Parar sem publicar nem declarar ID-01 concluído.**
+
+## INT-01 — Adapter Resend HTTPS e dispatcher manual (14/10/2026)
+
+Este adendo preserva o histórico ID-01 acima e registra o novo delta na base main/**a4dc35b710b9929c6569d66d4344e3570449d81e**, inicialmente limpa. Código não commitado/publicado. **LOCAL MOCK PASS; RESEND REAL, CI REMOTO E AUTH PÚBLICA BLOCKED.** Nenhuma mensagem real enviada; comando consent-gated não executado. [Guia e mapeamento](../../../../docs/05-engineering/integrations/INT-01-resend-local.md), [matriz de origem](../../../../docs/05-engineering/integrations/INT-03-matriz-de-provas.md).
+
+### Diagnóstico, solução e limites
+
+A outbox ID-01 enviava depois do commit, mas no request. O transporte inline permanece apenas para mailbox legado; profile local-resend enfileira no harness, sem rede no handler. A composição normal equipa somente dispatcher manual e mantém service HTTP 503/readiness false mesmo com key, pois páginas/hosts/compromised-password/legal continuam pendentes. Default disabled/local-disposable e guard da injeção de teste preservados; STAFF negado nos fluxos funcionais de teste.
+
+Resend via fetch nativo, endpoint HTTPS fixo, timeout/abort, sem SDK/dependência nova e sem alterar Prisma/Next/lockfile. From restrito onboarding@resend.dev e destino exato de env privado. Links têm origem loopback configurada e paths propostos fixos, token em fragmento, sem headers arbitrários. HTML/texto PT-BR escapados, sem PII em erro/telemetria. Nenhuma página foi criada.
+
+Sem migrations novas: PROCESSING/lease futuro=in-flight; PROCESSING/lease null + evento de aceitação=PROVIDER_ACCEPTED; FAILED + evento distingue permanente/UNCERTAIN. DELIVERED nunca é escrito pela trilha Resend. Eventos usam UUID da intenção como correlação técnica e ID opaco do provedor quando aceito, não e-mail/token. Aceitação não prova entrega inbox.
+
+Claim SKIP LOCKED, fencing por attempts/lease e snapshot AES-GCM de remetente/origem/versão antes da rede. Máximo lote 3, tentativas totais 3, retry persistido só 429/409 concorrente; Retry-After respeitado e mesma key/conteúdo. Janela conservadora de 24h desde criação, além de TTL/status/token válidos. 409 divergente não troca key. 5xx/timeout/erro de rede/ack perdido/crash são quarentenados, sem replay automático. Expiração de lease Resend não é recuperada pelo dispatcher legado. Retomada pode processar PENDING válido/quarentenar incerteza; não é scheduler/cron de Render Free.
+
+Provider acceptance seguida de falha de persistência foi simulada no port; o estado PostgreSQL de lease/quarentena foi verificado. Não se simulou crash de SO durante TLS real, nem entrega inbox, domínio verificado, reconciliação remota ou disponibilidade de provedor. Sem exactly-once prometido; revisão humana/provedor antes de reprocessar incerto. Nenhum endpoint de dispatch/replay ou privilégio STAFF criado.
+
+### Gates reais (código final + formatação sem mudança semântica)
+
+Ambiente Windows/PowerShell, Node 24.21.0, pnpm 12.11.2, PostgreSQL 17.10 Docker descartável, Prisma 7.10.0. Testes HTTP Resend usam servidor loopback: o transport de teste exige NODE_ENV=test/VITEST e confirma URL HTTPS fixa antes de encaminhar ao mock. A prova de composição bloqueia global fetch e confirma zero chamadas. Não se usou credencial real, .env real, API externa ou Supabase.
+
+| Comando                                     | Resultado/exit                                                                                       | Evidência                                                                                                           |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| pnpm install --frozen-lockfile              | 0; resolução intacta, sem SDK                                                                        | [log](evidence/int01/install-20261014T133617915Z.txt)                                                               |
+| pnpm audit                                  | 0; nenhuma vulnerabilidade conhecida                                                                 | [log](evidence/int01/audit-20261014T133615714Z.txt)                                                                 |
+| pnpm lint                                   | 0 final                                                                                              | [log](evidence/int01/lint-20261014T135015699Z.txt)                                                                  |
+| pnpm typecheck                              | 0 final, ambos clientes                                                                              | [log](evidence/int01/typecheck-20261014T135004766Z.txt)                                                             |
+| pnpm test                                   | 0; API 34 (29 anteriores + 5 grupos Resend), demais 3                                                | [log](evidence/int01/test-20261014T132557136Z.txt), [repetição check](evidence/int01/check-20261014T134231213Z.txt) |
+| Resend unit focado final                    | 0; 5/5, incluindo zero fetch no bootstrap                                                            | [log](evidence/int01/unit-resend-20261014T134851955Z.txt)                                                           |
+| pnpm build                                  | 0; também completou no check; sem timeout nesta execução                                             | [log](evidence/int01/build-20261014T133812476Z.txt)                                                                 |
+| pnpm check                                  | 1; lint/typecheck/test/build/smoke passaram, formatação apontou 32 CRLF preexistentes + adapter novo | [log](evidence/int01/check-20261014T134231213Z.txt)                                                                 |
+| pnpm format:check final                     | 1; adapter corrigido, restam **somente 32 CRLF preexistentes**; sem mudar ignore/endOfLine/gates     | [log](evidence/int01/format-20261014T135128665Z.txt)                                                                |
+| pnpm smoke                                  | 0 final; live 200, ready 503 DEPENDENCIES_NOT_CONFIGURED esperado                                    | [log](evidence/int01/smoke-20261014T135039823Z.txt)                                                                 |
+| identity:migrate                            | 0; migration existente, fixture nova                                                                 | [log](evidence/int01/migrate-20261014T132832542Z.txt)                                                               |
+| identity:test                               | 0; **22/22 existentes + 12/12 grupos INT-01**, dois arquivos / 34 testes                             | [log final](evidence/int01/identity-20261014T134320236Z.txt)                                                        |
+| spike:test                                  | 0; **16/16 PGSP**                                                                                    | [log](evidence/int01/pgsp-20261014T133740153Z.txt)                                                                  |
+| connection:test                             | 0; **9/9 probes**, sem cloud                                                                         | [log](evidence/int01/connection-20261014T134501470Z.txt)                                                            |
+| arquivos modificados / links / diff --check | verificação final registrada no relatório de entrega; sem mudança de schema/contrato                 | [guia](../../../../docs/05-engineering/integrations/INT-01-resend-local.md)                                         |
+| Resend real / novo GitHub Actions           | BLOCKED — sem consentimento/env real e sem publicação/novo run                                       | não inferir aprovação remota                                                                                        |
+
+Logs de execução capturam saídas higienizadas. Depois do check foram feitos a formatação do adapter, a prova adicional de zero fetch no bootstrap (teste focado/tipos/lint finais) e os guards de resultado sem intenção/shutdown do CLI (syntax-check/lint, sem executar o comando); não se converte check=1 em PASS. Sem normalizar 32 arquivos alheios. O timeout Windows observado em fases anteriores não é declarado resolvido definitivamente porque os builds atuais passaram.
+
+### Matriz INT-03: RSD-001–022
+
+PASS aqui é **mock/local**, nunca envio real. Referências: [unit](resend.spec.ts), [HTTP mock](resend-http.ts), [PG/HTTP](resend.pg.ts). Provas antigas Identity permanecem em [identity.pg.ts](identity.pg.ts) e [unit legado](identity.unit.spec.ts).
+
+| ID      | Estado                      | Prova / limite                                                                                                      |
+| ------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| RSD-001 | PASS_LOCAL                  | default ignora key e não faz fetch; auth 503/live 200                                                               |
+| RSD-002 | PASS_LOCAL                  | key ausente inicializa fechado, inválida/perfil indevido negados; erro estático                                     |
+| RSD-003 | PASS_LOCAL                  | URL HTTPS constante, custom settings/API URL recusados, redirect não seguido; transporte simulado só teste          |
+| RSD-004 | PASS_LOCAL                  | destinatário diferente vira PERMANENT/FAILED, zero requests                                                         |
+| RSD-005 | PASS_LOCAL / BLOCKED_REAL   | mock de HTTP válido; propriedade da caixa/env real e envio externo não comprovados                                  |
+| RSD-006 | PASS_LOCAL                  | shape/headers/PT-BR/texto/HTML e escaping; valores indevidos recusados                                              |
+| RSD-007 | PASS_LOCAL                  | origem/path fixos e contexto imutável; não lê Host/Forwarded; UI ausente                                            |
+| RSD-008 | PASS_LOCAL                  | 202 sem rede, verify/recovery single-use/revogação; 22 Identity preservados                                         |
+| RSD-009 | PASS_LOCAL                  | body/key idênticos em retry, snapshot cifrado; sem trocar key em conflito                                           |
+| RSD-010 | PASS_LOCAL                  | duas instâncias/repos PostgreSQL independentes, claim único; fencing/quarentena                                     |
+| RSD-011 | PASS_LOCAL                  | 200/201=>aceitação; PROCESSING/null+evento, jamais DELIVERED; guard inline legado                                   |
+| RSD-012 | PASS_LOCAL                  | 400/401/403 terminais, sem reenvio automático, lote interrompido 401/403                                            |
+| RSD-013 | PASS_LOCAL                  | 409 payload divergente e alteração de contexto => integridade/FAILED                                                |
+| RSD-014 | PASS_LOCAL                  | 409 concorrente, backoff/max 3, key original                                                                        |
+| RSD-015 | PASS_LOCAL                  | Retry-After numérico/data; espera persistida e nenhuma chamada antes do prazo                                       |
+| RSD-016 | PASS_LOCAL                  | 5xx/timeout/network =>UNCERTAIN, abort e sem retry cego                                                             |
+| RSD-017 | PASS_LOCAL                  | intenção criada há >24h bloqueada; sem promessa de dedup eterna                                                     |
+| RSD-018 | PASS_LOCAL                  | token expirado/invalidado/consumido não elegível antes do dispatch                                                  |
+| RSD-019 | PASS_LOCAL                  | worker novo/lease expirado/shutdown e falha de ack simulada; estado durável/quarentena; não prova crash SO/TLS real |
+| RSD-020 | PASS_LOCAL                  | eco de key/token/e-mail e exceptions do transport não escapam, JSON do adapter não serializa key                    |
+| RSD-021 | PASS_LOCAL / BLOCKED_PUBLIC | sender restrito e caixa única; domínio/UI/host real e auth pública pendentes                                        |
+| RSD-022 | BLOCKED_GLOBAL              | ID 22, INT 12, PGSP16, probes9/audit/tipos/build/smoke passam; check/format Windows e novo CI remoto pendentes      |
+
+SUPL1-001–015 fora desta tarefa. Nenhuma norma/contrato, UI, .github, migration, lockfile, provedor, conta remota, Stripe/Supabase/Render/Vercel/R2/MFA foi alterado. Projetos Docker próprios Identity e PGSP foram removidos com seus volumes; probes fizeram cleanup próprio; confirmação por labels vazia. Nenhum commit/push/deploy ou envio Resend real. INT-01 prepara adapter/dispatch/handoff, **não homologa autenticação pública nem ID-01 integral**.

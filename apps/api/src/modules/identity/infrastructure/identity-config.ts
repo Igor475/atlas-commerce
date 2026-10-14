@@ -1,4 +1,5 @@
 export interface IdentityConfig {
+  profile: "disabled" | "local-disposable" | "local-resend";
   enabled: boolean;
   origin: string;
   secureCookie: boolean;
@@ -51,9 +52,9 @@ export function identityDatabaseUrl(
 }
 export function readIdentityConfig(env: NodeJS.ProcessEnv): IdentityConfig {
   const profile = env.IDENTITY_PROFILE ?? "disabled";
-  const enabled = profile === "local-disposable";
+  const enabled = profile === "local-disposable" || profile === "local-resend";
   if (
-    !["disabled", "local-disposable"].includes(profile) ||
+    !["disabled", "local-disposable", "local-resend"].includes(profile) ||
     (enabled &&
       (env.IDENTITY_DISPOSABLE !== "1" || env.NODE_ENV === "production"))
   )
@@ -74,6 +75,7 @@ export function readIdentityConfig(env: NodeJS.ProcessEnv): IdentityConfig {
   const idleSeconds = number(env.IDENTITY_IDLE_SECONDS, 1800, 10, 1800);
   if (idleSeconds > absoluteSeconds) invalid();
   return {
+    profile: profile as IdentityConfig["profile"],
     enabled,
     origin,
     secureCookie: env.IDENTITY_TEST_SECURE_COOKIE === "1",

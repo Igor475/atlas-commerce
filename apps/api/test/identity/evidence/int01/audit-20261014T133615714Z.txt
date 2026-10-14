@@ -1,0 +1,3 @@
+COMMAND: pnpm audit
+No known vulnerabilities found
+EXIT_CODE=0

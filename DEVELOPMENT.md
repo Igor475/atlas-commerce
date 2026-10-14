@@ -217,3 +217,11 @@ Auth disabled por padrão; produção recusa habilitação, origem local exata e
 Sessões são CUSTOMER opacas de 256 bits, HMAC persistido, TTL máximo 12h/30min idle no DB, revogação em logout/logout-all/recovery. CSRF assinado é vinculado à origem/contexto e à sessão; após login obter novo /auth/csrf. Argon2id mínimo 19MiB/2/1 parametrizado e medido, sem composição artificial; senha 15–128 caracteres NFC e blocklist local mínima demonstrativa. Provedor e lista completa de credenciais comprometidas, host/TLS/proxy público, staff/MFA, retenção legal, backup/restore e Supabase L1 continuam pendentes.
 
 Nenhuma sessão/grant de staff, rota de perfil/endereço, checkout, Stripe, frontend ou tela FD-05 é criada pelo ID-01. Não expor esses fluxos à Internet nem aplicar migrations no Supabase.
+
+## INT-01 — Resend HTTPS local, manual e sem envio real automático
+
+[Guia de configuração e dispatch](docs/05-engineering/integrations/INT-01-resend-local.md); [matriz/resultados](apps/api/test/identity/RESULTS.md). Nenhum SDK/dependência nova. Perfil disabled e local-disposable preservados. local-resend prepara somente worker manual em loopback/DB descartável; HTTP auth e readiness continuam fechados na composição normal, mesmo com key. Mailbox e queued HTTP só no harness Vitest.
+
+O adapter usa endpoint HTTPS fixo, timeout, abort, destinatário único permitido e snapshots cifrados. Aceitação do provedor não é entrega; incerteza/crash é quarentena sem reenvio cego. Migrations e fixtures do spike não mudam. As páginas de verify/recovery não foram criadas.
+
+Testes sem envio externo: pnpm test e pnpm --filter @atlas/api identity:test (22 Identity + 12 grupos INT-01). O comando identity:mail:dispatch documentado no guia requer aprovação humana separada e flags de consentimento, seleciona uma intenção existente e **não foi executado**. Não informar credenciais no chat nem alterar .env real para esta entrega.

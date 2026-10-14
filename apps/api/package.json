@@ -19,7 +19,8 @@
     "connection:test": "pnpm build && node scripts/connection-local.mjs",
     "identity:generate": "prisma generate --config identity.prisma.config.ts",
     "identity:migrate": "node scripts/identity-db.mjs migrate",
-    "identity:test": "pnpm build && node scripts/identity-db.mjs test"
+    "identity:test": "pnpm build && node scripts/identity-db.mjs test",
+    "identity:mail:dispatch": "node scripts/identity-mail-dispatch.mjs"
   },
   "dependencies": {
     "@nestjs/common": "12.1.3",

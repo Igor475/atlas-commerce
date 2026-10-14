@@ -1,6 +1,10 @@
 import { Logger } from "@nestjs/common";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient, type Prisma } from "atlas-identity-client";
+import type {
+  MailDispatchRepository,
+  MailResult,
+} from "../domain/mail-dispatch.js";
 import {
   IdentityError,
   type IdentityRepository,
@@ -105,7 +109,9 @@ async function liveSession(
     sessionClass: "CUSTOMER",
   };
 }
-export class PrismaIdentityRepository implements IdentityRepository {
+export class PrismaIdentityRepository
+  implements IdentityRepository, MailDispatchRepository
+{
   private client: PrismaClient | undefined;
   constructor(private readonly name = "atlas-id01") {}
   get database(): PrismaClient {
@@ -419,7 +425,7 @@ export class PrismaIdentityRepository implements IdentityRepository {
         (
           await rows<MailIntent>(
             tx,
-            "UPDATE identity.email_outbox SET status='PROCESSING',lease_until=clock_timestamp()+interval '30 seconds',attempts=attempts+1 WHERE id=(SELECT o.id FROM identity.email_outbox o JOIN identity.account_token t ON t.id=o.token_id WHERE ((o.status='PENDING' AND (o.lease_until IS NULL OR o.lease_until<clock_timestamp())) OR (o.status='PROCESSING' AND o.lease_until<clock_timestamp())) AND o.attempts<10 AND o.expires_at>clock_timestamp() AND t.consumed_at IS NULL AND t.invalidated_at IS NULL ORDER BY o.created_at LIMIT 1 FOR UPDATE OF o SKIP LOCKED) RETURNING id,payload,attempts",
+            "UPDATE identity.email_outbox SET status='PROCESSING',lease_until=clock_timestamp()+interval '30 seconds',attempts=attempts+1 WHERE id=(SELECT o.id FROM identity.email_outbox o JOIN identity.account_token t ON t.id=o.token_id WHERE ((o.status='PENDING' AND (o.lease_until IS NULL OR o.lease_until<clock_timestamp())) OR (o.status='PROCESSING' AND o.lease_until<clock_timestamp())) AND NOT EXISTS(SELECT 1 FROM identity.auth_security_event e WHERE e.request_id=o.id AND e.action='RESEND_CLAIM') AND o.attempts<10 AND o.expires_at>clock_timestamp() AND t.consumed_at IS NULL AND t.invalidated_at IS NULL ORDER BY o.created_at LIMIT 1 FOR UPDATE OF o SKIP LOCKED) RETURNING id,payload,attempts",
           )
         )[0],
     );
@@ -437,6 +443,81 @@ export class PrismaIdentityRepository implements IdentityRepository {
         delivered,
         attempt,
       );
+    });
+  }
+  async claimDispatchMail(id?: string): Promise<MailIntent | undefined> {
+    return this.tx(async (tx) => {
+      // An expired real-provider lease is ambiguous, never a blind replay.
+      const crashed = await rows<{ id: string }>(
+        tx,
+        "UPDATE identity.email_outbox SET status='FAILED',lease_until=NULL WHERE id IN (SELECT o.id FROM identity.email_outbox o WHERE o.status='PROCESSING' AND o.lease_until<clock_timestamp() AND ($1::uuid IS NULL OR o.id=$1::uuid) AND EXISTS(SELECT 1 FROM identity.auth_security_event e WHERE e.request_id=o.id AND e.action='RESEND_CLAIM') LIMIT 3 FOR UPDATE OF o SKIP LOCKED) RETURNING id",
+        id ?? null,
+      );
+      for (const row of crashed)
+        await audit(tx, null, "RESEND_UNCERTAIN/CRASH", row.id);
+      const expired = await rows<{ id: string }>(
+        tx,
+        "UPDATE identity.email_outbox SET status='FAILED',lease_until=NULL WHERE id IN (SELECT o.id FROM identity.email_outbox o JOIN identity.account_token t ON t.id=o.token_id JOIN identity.customer_account a ON a.id=t.account_id WHERE o.status='PENDING' AND ($1::uuid IS NULL OR o.id=$1::uuid) AND (o.expires_at<=clock_timestamp() OR t.expires_at<=clock_timestamp() OR t.consumed_at IS NOT NULL OR t.invalidated_at IS NOT NULL OR o.created_at<=clock_timestamp()-interval '24 hours' OR o.attempts>=3 OR (t.purpose='VERIFY_EMAIL' AND a.status<>'PENDING_VERIFICATION') OR (t.purpose='RESET_PASSWORD' AND a.status<>'ACTIVE')) LIMIT 3 FOR UPDATE OF o SKIP LOCKED) RETURNING id",
+        id ?? null,
+      );
+      for (const row of expired)
+        await audit(tx, null, "RESEND_PERMANENT/EXPIRED_OR_WINDOW", row.id);
+      const intent = (
+        await rows<MailIntent>(
+          tx,
+          "UPDATE identity.email_outbox SET status='PROCESSING',lease_until=clock_timestamp()+interval '30 seconds',attempts=attempts+1 WHERE id=(SELECT o.id FROM identity.email_outbox o JOIN identity.account_token t ON t.id=o.token_id JOIN identity.customer_account a ON a.id=t.account_id WHERE o.status='PENDING' AND ($1::uuid IS NULL OR o.id=$1::uuid) AND (o.lease_until IS NULL OR o.lease_until<=clock_timestamp()) AND o.attempts<3 AND o.created_at>clock_timestamp()-interval '24 hours' AND o.expires_at>clock_timestamp() AND t.expires_at>clock_timestamp() AND t.consumed_at IS NULL AND t.invalidated_at IS NULL AND ((t.purpose='VERIFY_EMAIL' AND a.status='PENDING_VERIFICATION') OR (t.purpose='RESET_PASSWORD' AND a.status='ACTIVE')) ORDER BY o.created_at LIMIT 1 FOR UPDATE OF o SKIP LOCKED) RETURNING id,payload,attempts",
+          id ?? null,
+        )
+      )[0];
+      if (intent) await audit(tx, null, "RESEND_CLAIM", intent.id);
+      return intent;
+    });
+  }
+  freezeDispatchMail(intent: MailIntent, payload: string): Promise<boolean> {
+    return this.tx(
+      async (tx) =>
+        (await exec(
+          tx,
+          "UPDATE identity.email_outbox SET payload=$3 WHERE id=$1::uuid AND attempts=$2::int AND status='PROCESSING' AND lease_until>clock_timestamp()",
+          intent.id,
+          intent.attempts,
+          payload,
+        )) === 1,
+    );
+  }
+  dispatchMailLive(intent: MailIntent): Promise<boolean> {
+    return this.tx(
+      async (tx) =>
+        (
+          await rows(
+            tx,
+            "SELECT o.id FROM identity.email_outbox o JOIN identity.account_token t ON t.id=o.token_id JOIN identity.customer_account a ON a.id=t.account_id WHERE o.id=$1::uuid AND o.attempts=$2::int AND o.status='PROCESSING' AND o.lease_until>clock_timestamp() AND o.expires_at>clock_timestamp() AND o.created_at>clock_timestamp()-interval '24 hours' AND t.expires_at>clock_timestamp() AND t.consumed_at IS NULL AND t.invalidated_at IS NULL AND ((t.purpose='VERIFY_EMAIL' AND a.status='PENDING_VERIFICATION') OR (t.purpose='RESET_PASSWORD' AND a.status='ACTIVE'))",
+            intent.id,
+            intent.attempts,
+          )
+        ).length === 1,
+    );
+  }
+  finishDispatchMail(intent: MailIntent, result: MailResult): Promise<boolean> {
+    return this.tx(async (tx) => {
+      const retry = result.kind === "RETRY" ? result.afterSeconds : 0;
+      const changed = await rows<{ status: string }>(
+        tx,
+        "UPDATE identity.email_outbox SET status=CASE WHEN $3='ACCEPTED' THEN 'PROCESSING' WHEN $3='RETRY' AND attempts<3 AND clock_timestamp()+$4::int*interval '1 second'<LEAST(expires_at,created_at+interval '24 hours') THEN 'PENDING' ELSE 'FAILED' END,lease_until=CASE WHEN $3='RETRY' AND attempts<3 AND clock_timestamp()+$4::int*interval '1 second'<LEAST(expires_at,created_at+interval '24 hours') THEN clock_timestamp()+$4::int*interval '1 second' ELSE NULL END WHERE id=$1::uuid AND attempts=$2::int AND status='PROCESSING' AND lease_until>clock_timestamp() RETURNING status",
+        intent.id,
+        intent.attempts,
+        result.kind,
+        retry,
+      );
+      if (!changed.length) return false;
+      const action =
+        result.kind === "ACCEPTED"
+          ? "RESEND_PROVIDER_ACCEPTED/" + result.providerId
+          : result.kind === "RETRY" && changed[0]!.status === "FAILED"
+            ? "RESEND_PERMANENT/RETRY_EXHAUSTED"
+            : "RESEND_" + result.kind + "/" + result.code;
+      await audit(tx, null, action, intent.id);
+      return true;
     });
   }
   async ready(): Promise<boolean> {

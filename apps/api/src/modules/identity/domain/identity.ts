@@ -31,6 +31,7 @@ export interface EmailMessage {
   email: string;
   token: string;
   purpose: TokenPurpose;
+  delivery?: { version: 1; from: string; origin: string };
 }
 export interface MailIntent {
   id: string;
@@ -49,7 +50,10 @@ export interface IdentityCrypto {
   open(payload: string): EmailMessage;
 }
 export interface IdentityMail {
-  send(idempotencyKey: string, message: EmailMessage): Promise<void>;
+  send(
+    idempotencyKey: string,
+    message: EmailMessage,
+  ): Promise<void | import("./mail-dispatch.js").MailResult>;
 }
 export interface IssueToken {
   hash: string;

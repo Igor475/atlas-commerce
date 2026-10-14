@@ -1,0 +1,23 @@
+COMMAND: pnpm smoke
+$ pnpm --filter @atlas/api smoke
+$ pnpm build && node scripts/smoke.mjs
+$ pnpm spike:generate && pnpm identity:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 319ms
+
+$ prisma generate --config identity.prisma.config.ts
+Loaded Prisma config from identity.prisma.config.ts.
+
+Prisma schema loaded from prisma-identity\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-identity-client in 217ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+Smoke API: live=200; ready=503 DEPENDENCIES_NOT_CONFIGURED
+EXIT_CODE=0

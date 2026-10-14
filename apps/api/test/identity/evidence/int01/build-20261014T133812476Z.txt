@@ -1,0 +1,66 @@
+COMMAND: pnpm build
+packages/contracts build$ tsc -p tsconfig.build.json
+apps/api build$ pnpm spike:generate && pnpm identity:generate && nest build
+apps/admin build$ next build
+apps/storefront build$ next build
+apps/api build: $ prisma generate
+packages/contracts build: Done
+apps/storefront build: ▲ Next.js 16.4.0 (Turbopack)
+apps/admin build: ▲ Next.js 16.4.0 (Turbopack)
+apps/admin build: ✓ Running next.config.ts took 299ms
+apps/storefront build: ✓ Running next.config.ts took 351ms
+apps/storefront build: 
+apps/admin build: 
+apps/admin build:   Creating an optimized production build ...
+apps/storefront build:   Creating an optimized production build ...
+apps/api build: Loaded Prisma config from prisma.config.ts.
+apps/api build: 
+apps/api build: Prisma schema loaded from prisma\schema.prisma.
+apps/storefront build: ✓ Compiled successfully in 2.9s
+apps/storefront build:   Running TypeScript ...
+apps/api build: 
+apps/api build: ✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 511ms
+apps/api build: 
+apps/admin build: ✓ Compiled successfully in 3.1s
+apps/admin build:   Running TypeScript ...
+apps/api build: $ prisma generate --config identity.prisma.config.ts
+apps/api build: Loaded Prisma config from identity.prisma.config.ts.
+apps/api build: 
+apps/storefront build:   Finished TypeScript in 5.4s ...
+apps/storefront build:   Collecting page data using 4 workers ...
+apps/admin build:   Finished TypeScript in 5.6s ...
+apps/api build: Prisma schema loaded from prisma-identity\schema.prisma.
+apps/admin build:   Collecting page data using 4 workers ...
+apps/api build: 
+apps/api build: ✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-identity-client in 688ms
+apps/api build: 
+apps/api build: Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+apps/api build: 
+apps/api build: 
+apps/storefront build:   Generating static pages using 4 workers (0/3) ...
+apps/admin build:   Generating static pages using 4 workers (0/3) ...
+apps/storefront build: ✓ Generating static pages using 4 workers (3/3) in 2.4s
+apps/admin build: ✓ Generating static pages using 4 workers (3/3) in 2.4s
+apps/storefront build:   Finalizing page optimization ...
+apps/admin build:   Finalizing page optimization ...
+apps/storefront build: 
+apps/storefront build: Route (app)
+apps/storefront build: ┌ ○ /
+apps/storefront build: └ ○ /_not-found
+apps/storefront build: 
+apps/storefront build: 
+apps/storefront build: ○  (Static)  prerendered as static content
+apps/storefront build: 
+apps/admin build: 
+apps/admin build: Route (app)
+apps/admin build: ┌ ○ /
+apps/admin build: └ ○ /_not-found
+apps/admin build: 
+apps/admin build: 
+apps/admin build: ○  (Static)  prerendered as static content
+apps/admin build: 
+apps/storefront build: Done
+apps/admin build: Done
+apps/api build: Done
+$ pnpm -r --if-present build
+EXIT_CODE=0

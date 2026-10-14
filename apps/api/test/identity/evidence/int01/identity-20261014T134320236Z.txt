@@ -1,0 +1,30 @@
+COMMAND: pnpm --filter @atlas/api identity:test
+$ pnpm build && node scripts/identity-db.mjs test
+$ pnpm spike:generate && pnpm identity:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 260ms
+
+$ prisma generate --config identity.prisma.config.ts
+Loaded Prisma config from identity.prisma.config.ts.
+
+Prisma schema loaded from prisma-identity\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-identity-client in 260ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+
+ RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+
+
+ Test Files  2 passed (2)
+      Tests  34 passed (34)
+   Start at  10:44:18
+   Duration  70.20s (tests 75%, import 24%, transform 1%)
+
+EXIT_CODE=0
