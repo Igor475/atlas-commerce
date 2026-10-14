@@ -8,6 +8,25 @@ a limitação. Não foi escolhida uma garantia mais fraca.
 
 ## Evidência e causa
 
+### Adendo documental — 14/10/2026, INT-02.2
+
+O projeto existente **Atlas Commerce**, ref `bkxrsgryzkgpwgkngieh`, região
+`sa-east-1`, permanece o único alvo documental. Após o estado “Data API habilitada”
+registrado na revisão original abaixo, o responsável informou em 14/10/2026 que
+desligou **Enable Data API**. **USER_REPORTED_DISABLED — não verificado
+independentemente**; não houve consulta de catálogo, inspeção Dashboard ou prova
+HTTP nova nesta tarefa. As evidências e resultados abaixo pertencem à revisão
+original INT-02.1 e não foram reexecutados para este adendo.
+
+L1-SQL estrita continua **PENDENTE**: desativar a Data API não elimina TEMP,
+EXECUTE ou outros direitos herdados de PUBLIC. [ADR-011](../../04-architecture/adrs/ADR-011-diagnostico-mediado-e-politica-l1.md)
+e [INT-02.2](INT-02-2-diagnostico-mediado-proposta.md) descrevem MRD como **PROPOSTA**
+distinta, não implementada ou homologada. O plano SQL histórico segue não
+executado/bloqueado e não provisiona MRD. Nenhuma exceção do detector foi ampliada;
+SUPL1-001–015 e READONLY_PROVEN/ROLE_UNSAFE permanecem inalterados.
+
+### Evidência original INT-02.1 (preservada)
+
 O contexto confirmado pelo responsável identifica Atlas Commerce,
 `bkxrsgryzkgpwgkngieh`, organização `jwqgnrbkqqmuthquungg`, região `sa-east-1`.
 Role `atlas_l1_readonly` ausente. O catálogo remoto previamente inspecionado

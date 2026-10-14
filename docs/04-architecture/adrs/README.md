@@ -15,6 +15,10 @@
 | [ADR-009](ADR-009-selecao-render.md) | Render Web Service **Free** para backend demonstrativo | Cold start, TLS/cookies, conectividade, logs, RENDER-001–016 |
 | [ADR-010](ADR-010-postgresql-supabase.md) | Supabase PostgreSQL **Free** para banco demonstrativo | Pausing, Data API/RLS, migrations, backup/restore, SUPABASE-001–016 |
 
+## Proposta posterior — 14/10/2026
+
+- [ADR-011 — L1 estrita e diagnóstico mediado](ADR-011-diagnostico-mediado-e-politica-l1.md): **PROPOSTA**, ratificação pendente; não integra a lista de direções aprovadas acima. L1-SQL **PENDENTE**; MRD em especificação, não implementada. [Contrato e matriz MRD-001–016](../../05-engineering/integrations/INT-02-2-diagnostico-mediado-proposta.md), sem testes executados. Data API desligada conforme relato do responsável, sem confirmação independente.
+
 ## Significado do status
 
 - **Direção aprovada:** decisão expressa que orienta o futuro prompt Codex; não autoriza substituições silenciosas.

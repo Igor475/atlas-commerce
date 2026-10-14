@@ -5,6 +5,22 @@
 
 ## Decisão
 
+### Adendo de estado — 14/10/2026
+
+O projeto **Atlas Commerce** existe: ref `bkxrsgryzkgpwgkngieh`, região `sa-east-1`,
+conforme contexto do responsável e [registro INT-02.1](../../05-engineering/integrations/INT-02-1-postgresql-ci.md).
+Em 14/10/2026 o responsável informou ter desligado **Enable Data API**;
+**relato não verificado independentemente**, sem inspeção Dashboard ou teste HTTP
+nesta revisão. Isso não revoga direitos SQL de PUBLIC nem homologa segurança.
+**L1-SQL estrita PENDENTE**; [ADR-011](ADR-011-diagnostico-mediado-e-politica-l1.md)
+e [INT-02.2](../../05-engineering/integrations/INT-02-2-diagnostico-mediado-proposta.md)
+propõem MRD como trilha distinta, não implementada e sem ratificação formal.
+Os textos e gates de 12/10/2026 abaixo ficam preservados como histórico, inclusive
+o estado anterior “não criado”; este adendo atualiza somente a existência/estado,
+sem fechar gates de conectividade, SQL, Data API, runtime ou produção.
+
+### Decisão registrada em 12/10/2026 (preservada)
+
 1. **Banco gerenciado:** Supabase PostgreSQL como **fonte de verdade** dos pedidos, snapshots, estoque, pagamentos, reserva, refunds, sessões de identidade NestJS, inbox/outbox e entitlements.
 2. **Plano:** **Supabase Free escolhido explicitamente** para portfólio pessoal não comercial. Upgrade e contingência de backup/limites serão avaliados antes de operação sustentada ou comercial; não criar infraestrutura automaticamente.
 3. **Autenticação humana:** NestJS Identity com sessão opaca, cookies/CSRF e WebAuthn/TOTP segundo a ADR-003. **Não adotar Supabase Auth** por esta decisão.

@@ -23,6 +23,16 @@ A [Fase 03 v0.5](../04-architecture/CONSOLIDACAO-FINAL-FASE-03-v0.5.md) consolid
 | F04-11 | [Decisões pendentes](F04-11-decissoes-abertas.md) | O que falta antes de cada módulo e não impede planejamento |
 | MONO-01 | [Mapa do monorepo](diagrams/MONO-01-workspaces.md) | DOT, SVG e PNG editáveis/visualizáveis |
 | INT-02 | [Preparação Supabase L1 somente leitura](integrations/INT-02-supabase-readonly.md) | Diagnóstico isolado e provas locais; remoto `BLOCKED_NO_PROJECT_OR_READONLY_ROLE`, sem migrations ou liberação de Identity remoto |
+| INT-02.1 | [PostgreSQL 17 e CI isolado](integrations/INT-02-1-postgresql-ci.md) | Evidências locais históricas e bloqueios PUBLIC; L1-SQL estrita PENDENTE |
+| INT-02.2 | [Diagnóstico mediado MRD](integrations/INT-02-2-diagnostico-mediado-proposta.md) | PROPOSTA vinculada à [ADR-011](../04-architecture/adrs/ADR-011-diagnostico-mediado-e-politica-l1.md); MRD-001–016 futuros, não implementados ou executados |
+
+**Adendo de 14/10/2026 — diagnóstico:** projeto Supabase Atlas Commerce existente,
+ref `bkxrsgryzkgpwgkngieh`, região `sa-east-1`, conforme contexto do responsável e
+registro [INT-02.1](integrations/INT-02-1-postgresql-ci.md). Data API desligada
+conforme relato do responsável nesta data, **não verificada independentemente**.
+L1-SQL segue PENDENTE; MRD é trilha distinta em proposta, sem promover L1 ou
+alterar os códigos existentes. Os registros F04/CI abaixo são históricos e não
+comprovam MRD nem homologação remota atual.
 
 ## Nova entrega de contratos (F04-02)
 

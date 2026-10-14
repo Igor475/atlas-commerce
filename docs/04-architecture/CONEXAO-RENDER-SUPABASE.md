@@ -4,6 +4,26 @@
 
 ## Topologia e ownership
 
+### Adendo de estado — 14/10/2026
+
+O projeto Supabase **Atlas Commerce** existe, ref `bkxrsgryzkgpwgkngieh`, região
+`sa-east-1`, conforme contexto do responsável e [INT-02.1](../05-engineering/integrations/INT-02-1-postgresql-ci.md).
+O plano Free já foi aceito na [ADR-010](adrs/ADR-010-postgresql-supabase.md);
+a frase de cabeçalho “recomendação, não decisão explícita” é registro anterior,
+não o estado atual da escolha do plano. Data API desligada em 14/10/2026
+**segundo relato do responsável, não verificado independentemente**; nenhuma
+conexão ou prova HTTP foi realizada nesta revisão documental.
+
+**L1-SQL estrita PENDENTE:** PUBLIC TEMP/EXECUTE não é removido pelo toggle da
+Data API ou por NOINHERIT/default readonly. [ADR-011](adrs/ADR-011-diagnostico-mediado-e-politica-l1.md)
+e [INT-02.2](../05-engineering/integrations/INT-02-2-diagnostico-mediado-proposta.md)
+especificam MRD como proposta separada, não implementada, sem autorizar conexão,
+role, código ou mudança na topologia comercial. TLS, privilégios SQL e exposição
+Data API têm gates independentes. O contrato anterior abaixo permanece histórico;
+URLs ilustrativas, credenciais e transporte não foram alterados.
+
+### Topologia registrada anteriormente (preservada)
+
 | Área | Decisão / limite |
 |---|---|
 | Cliente/Next.js | **Nunca** conectar diretamente ao PostgreSQL com credencial privilegiada, tampouco publicar DATABASE_URL/SUPABASE_SECRET. Toda autorização de negócio pertence ao NestJS. |

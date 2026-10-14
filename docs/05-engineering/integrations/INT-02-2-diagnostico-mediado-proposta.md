@@ -1,6 +1,6 @@
 # INT-02.2 — Contrato proposto para diagnóstico mediado (MRD)
 
-> **Estado:** DOCUMENTAL / NÃO IMPLEMENTADO / NÃO EXECUTADO NO SUPABASE.  
+> **Estado:** PROPOSTA / RATIFICAÇÃO PENDENTE / NÃO IMPLEMENTADO / NÃO EXECUTADO NO SUPABASE.
 > **Data:** 14/10/2026 · **Decisão governante:** [ADR-011](../../04-architecture/adrs/ADR-011-diagnostico-mediado-e-politica-l1.md).  
 > **Pré-requisito:** L1 SQL original preservada como `PENDENTE` e `READONLY_PROVEN` não emitido por MRD.
 
@@ -14,7 +14,7 @@
 
 | Componente | Confiança | Poder permitido | Proibição |
 |---|---|---|---|
-| Operador autorizado | Autorização e ato explícitos | Selecionar **ID** de operação aprovada, sem SQL arbitrária | Ver credencial ou resultado bruto interno |
+| Operador autorizado | Autorização e ato explícitos | Selecionar **ID** de operação aprovada, sem SQL arbitrária | Interface não deve exibir credencial ou resultado bruto interno |
 | CLI MRD (processo isolado) | Binário/dependências sob revisão | Validar contexto e despachar enum fixo | HTTP de aplicação, uso geral de `pg`, eval, plugins SQL, interpolação de identificadores |
 | Executor de consultas fixas | Componente de alta confiança | Conectar e executar somente SQL hardcoded | SQL fornecida por cliente, comandos com efeito colateral, acesso fora do catálogo aprovado |
 | Credencial PostgreSQL MRD | Segredo do executor | Menor privilégio efetivo viável, com inventário `PUBLIC` | Ser divulgada, reutilizada por migrator/runtime/CI público, ser descrita como L1 estrita |
@@ -57,7 +57,7 @@
 | MRD-001 | Ausência de consentimento/identidade | Bloquear antes de abrir socket remoto |
 | MRD-002 | Projeto/host/role divergentes | Recusa segura, sem fallback |
 | MRD-003 | Tentativa de SQL arbitrária/argumentos extras | Bloquear integralmente sem enviar query |
-| MRD-004 | IDs de operação desconhecidos/repetidos | Fail-closed; sem operação fora da allowlist |
+| MRD-004 | IDs desconhecidos ou duplicados no mesmo pedido | Fail-closed; sem operação fora da allowlist |
 | MRD-005 | Tentativa de efeito colateral por `SELECT` | Revisão estática + teste negativo; não basta regex/prefixo |
 | MRD-006 | Segredos/PII em saída, erro e trace | Saída higienizada, sem credentials e sem dados comerciais |
 | MRD-007 | TLS/hostname/CA inválidos | Recusar conexão sem downgrade |
@@ -96,3 +96,28 @@ Proibido: alterar `.ts`, `.mjs`, Prisma, migrations, SQL de fixture, CI workflow
 **Base GitHub inspecionada:** branch `main`, commit `fa95b3534be84b7673794816e1b500411fddbb70` de 14/10/2026. **Leitura do banco previamente documentada:** `PUBLIC TEMP` e função `lo_create` efetivamente executável por roles públicas; `atlas_l1_readonly` não provisionada. **Limites:** sem confirmação independente de toggle Data API e sem execução MRD. 
 
 **Responsável técnico:** a definir · **Aprovador:** a definir · **Status da execução:** NÃO EXECUTADO.
+
+### Adendo de evidências e limites — 14/10/2026
+
+Esta revisão inspecionou o repositório **local**, branch `main`, HEAD `0307484`;
+o commit `fa95b3534be84b7673794816e1b500411fddbb70` acima é a referência histórica
+do documento recebido, não uma nova inspeção GitHub nesta tarefa. A consulta de
+catálogo anterior é registrada em [INT-02.1](INT-02-1-postgresql-ci.md); ensaios
+Docker locais de TEMP/large objects não são provas executadas no Supabase.
+
+Data API desligada: **relato do responsável em 14/10/2026**,
+`USER_REPORTED_DISABLED`, sem confirmação independente ou prova HTTP nesta tarefa.
+Esse relato não altera ACLs PostgreSQL nem satisfaz MRD-014. Todos os casos
+MRD-001–016 continuam **PENDENTES / NÃO EXECUTADOS**. As execuções anteriores
+dos 38 testes INT-02 não constituem execução nova de MRD-012.
+
+A interface que oculta credenciais não impede acesso por administrador do
+executor/SO. Distribuição do segredo, identidade do operador e isolamento do
+executor precisam de design aprovado em G1. IDs duplicados no mesmo pedido são
+o negativo MRD-004; chamadas separadas/repetidas são avaliadas por MRD-010 com
+limites e consentimento, sem contradição. Os IDs das operações e estados MRD
+são propostas documentais, não contratos implementados ou códigos novos da L1.
+
+G0 (ratificação), G1 (design e autorização para código) e G3/G4 (provisionamento
+e prova remota autorizados separadamente) continuam abertos. **Parar nesta etapa
+documental:** não implementar MRD nem provisionar credencial por inferência.

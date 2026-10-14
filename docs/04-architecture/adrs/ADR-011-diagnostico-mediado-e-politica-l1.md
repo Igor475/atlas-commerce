@@ -1,6 +1,6 @@
 # ADR-011 — Política L1 estrita e diagnóstico mediado no Supabase PostgreSQL
 
-> **Atlas Commerce · Status:** PROPOSTA DE RATIFICAÇÃO — direção de diagnóstico mediado escolhida pelo responsável em 14/10/2026; não implementada, não homologada.  
+> **Atlas Commerce · Status:** PROPOSTA — diagnóstico mediado em especificação, ratificação do responsável pendente; não implementado, não homologado.
 > **Data:** 14/10/2026 · **Referências:** ADR-006, ADR-008, ADR-010, INT-02, INT-02.1, INT-03, SEC-001–038, SUPL1-001–015.  
 > **Escopo:** decisão sobre mecanismo de diagnóstico de metadados. Não decide políticas de runtime comercial, Auth, Storage, backups ou migrations.
 
@@ -21,7 +21,7 @@ As evidências levantadas em 14/10/2026 indicam `TEMP` herdado de `PUBLIC` no ba
 | Revogar `PUBLIC` globalmente no Supabase | Reduz algumas capacidades efetivas | Impacto transversal em serviços do provedor; permissões nativas não controláveis; não garante L1 estrita | **Rejeitada para esta etapa** |
 | Role `NOINHERIT` com `default_transaction_read_only=on` | Boa defesa contra escrita acidental | `PUBLIC`, funções e alteração de configuração de sessão persistem | **Insuficiente como prova L1** |
 | Banco PostgreSQL isolado com ACL integralmente controlada | Pode suportar prova de credencial SQL estrita, sob inventário/validação | Custo operacional e nova arquitetura | **Alternativa futura condicionada** |
-| Diagnóstico mediado com consultas fixas e credencial guardada em executor confiável | Restringe o que a ferramenta/caller pode pedir e não exige mudar grants globais | **Não transforma a credencial em SQL estritamente read-only**; depende da confiança no mediador e sua cadeia de execução | **Direção selecionada para estudo e implementação posterior**, sob nova garantia distinta |
+| Diagnóstico mediado com consultas fixas e credencial guardada em executor confiável | Restringe o que a ferramenta/caller pode pedir e não exige mudar grants globais | **Não transforma a credencial em SQL estritamente read-only**; depende da confiança no mediador e sua cadeia de execução | **Proposta para estudo**, sob garantia distinta; aprovação e implementação pendentes |
 
 ## Decisão proposta
 
@@ -64,10 +64,21 @@ Nenhum desses estados autoriza migrations comerciais, acesso a PII ou integraç�
 
 ## Fontes e evidências
 
-- Código existente: `apps/api/src/infrastructure/persistence/l1-config.ts`, `l1-diagnostic.ts`, `l1-queries.ts`, `apps/api/scripts/supabase-readonly.mjs`.
-- Evidência versionada: `docs/05-engineering/integrations/INT-02-1-postgresql-ci.md` e `apps/api/test/supabase-l1/RESULTS.md`.
+- Código existente, inspecionado somente para leitura: [configuração L1](../../../apps/api/src/infrastructure/persistence/l1-config.ts), [diagnóstico](../../../apps/api/src/infrastructure/persistence/l1-diagnostic.ts), [queries](../../../apps/api/src/infrastructure/persistence/l1-queries.ts) e [CLI](../../../apps/api/scripts/supabase-readonly.mjs).
+- Evidência histórica versionada: [INT-02.1](../../05-engineering/integrations/INT-02-1-postgresql-ci.md) e [RESULTS](../../../apps/api/test/supabase-l1/RESULTS.md). Catálogo remoto anteriormente documentado e ensaios locais são evidências distintas; não foram repetidos nesta revisão documental.
+- Contrato e matriz futura: [INT-02.2 / MRD-001–016](../../05-engineering/integrations/INT-02-2-diagnostico-mediado-proposta.md), todos pendentes.
 - Supabase: https://supabase.com/docs/guides/troubleshooting/custom-role-inherits-privileges-that-were-not-explicitly-granted-ddaa1c
 - Supabase Data API: https://supabase.com/docs/guides/api/securing-your-api
 - PostgreSQL 17 (privilégios): https://www.postgresql.org/docs/17/ddl-priv.html
 
 **Responsável técnico:** a definir · **Aprovador:** a definir · **Data de ratificação formal:** pendente.
+
+### Adendo de rastreabilidade — 14/10/2026
+
+Revisão local na branch `main`, HEAD `0307484`, inicialmente sem diferenças.
+ADR-011 e INT-02.2 já estavam presentes; conteúdo útil preservado. A afirmação
+anterior de direção “escolhida pelo responsável” foi corrigida para **PROPOSTA**:
+o pedido autoriza especificação documental, não comprova ratificação nem autoriza
+codificação. O relato de Data API desligada não foi verificado no Dashboard ou
+por HTTP. Nenhum projeto foi acessado, nenhum teste de software ou prova remota
+foi executado nesta revisão. L1-SQL continua PENDENTE; MRD permanece proposta.

@@ -49,7 +49,24 @@
 | SUPL1-014 | CI sem cloud credentials | Passa com DB efêmero; sem banco remoto |
 | SUPL1-015 | Authorization e evidências | Só marcar REMOTE PASS com consentimento e execução real |
 
-## Ordem de saída
+## Adendo de trilhas independentes — 14/10/2026
+
+Projeto Supabase existente **Atlas Commerce**, ref `bkxrsgryzkgpwgkngieh`, região
+`sa-east-1`, conforme responsável e [INT-02.1](INT-02-1-postgresql-ci.md).
+Data API desligada nesta data **conforme relato do responsável, não verificado
+independentemente**; nenhum teste HTTP ou consulta remota foi feito nesta revisão.
+
+- **L1-SQL estrita: PENDENTE.** SUPL1-001–015 acima e os códigos READONLY_PROVEN,
+  ROLE_UNSAFE e demais resultados existentes não mudam. Catálogos remotos
+  anteriores e testes locais históricos não comprovam SUPL1-015 nem MRD.
+- **MRD: PROPOSTA / NÃO IMPLEMENTADA.** A matriz futura independente
+  [MRD-001–016](INT-02-2-diagnostico-mediado-proposta.md#5-matriz-de-testes-futura-tudo-pendente)
+  é governada pela [ADR-011](../../04-architecture/adrs/ADR-011-diagnostico-mediado-e-politica-l1.md).
+  Todos os casos permanecem PENDENTES / NÃO EXECUTADOS; não substituem SUPL1.
+- Aprovação documental, autorização para código, testes locais e autorização
+  para provisionamento/prova remota são gates separados. Sem execução nesta tarefa.
+
+## Ordem de saída (registro anterior preservado)
 
 - INT-01: local fake PASS esperado; envio real só após usuário permitir, e-mail recebido não significa auth pública apta.
 - INT-02: testes locais, seguida de autorização/referência/remoto READ ONLY, sem DDL. **Não executar duas trilhas na mesma tarefa Codex.**
