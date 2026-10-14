@@ -1,0 +1,65 @@
+INT-02 — LOCAL ONLY — 2026-10-14
+HEAD baseline: fd0b16e4a4f89fa2a64c76a132807c2d913c9913
+Remote: BLOCKED_NO_PROJECT_OR_READONLY_ROLE
+No remote SQL/socket/provider changes.
+
+COMMAND: node apps/api/scripts/supabase-local.mjs
+
+ RUN  v5.0.4 C:/Users/igor.ferreira/Desktop/atlas-commerce/apps/api
+
+LOCAL_ONLY {"ready":true,"status":200,"code":"READONLY_PROVEN","elapsedMs":60,"queries":["server","role","schemas","exposure","ping"]}
+LOCAL_TIMEOUT {"ready":false,"status":503,"code":"DB_UNAVAILABLE","elapsedMs":1019,"queries":["server"]}
+
+ Test Files  1 passed (1)
+      Tests  25 passed (25)
+   Start at  11:48:23
+   Duration  3.73s (tests 90%, import 5%, transform 5%)
+
+
+EVIDENCE: lint-20261014T143731542Z.txt
+COMMAND: pnpm lint
+EXIT_CODE=0
+
+EVIDENCE: typecheck-20261014T143741715Z.txt
+COMMAND: pnpm typecheck
+EXIT_CODE=0
+
+EVIDENCE: test-20261014T142436349Z.txt
+COMMAND: pnpm test
+packages/contracts test:       Tests  1 passed (1)
+apps/storefront test:       Tests  1 passed (1)
+apps/admin test:       Tests  1 passed (1)
+apps/api test:       Tests  34 passed (34)
+EXIT_CODE=0
+
+EVIDENCE: build-20261014T142856917Z.txt
+COMMAND: pnpm build
+EXIT_CODE=0
+
+EVIDENCE: smoke-20261014T143321980Z.txt
+COMMAND: pnpm smoke
+Smoke API: live=200; ready=503 DEPENDENCIES_NOT_CONFIGURED
+EXIT_CODE=0
+
+EVIDENCE: audit-20261014T143928522Z.txt
+COMMAND: pnpm audit
+No known vulnerabilities found
+EXIT_CODE=0
+
+EVIDENCE: identity-20261014T143439935Z.txt
+COMMAND: pnpm --filter @atlas/api identity:test
+      Tests  34 passed (34)
+EXIT_CODE=0
+
+EVIDENCE: connection-20261014T143646352Z.txt
+COMMAND: pnpm --filter @atlas/api connection:test
+      Tests  9 passed (9)
+EXIT_CODE=0
+
+EVIDENCE: pgsp-migrate.txt
+
+
+EVIDENCE: format-20261014T143819896Z.txt
+COMMAND: pnpm format:check
+[warn] Code style issues found in 32 files. Run Prettier with --write to fix.
+EXIT_CODE=1

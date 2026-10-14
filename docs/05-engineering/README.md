@@ -22,6 +22,7 @@ A [Fase 03 v0.5](../04-architecture/CONSOLIDACAO-FINAL-FASE-03-v0.5.md) consolid
 | F04-10 | [Roadmap Codex](F04-10-ordem-codex.md) | Passos, autorização, critérios de pronto, limites |
 | F04-11 | [Decisões pendentes](F04-11-decissoes-abertas.md) | O que falta antes de cada módulo e não impede planejamento |
 | MONO-01 | [Mapa do monorepo](diagrams/MONO-01-workspaces.md) | DOT, SVG e PNG editáveis/visualizáveis |
+| INT-02 | [Preparação Supabase L1 somente leitura](integrations/INT-02-supabase-readonly.md) | Diagnóstico isolado e provas locais; remoto `BLOCKED_NO_PROJECT_OR_READONLY_ROLE`, sem migrations ou liberação de Identity remoto |
 
 ## Nova entrega de contratos (F04-02)
 
