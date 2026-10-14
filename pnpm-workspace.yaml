@@ -24,3 +24,9 @@ minimumReleaseAgeExclude:
   - "@vitest/spy@5.0.4"
   - typescript-eslint@8.71.2
   - vitest@5.0.4
+# Scoped security fixes; remove when Prisma 7 ships these dependency updates.
+# GHSA-ggr8-5vv4-36mx; local Prisma configs use plain records, not Maps.
+overrides:
+  "@prisma/config@7.10.0>deepmerge-ts": "8.0.0"
+  # GHSA-3f6p-5ww8-9rcr and GHSA-rgwj-5xj2-c3m3.
+  "prisma@7.10.0>mysql2": "3.23.1"
