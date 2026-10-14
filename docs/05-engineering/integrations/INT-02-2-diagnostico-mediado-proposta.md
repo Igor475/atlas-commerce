@@ -73,6 +73,8 @@
 
 ## 6. Ordem de execução e gates
 
+**Design G1 de 14/10/2026:** [MRD-G1 — segurança e implementação local futura](MRD-G1-design-seguranca.md), proposta para revisão humana. Detalha modalidades A/B, quatro literais SQL, saídas, ameaças, execução, MRD-001–016 e plano G2. Não ratifica ADR-011, não implementa MRD e não autoriza iniciar G2. A matriz acima mantém seus IDs e status pendentes.
+
 **G0 — documentação:** aprovar ADR-011 e contrato INT-02.2; nenhum código/SQL remoto; manter INT-02/INT-02.1 como fontes históricas e a matriz L1 intacta.
 
 **G1 — design revisado:** congelar operações permitidas, seu SQL e dados de saída; analisar ameaças e obter autorização explícita para código.
