@@ -1,0 +1,132 @@
+PRIC-01 local acceptance, 2026-10-15 America/Sao_Paulo
+Baseline main 1727a3820829ba319b7ddfd66165a388618552d5 + uncommitted local delta
+Node24.21.0 / pnpm12.11.2 / Nest12.1.3 / Prisma7.10.0 / pg8.23.1
+PostgreSQL17.10 Docker Linux, Windows host; fictitious DEMO data persisted only in own fixture
+Command: pnpm --filter @atlas/api pricing:test
+Exit0; remote CI NOT EXECUTED; free-product decision PENDING; L1_SQL_STRICT PENDENTE
+
+$ pnpm build && node scripts/pricing-local.mjs
+$ pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 185ms
+
+$ prisma generate --config identity.prisma.config.ts
+Loaded Prisma config from identity.prisma.config.ts.
+
+Prisma schema loaded from prisma-identity\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-identity-client in 252ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+$ prisma generate --config catalog.prisma.config.ts
+Loaded Prisma config from catalog.prisma.config.ts.
+
+Prisma schema loaded from prisma-catalog\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-catalog-client in 714ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+$ prisma generate --config pricing.prisma.config.ts
+Loaded Prisma config from pricing.prisma.config.ts.
+
+Prisma schema loaded from prisma-pricing\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-pricing-client in 243ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+PRICING_LOCAL_POSTGRES17_READY
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "catalog" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+Applying migration `202610150001_catalog`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202610150001_catalog/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+Loaded Prisma config from catalog.prisma.config.ts.
+
+Prisma schema loaded from prisma-catalog\schema.prisma.
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "catalog" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+
+No pending migrations to apply.
+Loaded Prisma config from catalog.prisma.config.ts.
+
+Prisma schema loaded from prisma-catalog\schema.prisma.
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "pricing" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+Applying migration `202610150002_pricing`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202610150002_pricing/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+Loaded Prisma config from pricing.prisma.config.ts.
+
+Prisma schema loaded from prisma-pricing\schema.prisma.
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "pricing" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+
+No pending migrations to apply.
+Loaded Prisma config from pricing.prisma.config.ts.
+
+Prisma schema loaded from prisma-pricing\schema.prisma.
+
+ RUN  v5.0.4 [WORKSPACE]/apps/api
+
+stdout | test/pricing/pricing.integration.ts > PRIC-01 real integrated Catalog/Pricing PostgreSQL17 and Nest HTTP > PRIC-022 actual HTTP satisfies unchanged OpenAPI31 and internal refs
+PRIC_HTTP_PERSISTED_DEMO {"product":{"id":"00000000-0000-4000-8000-000000000001","title":"DEMO Oferta 1","productType":"PHYSICAL_BOOK","price":{"currency":"BRL","amountCents":1001},"previewAvailable":false,"description":""},"list":{"items":[{"id":"00000000-0000-4000-8000-000000000001","title":"DEMO Oferta 1","productType":"PHYSICAL_BOOK","price":{"currency":"BRL","amountCents":1001},"previewAvailable":false,"description":""},{"id":"00000000-0000-4000-8000-000000000002","title":"DEMO Oferta 2","productType":"EBOOK","price":{"currency":"BRL","amountCents":2002},"previewAvailable":false,"description":""},{"id":"00000000-0000-4000-8000-000000000003","title":"DEMO Oferta 3","productType":"DIGITAL_MAGAZINE","price":{"currency":"BRL","amountCents":3003},"previewAvailable":false,"description":""},{"id":"00000000-0000-4000-8000-000000000004","title":"DEMO Kit 4","productType":"KIT","price":{"currency":"BRL","amountCents":4004},"previewAvailable":false,"description":""},{"id":"00000000-0000-4000-8000-000000000005","title":"DEMO Kit 5","productType":"KIT","price":{"currency":"BRL","amountCents":5005},"previewAvailable":false,"description":""},{"id":"00000000-0000-4000-8000-000000000006","title":"DEMO Kit 6","productType":"KIT","price":{"currency":"BRL","amountCents":6006},"previewAvailable":false,"description":""}],"nextCursor":null},"refs":182}
+
+stdout | test/pricing/pricing.integration.ts > PRIC-01 real integrated Catalog/Pricing PostgreSQL17 and Nest HTTP > PRIC-030 SQL plan/version proof, gates and remote CI honestly separated
+PRIC_ENV {"server":"PostgreSQL 17.10 (Debian 17.10-1.pgdg12+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit","db":"atlas_catalog_cat01"}
+
+stdout | test/pricing/pricing.integration.ts > PRIC-01 real integrated Catalog/Pricing PostgreSQL17 and Nest HTTP > PRIC-030 SQL plan/version proof, gates and remote CI honestly separated
+PRIC_EXPLAIN [{"QUERY PLAN":[{"Plan":{"Node Type":"Subquery Scan","Parallel Aware":false,"Async Capable":false,"Alias":"current_prices","Startup Cost":0.16,"Total Cost":8.22,"Plan Rows":1,"Plan Width":24,"Plans":[{"Node Type":"Nested Loop","Parent Relationship":"Subquery","Parallel Aware":false,"Async Capable":false,"Join Type":"Inner","Startup Cost":0.16,"Total Cost":8.21,"Plan Rows":1,"Plan Width":218,"Inner Unique":false,"Join Filter":"(price_revision.starts_at <= observed.at)","Plans":[{"Node Type":"Result","Parent Relationship":"InitPlan","Subplan Name":"CTE observed","Parallel Aware":false,"Async Capable":false,"Startup Cost":0,"Total Cost":0.01,"Plan Rows":1,"Plan Width":8},{"Node Type":"Index Scan","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Scan Direction":"Forward","Index Name":"price_one_current","Relation Name":"price_revision","Alias":"price_revision","Startup Cost":0.14,"Total Cost":8.16,"Plan Rows":1,"Plan Width":32,"Index Cond":"(product_id = '00000000-0000-4000-8000-000000000001'::uuid)","Filter":"(ends_at IS NULL)"},{"Node Type":"CTE Scan","Parent Relationship":"Inner","Parallel Aware":false,"Async Capable":false,"CTE Name":"observed","Alias":"observed","Startup Cost":0,"Total Cost":0.02,"Plan Rows":1,"Plan Width":8}]}]}}]}]
+PRIC_REMOTE_CI_NOT_EXECUTED_L1_PENDING_FREE_POLICY_BLOCKED
+
+ ✓ test/pricing/pricing.integration.ts (30 tests) 17198ms
+   ✓ PRIC-01 real integrated Catalog/Pricing PostgreSQL17 and Nest HTTP (30)
+     ✓ PRIC-001 default closed, explicit local opt-in required 1199ms
+     ✓ PRIC-003 separate migrations applied and repeatable 4069ms
+     ✓ PRIC-004 constraints reject unknown product and invalid revisions without losing current 863ms
+     ✓ PRIC-005 runtime read-only projection, Catalog privileges not expanded 308ms
+     ✓ PRIC-009 zero is not a fallback or approved free-product policy 316ms
+     ✓ PRIC-010 no current price fails explicitly 750ms
+     ✓ PRIC-014 concurrent writers serialize, uncommitted replacement never leaks 2119ms
+     ✓ PRIC-022 actual HTTP satisfies unchanged OpenAPI31 and internal refs 814ms
+     ✓ PRIC-025 real lock timeout is bounded and cleanup closes both runtime pools 1751ms
+     ✓ PRIC-026 Pricing disabled stays503 and opt-in restores real integration 358ms
+     ✓ PRIC-028 Identity/Resend and their SQL/test contracts unchanged 485ms
+     ✓ PRIC-029 original Catalog/PGSP/L0/L1/MRD/norms untouched; regressions separately executed 454ms
+
+ Test Files  1 passed (1)
+      Tests  30 passed (30)
+   Start at  11:24:42
+   Duration  20.17s (tests 87%, import 12%, transform 1%)
+
+PRICING_OWN_RESOURCES_CLEANED
+EXIT_CODE=0

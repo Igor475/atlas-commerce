@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "nest start --watch",
-    "build": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && nest build",
+    "build": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && nest build",
     "start": "node dist/main.js",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && tsc -p tsconfig.json --noEmit",
-    "test": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && vitest run",
+    "typecheck": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && tsc -p tsconfig.json --noEmit",
+    "test": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && vitest run",
     "smoke": "pnpm build && node scripts/smoke.mjs",
     "spike:generate": "prisma generate",
     "spike:validate": "prisma validate",
@@ -24,7 +24,11 @@
     "catalog:generate": "prisma generate --config catalog.prisma.config.ts",
     "catalog:validate": "prisma validate --config catalog.prisma.config.ts",
     "catalog:migrate": "node scripts/catalog-db.mjs migrate",
-    "catalog:test": "pnpm build && node scripts/catalog-local.mjs"
+    "catalog:test": "pnpm build && node scripts/catalog-local.mjs",
+    "pricing:generate": "prisma generate --config pricing.prisma.config.ts",
+    "pricing:validate": "prisma validate --config pricing.prisma.config.ts",
+    "pricing:migrate": "node scripts/pricing-db.mjs migrate",
+    "pricing:test": "pnpm build && node scripts/pricing-local.mjs"
   },
   "dependencies": {
     "@nestjs/common": "12.1.3",

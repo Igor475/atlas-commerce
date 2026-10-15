@@ -57,3 +57,11 @@ Estado final depende das [evidências](../../../apps/api/test/catalog/RESULTS.md
 não da presença de documentos. Mesmo com testes locais aprovados, CAT-01 **não está
 homologado para produção**. Não avançar para Pricing, Inventory, providers ou UI
 sem nova autorização. Nenhum commit/push/deploy nesta tarefa.
+
+## Adendo PRIC-01 — 15/10/2026
+
+O responsável autorizou posteriormente [Pricing local](../pricing/README.md):
+preço-base persistido e integração ao port mediante opt-in explícito na fixture.
+A pendência de Pricing acima descreve o estado original CAT-01; default continua
+fechado e produção/provedores/checkout permanecem bloqueados. HTTP400 segue proposta
+separada, sem aprovação ou mudança automática do OpenAPI.

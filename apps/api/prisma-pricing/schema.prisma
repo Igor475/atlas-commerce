@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/atlas-pricing-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["pricing"]
+}
+
+model PriceProduct {
+  productId   String          @id @map("product_id") @db.Uuid
+  lastVersion Int             @default(0) @map("last_version")
+  createdAt   DateTime        @default(dbgenerated("clock_timestamp()")) @map("created_at") @db.Timestamptz(6)
+  revisions   PriceRevision[]
+
+  @@map("price_product")
+  @@schema("pricing")
+}
+
+model PriceRevision {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  productId   String       @map("product_id") @db.Uuid
+  version     Int
+  amountCents BigInt       @map("amount_cents")
+  currency    String       @db.VarChar(3)
+  state       String       @db.VarChar(12)
+  source      String       @db.VarChar(80)
+  startsAt    DateTime     @map("starts_at") @db.Timestamptz(6)
+  endsAt      DateTime?    @map("ends_at") @db.Timestamptz(6)
+  createdAt   DateTime     @map("created_at") @db.Timestamptz(6)
+  product     PriceProduct @relation(fields: [productId], references: [productId], onDelete: Restrict, onUpdate: NoAction)
+
+  @@unique([productId, version])
+  @@map("price_revision")
+  @@schema("pricing")
+}

@@ -28,14 +28,14 @@ export const unavailablePricing: PublicPricing = {
     throw new CatalogError("DEPENDENCY_UNAVAILABLE");
   },
 };
-export function composeCatalog(env: NodeJS.ProcessEnv): CatalogRuntime {
+export function composeCatalog(
+  env: NodeJS.ProcessEnv,
+  pricing: PublicPricing = unavailablePricing,
+): CatalogRuntime {
   if (!catalogEnabled(env)) return new CatalogRuntime();
   const repository = new CatalogDatabase(
     env.CATALOG_RUNTIME_URL!,
     env.CATALOG_CONSENT,
   );
-  return new CatalogRuntime(
-    new CatalogReader(repository, unavailablePricing),
-    repository,
-  );
+  return new CatalogRuntime(new CatalogReader(repository, pricing), repository);
 }

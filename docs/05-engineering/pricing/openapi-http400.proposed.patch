@@ -1,0 +1,18 @@
+diff --git a/docs/05-engineering/contracts/openapi/atlas-commerce-api-v1.yaml b/docs/05-engineering/contracts/openapi/atlas-commerce-api-v1.yaml
+index cb08bce..78c64ae 100644
+--- a/docs/05-engineering/contracts/openapi/atlas-commerce-api-v1.yaml
++++ b/docs/05-engineering/contracts/openapi/atlas-commerce-api-v1.yaml
+@@ -605,0 +606,6 @@ paths:
++        '400':
++          description: Solicitação inválida, sem dados sensíveis (CT-03 INVALID_REQUEST)
++          content:
++            application/problem+json:
++              schema:
++                $ref: '#/components/schemas/ProblemDetails'
+@@ -644,0 +651,6 @@ paths:
++        '400':
++          description: Solicitação inválida, sem dados sensíveis (CT-03 INVALID_REQUEST)
++          content:
++            application/problem+json:
++              schema:
++                $ref: '#/components/schemas/ProblemDetails'
