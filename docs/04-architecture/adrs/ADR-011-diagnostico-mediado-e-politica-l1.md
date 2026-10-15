@@ -1,10 +1,24 @@
 # ADR-011 — Política L1 estrita e diagnóstico mediado no Supabase PostgreSQL
 
-> **Atlas Commerce · Status:** PROPOSTA — diagnóstico mediado em especificação, ratificação do responsável pendente; não implementado, não homologado.
+> **Atlas Commerce · Status:** modalidade A ratificada para experimentação local MRD-G2; G2 PARCIAL. Evolução B/remota e deltas contratuais pendentes; sem homologação.
 > **Data:** 14/10/2026 · **Referências:** ADR-006, ADR-008, ADR-010, INT-02, INT-02.1, INT-03, SEC-001–038, SUPL1-001–015.  
 > **Escopo:** decisão sobre mecanismo de diagnóstico de metadados. Não decide políticas de runtime comercial, Auth, Storage, backups ou migrations.
 
 ## Contexto e problema
+
+### Adendo G2 — autorização local em 14–15/10/2026
+
+O prompt explícito MRD-G2 do responsável ratificou **somente para experimentação
+local** modalidade A, catálogo v1 sujeito a validação real e riscos residuais de
+operador/SO/PUBLIC. Autoriza implementação e recursos Docker descartáveis próprios;
+não autoriza remoto, produção, CI, migrations comerciais ou homologação automática.
+Ver [implementação/limites G2](../../05-engineering/integrations/MRD-G2-implementacao-local.md).
+O estado PROPOSTA do G1 foi sucedido somente pela autorização local: evolução B/remota e deltas
+contratuais continuam pendentes; nenhuma assinatura de revisor foi fornecida.
+L1-SQL permanece PENDENTE e inalterada. Data API desligada continua relato humano
+não verificado. Este adendo não aprova o delta de cobertura identificado em G2.
+
+### Contexto anterior preservado
 
 O Atlas Commerce utiliza PostgreSQL gerenciado no Supabase Free como fonte de verdade; o NestJS acessará o banco por uma credencial de runtime segregada, e não pela Data API. A autenticação humana permanece no NestJS; a mídia permanece no Cloudflare R2. O projeto Supabase **Atlas Commerce** possui ref pública `bkxrsgryzkgpwgkngieh`, na região `sa-east-1`. A desativação da **Data API foi informada pelo responsável** em 14/10/2026, mas não há evidência de inspeção independente do toggle nem de teste HTTP negativo nesta ADR.
 

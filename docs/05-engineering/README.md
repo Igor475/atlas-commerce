@@ -25,7 +25,8 @@ A [Fase 03 v0.5](../04-architecture/CONSOLIDACAO-FINAL-FASE-03-v0.5.md) consolid
 | INT-02 | [Preparação Supabase L1 somente leitura](integrations/INT-02-supabase-readonly.md) | Diagnóstico isolado e provas locais; remoto `BLOCKED_NO_PROJECT_OR_READONLY_ROLE`, sem migrations ou liberação de Identity remoto |
 | INT-02.1 | [PostgreSQL 17 e CI isolado](integrations/INT-02-1-postgresql-ci.md) | Evidências locais históricas e bloqueios PUBLIC; L1-SQL estrita PENDENTE |
 | INT-02.2 | [Diagnóstico mediado MRD](integrations/INT-02-2-diagnostico-mediado-proposta.md) | PROPOSTA vinculada à [ADR-011](../04-architecture/adrs/ADR-011-diagnostico-mediado-e-politica-l1.md); MRD-001–016 futuros, não implementados ou executados |
-| MRD-G1 | [Design de segurança MRD](integrations/MRD-G1-design-seguranca.md) | PROPOSTA para revisão humana: catálogo SQL, modalidades A/B e testes futuros; G2 não iniciada, L1-SQL PENDENTE |
+| MRD-G1 | [Design de segurança MRD](integrations/MRD-G1-design-seguranca.md) | Especificação de base: modalidade A autorizada posteriormente para G2 local; B/remoto e deltas pendentes, L1-SQL PENDENTE |
+| MRD-G2 | [Implementação local MRD](integrations/MRD-G2-implementacao-local.md) | Experimentação local autorizada posteriormente; G2 PARCIAL, cobertura pendente de revisão/gate global de formatação; remoto bloqueado, L1-SQL PENDENTE |
 
 **Adendo de 14/10/2026 — diagnóstico:** projeto Supabase Atlas Commerce existente,
 ref `bkxrsgryzkgpwgkngieh`, região `sa-east-1`, conforme contexto do responsável e

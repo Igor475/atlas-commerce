@@ -1,10 +1,22 @@
 # INT-02.2 — Contrato proposto para diagnóstico mediado (MRD)
 
-> **Estado:** PROPOSTA / RATIFICAÇÃO PENDENTE / NÃO IMPLEMENTADO / NÃO EXECUTADO NO SUPABASE.
+> **Estado:** modalidade A autorizada e implementada localmente em MRD-G2 PARCIAL; deltas contratuais pendentes de revisão. NÃO EXECUTADO NO SUPABASE; sem homologação.
 > **Data:** 14/10/2026 · **Decisão governante:** [ADR-011](../../04-architecture/adrs/ADR-011-diagnostico-mediado-e-politica-l1.md).  
 > **Pré-requisito:** L1 SQL original preservada como `PENDENTE` e `READONLY_PROVEN` não emitido por MRD.
 
 ## 1. Objetivo e não objetivos
+
+### Adendo G2 — 14–15/10/2026
+
+O responsável autorizou explicitamente **G2 local**, ratificando modalidade A e
+riscos residuais apenas para experimentação. [MRD-G2](MRD-G2-implementacao-local.md)
+registra implementação, provas novas e divergência de cobertura pendente de
+revisão humana. O estado documental anterior e a matriz futura abaixo ficam como
+histórico G1; resultados G2 têm matriz própria, sem renumerar IDs. Remoto, B,
+produção, alterações CI e homologação automática não foram autorizados.
+L1-SQL PENDENTE; Data API USER_REPORTED_DISABLED, sem prova independente.
+
+### Objetivo original preservado
 
 **Objetivo:** disponibilizar apenas um conjunto pequeno e fixo de leituras de metadados de infraestrutura PostgreSQL, mediado por código controlado, com respostas mínimas e evidência reproduzível, sem alterar grants globais do Supabase.
 

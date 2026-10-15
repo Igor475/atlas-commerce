@@ -1,0 +1,64 @@
+MRD-G2 local acceptance evidence, 2026-10-15
+Baseline: c48c97f4b4ef97a5bafd2dbb181f70dd234034f7 + uncommitted local delta
+Node 24.21.0; pnpm 12.11.2; PostgreSQL 17.10 Docker Linux; Windows host
+Command: node apps/api/scripts/mrd-local.mjs
+Exit: 0; remote MRD-014/016 BLOCKED; L1-SQL PENDENTE
+
+MRD_FIXTURE_STARTED
+MRD_POSTGRES_READY
+
+ RUN  v5.0.4 [WORKSPACE]/apps/api
+
+MRD_SQL_METADATA [{"hash":"e6f12980bee42334051224b62b78adae9f436d1a57dbe5c569f01672bf2e3d96","oids":[19,19,19,23,16,16,25],"rows":1},{"hash":"a9ff442cb295504488ac0ecd401acbffb90f588a048c6dcf964b46399811e225","oids":[16,16,16,16,16,16,16,16,16,16,16,16,16,16],"rows":1},{"hash":"8d5346e9b8b36a6d8bc3108b7f71462b9f9409756d9bbd4f69a7b1e8f66892a6","oids":[23],"rows":1},{"hash":"e6f12980bee42334051224b62b78adae9f436d1a57dbe5c569f01672bf2e3d96","oids":[19,19,19,23,16,16,25],"rows":1},{"hash":"a9ff442cb295504488ac0ecd401acbffb90f588a048c6dcf964b46399811e225","oids":[16,16,16,16,16,16,16,16,16,16,16,16,16,16],"rows":1},{"hash":"e6f12980bee42334051224b62b78adae9f436d1a57dbe5c569f01672bf2e3d96","oids":[19,19,19,23,16,16,25],"rows":1},{"hash":"a9ff442cb295504488ac0ecd401acbffb90f588a048c6dcf964b46399811e225","oids":[16,16,16,16,16,16,16,16,16,16,16,16,16,16],"rows":1},{"hash":"e6f12980bee42334051224b62b78adae9f436d1a57dbe5c569f01672bf2e3d96","oids":[19,19,19,23,16,16,25],"rows":1},{"hash":"a9ff442cb295504488ac0ecd401acbffb90f588a048c6dcf964b46399811e225","oids":[16,16,16,16,16,16,16,16,16,16,16,16,16,16],"rows":1},{"hash":"998d17539ff4890e06c1009ccb69d3d36201553286ecc88ded99485294f3d9da","oids":[25,16,16,16,16,16],"rows":2}]
+MRD_G1_SCHEMA_ABSENT_API_ROLES_ORIGINAL_FALSE_CORRECTED_NULL_PENDING_REVIEW
+MRD_REMOTE_014_016_BLOCKED_NO_AUTHORIZATION_NO_CLOUD_SOCKETS
+ ✓ test/mrd/mrd.integration.ts (44 tests) 52065ms
+   ✓ MRD local security; no remote execution (44)
+     ✓ MRD-002/003/016 ambient PGHOST refused 542ms
+     ✓ MRD-002/003/016 ambient PGOPTIONS refused 367ms
+     ✓ MRD-002/003/016 ambient DATABASE_URL refused 321ms
+     ✓ MRD-002/003/016 ambient SUPABASE_KEY refused 350ms
+     ✓ MRD-002/003/016 ambient ATLAS_SUPABASE_PROJECT_REF refused 318ms
+     ✓ MRD-002/003/016 ambient DEBUG refused 352ms
+     ✓ MRD-002/003/016 ambient NODE_OPTIONS refused 311ms
+     ✓ MRD-002/003/016 ambient NODE_PATH refused 354ms
+     ✓ MRD-002/003/016 ambient NODE_TLS_REJECT_UNAUTHORIZED refused 395ms
+     ✓ MRD-002/006 rejects credential, endpoint, cert and manifest substitution 4311ms
+     ✓ four literal SQLs execute with exact OIDs and minimized output 422ms
+     ✓ MRD-005/013 PUBLIC TEMP and native large-object capability remain visible without CLI effects 564ms
+     ✓ MRD-005/009 homonymous application objects never run 571ms
+     ✓ MRD-002/009 denies superuser 1068ms
+     ✓ MRD-002/009 denies bypassrls 1069ms
+     ✓ MRD-002/009 denies createdb 1107ms
+     ✓ MRD-002/009 denies createrole 1076ms
+     ✓ MRD-002/009 denies replication 1168ms
+     ✓ MRD-002/009 denies membership 1092ms
+     ✓ MRD-002/009 denies ownership 1053ms
+     ✓ MRD-002/009 denies DML direct 1319ms
+     ✓ MRD-002/009 denies DML PUBLIC 1096ms
+     ✓ MRD-002/009 denies DDL 1134ms
+     ✓ MRD-002/009 denies sequence 1050ms
+     ✓ MRD-002/009 denies defaultACL 1074ms
+     ✓ MRD-002/009 denies parameter 1140ms
+     ✓ MRD-009/014 absent API roles yield null and explicit coverage; role/direct/PUBLIC grants distinguished 3869ms
+     ✓ MRD-009/014 one missing API role remains indeterminate and identity refuses unknown 812ms
+     ✓ MRD-007 proves IP SAN then rejects real invalid CA and changed server SAN 998ms
+     ✓ MRD-008/010 execution lock refuses concurrency without removing foreign lock 1394ms
+     ✓ MRD-007 real server SAN mismatch is refused without downgrade 7203ms
+     ✓ MRD-008 real catalog lock times out, destroys socket, then recovers 4052ms
+     ✓ MRD-008 initialization and audit failure never report success 1393ms
+     ✓ MRD-008 injected terminal-audit failure suppresses success and preserves foreign resources 828ms
+     ✓ MRD-008 injected cleanup failure suppresses success and preserves foreign resources 746ms
+     ✓ MRD-010 two actual CLI calls never execute concurrently 958ms
+     ✓ MRD-008 interrupt aborts active query, destroys connection, then recovers 3604ms
+     ✓ MRD-005/009 executable application functions, SECURITY DEFINER and delegated grants refuse 1581ms
+     ✓ MRD-011/015 rejects symlink manifest before connection 492ms
+     ✓ MRD-016 remote path remains blocked in CI; no remote test substituted by skip 384ms
+
+ Test Files  1 passed (1)
+      Tests  44 passed (44)
+   Start at  08:36:28
+   Duration  52.78s (tests 100%)
+
+MRD_OWN_RESOURCES_CLEANED
+MRD_LOCAL_TESTS_COMPLETED_L1_PENDENTE_REMOTE_BLOCKED

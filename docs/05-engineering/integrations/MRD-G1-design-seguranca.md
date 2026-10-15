@@ -1,6 +1,6 @@
 # MRD-G1 — Design de segurança e preparação da implementação local
 
-**Status: PROPOSTA PARA REVISÃO HUMANA. G1 documental entregue; aprovação pendente.**
+**Status: especificação G1 histórica; modalidade A autorizada posteriormente para experimentação local G2. Deltas contratuais pendentes; sem homologação.**
 Data: 14/10/2026. Baseline local `8238dc7042971aa64f875296a615220adb5a1fad`,
 branch `main`, inicialmente limpa. Não há código MRD, execução SQL, criação de
 roles/segredos, teste de software, conexão Supabase ou alteração de CI nesta etapa.
@@ -13,6 +13,17 @@ Governança: [ADR-011](../../04-architecture/adrs/ADR-011-diagnostico-mediado-e-
 não ratifica ADRs, não inicia G2 e não substitui normas RN/PC/SEC.
 
 ## 1. Diagnóstico e garantias
+
+### Adendo de execução local — 14–15/10/2026
+
+O prompt MRD-G2 ratificou modalidade A/catálogo v1 **para experimentação local** e
+autorizou implementação/fixtures próprias. [MRD-G2](MRD-G2-implementacao-local.md)
+registra as provas e o delta de cobertura de roles API pendente de revisão humana.
+Os SQLs e limites originais deste G1 são preservados abaixo para rastreabilidade;
+o texto histórico “não iniciar G2” não revoga a autorização posterior e limitada.
+Nenhuma aprovação remota/produção, assinatura de revisor ou homologação foi inferida.
+
+### Diagnóstico G1 original preservado
 
 Os documentos atuais já distinguem L1-SQL e MRD, exigem consultas fixas, segredo
 no executor e aprovação separada para remoto. Faltavam SQL literal, projeção de
