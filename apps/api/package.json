@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "nest start --watch",
-    "build": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && nest build",
+    "build": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && pnpm inventory:generate && nest build",
     "start": "node dist/main.js",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && tsc -p tsconfig.json --noEmit",
-    "test": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && vitest run",
+    "typecheck": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && pnpm inventory:generate && tsc -p tsconfig.json --noEmit",
+    "test": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && pnpm inventory:generate && vitest run",
     "smoke": "pnpm build && node scripts/smoke.mjs",
     "spike:generate": "prisma generate",
     "spike:validate": "prisma validate",
@@ -28,7 +28,11 @@
     "pricing:generate": "prisma generate --config pricing.prisma.config.ts",
     "pricing:validate": "prisma validate --config pricing.prisma.config.ts",
     "pricing:migrate": "node scripts/pricing-db.mjs migrate",
-    "pricing:test": "pnpm build && node scripts/pricing-local.mjs"
+    "pricing:test": "pnpm build && node scripts/pricing-local.mjs",
+    "inventory:generate": "prisma generate --config inventory.prisma.config.ts",
+    "inventory:validate": "prisma validate --config inventory.prisma.config.ts",
+    "inventory:migrate": "node scripts/inventory-db.mjs migrate",
+    "inventory:test": "pnpm build && node scripts/inventory-local.mjs"
   },
   "dependencies": {
     "@nestjs/common": "12.1.3",

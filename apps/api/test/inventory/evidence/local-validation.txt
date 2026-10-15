@@ -1,0 +1,174 @@
+INV-01 final local evidence, 2026-10-15 America/Sao_Paulo
+Baseline main d6b1b4c4744e81afb9a327f2b2b115f9b5956c28 + uncommitted local delta
+Node24.21.0 / pnpm12.11.2 / Nest12.1.3 / Prisma7.10.0 / pg8.23.1
+PostgreSQL17.10 Docker Linux, Windows host; DEMO data only
+Command: pnpm --filter @atlas/api inventory:test
+Exit0,36 PASS, own resources cleaned; remote delta CI NOT EXECUTED; L1_SQL_STRICT PENDENTE
+Global format FAIL32 historical CRLF; targeted changed-file formatting PASS
+
+COMMAND: pnpm --filter @atlas/api inventory:test
+$ pnpm build && node scripts/inventory-local.mjs
+$ pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && pnpm inventory:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 152ms
+
+$ prisma generate --config identity.prisma.config.ts
+Loaded Prisma config from identity.prisma.config.ts.
+
+Prisma schema loaded from prisma-identity\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-identity-client in 499ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+$ prisma generate --config catalog.prisma.config.ts
+Loaded Prisma config from catalog.prisma.config.ts.
+
+Prisma schema loaded from prisma-catalog\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-catalog-client in 514ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+$ prisma generate --config pricing.prisma.config.ts
+Loaded Prisma config from pricing.prisma.config.ts.
+
+Prisma schema loaded from prisma-pricing\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-pricing-client in 446ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+$ prisma generate --config inventory.prisma.config.ts
+Loaded Prisma config from inventory.prisma.config.ts.
+
+Prisma schema loaded from prisma-inventory\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-inventory-client in 259ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+INVENTORY_LOCAL_POSTGRES17_READY
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "catalog" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+Applying migration `202610150001_catalog`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202610150001_catalog/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+Loaded Prisma config from catalog.prisma.config.ts.
+
+Prisma schema loaded from prisma-catalog\schema.prisma.
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "catalog" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+
+No pending migrations to apply.
+Loaded Prisma config from catalog.prisma.config.ts.
+
+Prisma schema loaded from prisma-catalog\schema.prisma.
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "pricing" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+Applying migration `202610150002_pricing`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202610150002_pricing/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+Loaded Prisma config from pricing.prisma.config.ts.
+
+Prisma schema loaded from prisma-pricing\schema.prisma.
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "pricing" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+
+No pending migrations to apply.
+Loaded Prisma config from pricing.prisma.config.ts.
+
+Prisma schema loaded from prisma-pricing\schema.prisma.
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "inventory" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+Applying migration `202610150003_inventory`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202610150003_inventory/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+Loaded Prisma config from inventory.prisma.config.ts.
+
+Prisma schema loaded from prisma-inventory\schema.prisma.
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "inventory" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+
+No pending migrations to apply.
+Loaded Prisma config from inventory.prisma.config.ts.
+
+Prisma schema loaded from prisma-inventory\schema.prisma.
+
+ RUN  v5.0.4 [WORKSPACE]/apps/api
+
+stdout | test/inventory/inventory.integration.ts > INV-01 PostgreSQL17 disposable ledger and reservations > INV-013 independent connections compete for last unit
+INV_LAST_UNIT {"initialAvailable":1,"success":1,"refused":1,"after":{"on_hand":10,"reserved_active":10,"allocated":0,"available":0}}
+
+stdout | test/inventory/inventory.integration.ts > INV-01 PostgreSQL17 disposable ledger and reservations > INV-020 lock timeout rolls back and safe replay recovers
+INV_TRANSACTION_REPLAY {"sqlstate":"40001","attempts":2,"effects":1}
+
+stdout | test/inventory/inventory.integration.ts > INV-01 PostgreSQL17 disposable ledger and reservations > INV-028 two expirers release exactly once
+INV_DOUBLE_EXPIRATION {"effects":1,"after":{"on_hand":10,"reserved_active":0,"allocated":0,"available":10}}
+
+stdout | test/inventory/inventory.integration.ts > INV-01 PostgreSQL17 disposable ledger and reservations > INV-030 transaction starts before TTL but waits past deadline
+INV_AFTER_LOCK_TTL {"outcome":"RESERVATION_REFUSED","after":{"on_hand":10,"reserved_active":1,"allocated":0,"available":9}}
+
+stdout | test/inventory/inventory.integration.ts > INV-01 PostgreSQL17 disposable ledger and reservations > INV-036 environment, SQL plan and honest aggregate status
+INV_ENV {"version":"PostgreSQL 17.10 (Debian 17.10-1.pgdg12+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit","db":"atlas_catalog_cat01"}
+INV_EXPLAIN [{"QUERY PLAN":[{"Plan":{"Node Type":"Limit","Parallel Aware":false,"Async Capable":false,"Startup Cost":12.66,"Total Cost":12.66,"Plan Rows":1,"Plan Width":24,"Plans":[{"Node Type":"Sort","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Startup Cost":12.66,"Total Cost":12.66,"Plan Rows":1,"Plan Width":24,"Sort Key":["expires_at","id"],"Plans":[{"Node Type":"Bitmap Heap Scan","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Relation Name":"reservation","Alias":"reservation","Startup Cost":4.17,"Total Cost":12.65,"Plan Rows":1,"Plan Width":24,"Recheck Cond":"(state = 'ACTIVE'::text)","Filter":"(expires_at <= clock_timestamp())","Plans":[{"Node Type":"Bitmap Index Scan","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Index Name":"reservation_due","Startup Cost":0,"Total Cost":4.16,"Plan Rows":4,"Plan Width":0}]}]}]}}]}]
+INV_LOCAL_36_AUTOMATED_CASES_REMOTE_DELTA_CI_NOT_EXECUTED_L1_PENDING_AGGREGATE_SEE_RESULTS
+
+ ✓ test/inventory/inventory.integration.ts (36 tests) 15527ms
+   ✓ INV-01 PostgreSQL17 disposable ledger and reservations (36)
+     ✓ INV-003 repeat migration leaves ledger intact 3699ms
+     ✓ INV-006 guard refuses wrong marker before any business write 999ms
+     ✓ INV-007 availability separates reserved from allocated 322ms
+     ✓ INV-010 projection reconciles to ledger deltas 334ms
+     ✓ INV-017 concurrent identical intent commits once 1200ms
+     ✓ INV-020 lock timeout rolls back and safe replay recovers 1760ms
+     ✓ INV-030 transaction starts before TTL but waits past deadline 523ms
+     ✓ INV-032 killed process rolls back and restart/replay does not duplicate 599ms
+     ✓ INV-033 permissions, SQL injection and no inventory HTTP routes 865ms
+     ✓ INV-035 protected modules and normative documents unchanged 480ms
+
+ Test Files  1 passed (1)
+      Tests  36 passed (36)
+   Start at  13:36:34
+   Duration  18.39s (tests 86%, import 12%, transform 2%)
+
+INVENTORY_OWN_RESOURCES_CLEANED
+EXIT_CODE=0

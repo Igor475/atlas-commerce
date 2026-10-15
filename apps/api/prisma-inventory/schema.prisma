@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/atlas-inventory-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["inventory"]
+}
+
+// SQL owns FKs, guards, privileged functions and CHECKs. Never db push.
+model StockBalance {
+  sku            String @id @db.Uuid
+  onHand         BigInt @default(0) @map("on_hand")
+  reservedActive BigInt @default(0) @map("reserved_active")
+  allocated      BigInt @default(0)
+
+  @@map("stock_balance")
+  @@schema("inventory")
+}
+
+model Reservation {
+  id            String   @id @db.Uuid
+  commercialRef String   @map("commercial_ref") @db.Uuid
+  state         String
+  createdAt     DateTime @map("created_at") @db.Timestamptz(6)
+  expiresAt     DateTime @map("expires_at") @db.Timestamptz(6)
+
+  @@map("reservation")
+  @@schema("inventory")
+}
+
+model Intent {
+  key           String   @id @db.Uuid
+  commercialRef String   @unique @map("commercial_ref") @db.Uuid
+  fingerprint   String
+  physicalLines Json     @map("physical_lines")
+  reservationId String?  @unique @map("reservation_id") @db.Uuid
+  createdAt     DateTime @default(dbgenerated("clock_timestamp()")) @map("created_at") @db.Timestamptz(6)
+
+  @@map("intent")
+  @@schema("inventory")
+}
+
+model ReservationLine {
+  reservationId String @map("reservation_id") @db.Uuid
+  sku           String @db.Uuid
+  quantity      BigInt
+
+  @@id([reservationId, sku])
+  @@map("reservation_line")
+  @@schema("inventory")
+}
+
+model StockLedgerEntry {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sku            String   @db.Uuid
+  kind           String
+  quantity       BigInt
+  operationRef   String   @map("operation_ref") @db.Uuid
+  correlationRef String   @map("correlation_ref") @db.Uuid
+  occurredAt     DateTime @default(dbgenerated("clock_timestamp()")) @map("occurred_at") @db.Timestamptz(6)
+  deltaOnHand    BigInt   @map("delta_on_hand")
+  deltaReserved  BigInt   @map("delta_reserved")
+  deltaAllocated BigInt   @map("delta_allocated")
+
+  @@unique([sku, kind, operationRef])
+  @@map("stock_ledger_entry")
+  @@schema("inventory")
+}
+
+model Event {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reservationId String   @map("reservation_id") @db.Uuid
+  kind          String
+  decisionRef   String?  @map("decision_ref") @db.Uuid
+  occurredAt    DateTime @default(dbgenerated("clock_timestamp()")) @map("occurred_at") @db.Timestamptz(6)
+
+  @@unique([reservationId, kind, decisionRef])
+  @@map("event")
+  @@schema("inventory")
+}
