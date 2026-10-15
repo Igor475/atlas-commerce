@@ -31,6 +31,7 @@ A [Fase 03 v0.5](../04-architecture/CONSOLIDACAO-FINAL-FASE-03-v0.5.md) consolid
 | PRIC-01 | [Preço-base e integração Catalog](pricing/README.md) | Fonte Pricing persistida em fixture integrada mediante opt-in local; sem checkout/produção, HTTP400 ratificado em CT-CAT-400, CI remoto pendente, L1-SQL PENDENTE |
 | INV-01 | [Estoque, ledger e reservas físicas](inventory/README.md) | Backend e provas locais descartáveis; sem endpoints/Orders/Payments, CI remoto do delta pendente, L1-SQL PENDENTE |
 | ORD-01 | [Preparação transacional local de pedidos](orders/README.md) | Fundação TEST_ONLY e 36 provas locais aprovadas; sem checkout comercial/Payments, CI remoto do delta pendente, L1-SQL PENDENTE |
+| QTE-01 | [Cotação e entrega local TEST_ONLY](quotes/README.md) | Persistência TEST_ONLY e 30 provas locais aprovadas; sem API pública, políticas comerciais/CI remoto/L1 pendentes |
 
 **Adendo de 14/10/2026 — diagnóstico:** projeto Supabase Atlas Commerce existente,
 ref `bkxrsgryzkgpwgkngieh`, região `sa-east-1`, conforme contexto do responsável e

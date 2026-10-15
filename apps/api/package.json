@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "nest start --watch",
-    "build": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && pnpm inventory:generate && pnpm orders:generate && nest build",
+    "build": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && pnpm inventory:generate && pnpm orders:generate && pnpm quotes:generate && nest build",
     "start": "node dist/main.js",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && pnpm inventory:generate && pnpm orders:generate && tsc -p tsconfig.json --noEmit",
-    "test": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && pnpm inventory:generate && pnpm orders:generate && vitest run",
+    "typecheck": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && pnpm inventory:generate && pnpm orders:generate && pnpm quotes:generate && tsc -p tsconfig.json --noEmit",
+    "test": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && pnpm pricing:generate && pnpm inventory:generate && pnpm orders:generate && pnpm quotes:generate && vitest run",
     "smoke": "pnpm build && node scripts/smoke.mjs",
     "spike:generate": "prisma generate",
     "spike:validate": "prisma validate",
@@ -35,7 +35,10 @@
     "inventory:test": "pnpm build && node scripts/inventory-local.mjs",
     "orders:generate": "prisma generate --config orders.prisma.config.ts",
     "orders:validate": "prisma validate --config orders.prisma.config.ts",
-    "orders:test": "pnpm build && node scripts/orders-local.mjs"
+    "orders:test": "pnpm build && node scripts/orders-local.mjs",
+    "quotes:generate": "prisma generate --config quotes.prisma.config.ts",
+    "quotes:validate": "prisma validate --config quotes.prisma.config.ts",
+    "quotes:test": "pnpm build && node scripts/quotes-local.mjs"
   },
   "dependencies": {
     "@nestjs/common": "12.1.3",

@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/atlas-quotes-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["quotes"]
+}
+
+// SQL owns all snapshots, ACLs, constraints and functions; no db push or ORM writes.
+model Quote {
+  id            String   @id @db.Uuid
+  actorId       String   @map("actor_id") @db.Uuid
+  purpose       String
+  state         String
+  currency      String
+  baseSubtotal  BigInt   @map("base_subtotal_cents")
+  deliveryCents BigInt?  @map("delivery_cents")
+  totalCents    BigInt   @map("total_cents")
+  createdAt     DateTime @map("created_at") @db.Timestamptz(6)
+  expiresAt     DateTime @map("expires_at") @db.Timestamptz(6)
+
+  @@map("quote")
+  @@schema("quotes")
+}

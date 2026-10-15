@@ -46,9 +46,9 @@ export class OrdersDatabase {
           AND NOT (rolsuper OR rolbypassrls OR rolcreatedb OR rolcreaterole OR rolreplication)
           AND NOT EXISTS(SELECT 1 FROM pg_auth_members WHERE member=r.oid)
           AND NOT has_database_privilege(current_user,current_database(),'CREATE')
-          AND NOT EXISTS(SELECT 1 FROM pg_namespace n WHERE n.nspname IN ('orders','catalog','pricing','inventory','identity') AND (has_schema_privilege(n.oid,'CREATE') OR n.nspowner=r.oid))
-          AND NOT EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('orders','catalog','pricing','inventory','identity') AND c.relkind IN ('r','p','v','m') AND (c.relowner=r.oid OR has_table_privilege(c.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') OR has_any_column_privilege(c.oid,'SELECT,INSERT,UPDATE,REFERENCES')))
-          AND NOT EXISTS(SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname IN ('orders','catalog','pricing','inventory') AND has_function_privilege(p.oid,'EXECUTE') AND NOT(n.nspname='orders' AND p.proname IN ('prepare','read_preparation')))
+          AND NOT EXISTS(SELECT 1 FROM pg_namespace n WHERE n.nspname IN ('quotes','orders','catalog','pricing','inventory','identity') AND (has_schema_privilege(n.oid,'CREATE') OR n.nspowner=r.oid))
+          AND NOT EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname IN ('quotes','orders','catalog','pricing','inventory','identity') AND c.relkind IN ('r','p','v','m') AND (c.relowner=r.oid OR has_table_privilege(c.oid,'SELECT,INSERT,UPDATE,DELETE,TRUNCATE,REFERENCES,TRIGGER') OR has_any_column_privilege(c.oid,'SELECT,INSERT,UPDATE,REFERENCES')))
+          AND NOT EXISTS(SELECT 1 FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname IN ('quotes','orders','catalog','pricing','inventory') AND has_function_privilege(p.oid,'EXECUTE') AND NOT(n.nspname='orders' AND p.proname IN ('prepare','read_preparation','prepare_quote')))
           AS safe FROM pg_roles r WHERE rolname=current_user`;
         if (proof[0]?.safe !== true)
           throw new OrdersError("ORDERS_UNAVAILABLE");
@@ -102,6 +102,15 @@ export class OrdersDatabase {
         this.client.$queryRaw<
           { result: PreparedOrderIntent }[]
         >`SELECT orders.read_preparation(${actor}::uuid,${id}::uuid) AS result`,
+    );
+  }
+  // QTE-01's versioned SQL port preserves the original preparation transaction.
+  prepareQuote(actor: string, key: string, quote: string) {
+    return this.run(
+      () =>
+        this.client.$queryRaw<
+          { result: PreparedOrderIntent }[]
+        >`SELECT orders.prepare_quote(${actor}::uuid,${key}::uuid,${quote}::uuid) AS result`,
     );
   }
   async close() {
