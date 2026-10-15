@@ -1,0 +1,116 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/atlas-catalog-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["catalog"]
+}
+
+model Work {
+  id       String       @id @db.Uuid
+  title    String       @db.VarChar(300)
+  status   String       @default("DRAFT") @db.VarChar(16)
+  editions Edition[]
+  authors  WorkAuthor[]
+
+  @@map("work")
+  @@schema("catalog")
+}
+
+model Author {
+  id    String       @id @db.Uuid
+  name  String       @db.VarChar(200)
+  works WorkAuthor[]
+
+  @@map("author")
+  @@schema("catalog")
+}
+
+model WorkAuthor {
+  workId   String @map("work_id") @db.Uuid
+  authorId String @map("author_id") @db.Uuid
+  work     Work   @relation(fields: [workId], references: [id], onDelete: Restrict, onUpdate: NoAction)
+  author   Author @relation(fields: [authorId], references: [id], onDelete: Restrict, onUpdate: NoAction)
+
+  @@id([workId, authorId])
+  @@map("work_author")
+  @@schema("catalog")
+}
+
+model Publisher {
+  id       String    @id @db.Uuid
+  name     String    @db.VarChar(200)
+  editions Edition[]
+
+  @@map("publisher")
+  @@schema("catalog")
+}
+
+model Edition {
+  id          String    @id @db.Uuid
+  workId      String    @map("work_id") @db.Uuid
+  publisherId String    @map("publisher_id") @db.Uuid
+  label       String    @db.VarChar(200)
+  language    String    @db.VarChar(35)
+  isbn        String?   @db.VarChar(17)
+  status      String    @default("DRAFT") @db.VarChar(16)
+  work        Work      @relation(fields: [workId], references: [id], onDelete: Restrict, onUpdate: NoAction)
+  publisher   Publisher @relation(fields: [publisherId], references: [id], onDelete: Restrict, onUpdate: NoAction)
+  products    Product[]
+
+  @@map("edition")
+  @@schema("catalog")
+}
+
+model Product {
+  id                 String            @id @db.Uuid
+  sku                String            @unique @db.VarChar(64)
+  title              String            @db.VarChar(300)
+  description        String            @default("") @db.VarChar(5000)
+  productType        String            @map("product_type") @db.VarChar(24)
+  editionId          String?           @map("edition_id") @db.Uuid
+  status             String            @default("DRAFT") @db.VarChar(16)
+  compositionVersion Int               @default(1) @map("composition_version")
+  sealed             Boolean           @default(false)
+  edition            Edition?          @relation(fields: [editionId], references: [id], onDelete: Restrict, onUpdate: NoAction)
+  categories         ProductCategory[]
+  components         KitComposition[]  @relation("Kit")
+  usedIn             KitComposition[]  @relation("Component")
+
+  @@map("product")
+  @@schema("catalog")
+}
+
+model Category {
+  id       String            @id @db.Uuid
+  name     String            @db.VarChar(200)
+  products ProductCategory[]
+
+  @@map("category")
+  @@schema("catalog")
+}
+
+model ProductCategory {
+  productId  String   @map("product_id") @db.Uuid
+  categoryId String   @map("category_id") @db.Uuid
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Restrict, onUpdate: NoAction)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Restrict, onUpdate: NoAction)
+
+  @@id([productId, categoryId])
+  @@map("product_category")
+  @@schema("catalog")
+}
+
+model KitComposition {
+  kitId       String  @map("kit_id") @db.Uuid
+  componentId String  @map("component_id") @db.Uuid
+  quantity    Int
+  kit         Product @relation("Kit", fields: [kitId], references: [id], onDelete: Restrict, onUpdate: NoAction)
+  component   Product @relation("Component", fields: [componentId], references: [id], onDelete: Restrict, onUpdate: NoAction)
+
+  @@id([kitId, componentId])
+  @@map("kit_composition")
+  @@schema("catalog")
+}

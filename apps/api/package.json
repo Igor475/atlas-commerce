@@ -5,11 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "nest start --watch",
-    "build": "pnpm spike:generate && pnpm identity:generate && nest build",
+    "build": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && nest build",
     "start": "node dist/main.js",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "pnpm spike:generate && pnpm identity:generate && tsc -p tsconfig.json --noEmit",
-    "test": "pnpm spike:generate && pnpm identity:generate && vitest run",
+    "typecheck": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && tsc -p tsconfig.json --noEmit",
+    "test": "pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && vitest run",
     "smoke": "pnpm build && node scripts/smoke.mjs",
     "spike:generate": "prisma generate",
     "spike:validate": "prisma validate",
@@ -20,7 +20,11 @@
     "identity:generate": "prisma generate --config identity.prisma.config.ts",
     "identity:migrate": "node scripts/identity-db.mjs migrate",
     "identity:test": "pnpm build && node scripts/identity-db.mjs test",
-    "identity:mail:dispatch": "node scripts/identity-mail-dispatch.mjs"
+    "identity:mail:dispatch": "node scripts/identity-mail-dispatch.mjs",
+    "catalog:generate": "prisma generate --config catalog.prisma.config.ts",
+    "catalog:validate": "prisma validate --config catalog.prisma.config.ts",
+    "catalog:migrate": "node scripts/catalog-db.mjs migrate",
+    "catalog:test": "pnpm build && node scripts/catalog-local.mjs"
   },
   "dependencies": {
     "@nestjs/common": "12.1.3",

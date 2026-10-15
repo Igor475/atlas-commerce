@@ -27,6 +27,7 @@ A [Fase 03 v0.5](../04-architecture/CONSOLIDACAO-FINAL-FASE-03-v0.5.md) consolid
 | INT-02.2 | [Diagnóstico mediado MRD](integrations/INT-02-2-diagnostico-mediado-proposta.md) | PROPOSTA vinculada à [ADR-011](../04-architecture/adrs/ADR-011-diagnostico-mediado-e-politica-l1.md); MRD-001–016 futuros, não implementados ou executados |
 | MRD-G1 | [Design de segurança MRD](integrations/MRD-G1-design-seguranca.md) | Especificação de base: modalidade A autorizada posteriormente para G2 local; B/remoto e deltas pendentes, L1-SQL PENDENTE |
 | MRD-G2 | [Implementação local MRD](integrations/MRD-G2-implementacao-local.md) | Experimentação local autorizada posteriormente; G2 PARCIAL, cobertura pendente de revisão/gate global de formatação; remoto bloqueado, L1-SQL PENDENTE |
+| CAT-01 | [Catálogo editorial local](catalog/README.md) | Backend e provas PostgreSQL/HTTP locais; Pricing real e homologação pública bloqueados, CI remoto do delta pendente, L1-SQL PENDENTE |
 
 **Adendo de 14/10/2026 — diagnóstico:** projeto Supabase Atlas Commerce existente,
 ref `bkxrsgryzkgpwgkngieh`, região `sa-east-1`, conforme contexto do responsável e

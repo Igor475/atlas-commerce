@@ -1,0 +1,95 @@
+CAT-01 local acceptance, 2026-10-15 America/Sao_Paulo
+Baseline main af091a1bad9ef4c2b360b90fb6701125efc4349e + uncommitted local delta
+Node24.21.0 / pnpm12.11.2 / Prisma7.10.0 / pg8.23.1
+PostgreSQL17.10 Docker Linux, Windows host; fictitious DEMO data only
+Command: pnpm --filter @atlas/api catalog:test
+Exit0; remote CI NOT EXECUTED; Pricing real BLOCKED; L1_SQL_STRICT PENDENTE
+
+$ pnpm build && node scripts/catalog-local.mjs
+$ pnpm spike:generate && pnpm identity:generate && pnpm catalog:generate && nest build
+$ prisma generate
+Loaded Prisma config from prisma.config.ts.
+
+Prisma schema loaded from prisma\schema.prisma.
+
+✔ Generated Prisma Client (7.10.0) to .\src\infrastructure\persistence\generated in 249ms
+
+$ prisma generate --config identity.prisma.config.ts
+Loaded Prisma config from identity.prisma.config.ts.
+
+Prisma schema loaded from prisma-identity\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-identity-client in 324ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+$ prisma generate --config catalog.prisma.config.ts
+Loaded Prisma config from catalog.prisma.config.ts.
+
+Prisma schema loaded from prisma-catalog\schema.prisma.
+
+✔ Generated Prisma Client (v7.10.0) to .\node_modules\atlas-catalog-client in 474ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+
+CATALOG_LOCAL_POSTGRES17_READY
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "catalog" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+Applying migration `202610150001_catalog`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 202610150001_catalog/
+    └─ migration.sql
+
+All migrations have been successfully applied.
+Loaded Prisma config from catalog.prisma.config.ts.
+
+Prisma schema loaded from prisma-catalog\schema.prisma.
+Datasource "db": PostgreSQL database "atlas_catalog_cat01", schemas "catalog" at "127.0.0.1:55439"
+
+1 migration found in prisma/migrations
+
+
+No pending migrations to apply.
+Loaded Prisma config from catalog.prisma.config.ts.
+
+Prisma schema loaded from prisma-catalog\schema.prisma.
+
+ RUN  v5.0.4 [WORKSPACE]/apps/api
+
+stdout | test/catalog/catalog.integration.ts > CAT-01 real PostgreSQL17 and Nest HTTP, no remote provider > CAT-021 public responses validated against actual OpenAPI in contract evidence gate
+CAT_OPENAPI31_INTERNAL_REFS_RESOLVED 182
+CAT_CONTRACT_SAMPLES {"product":{"id":"00000000-0000-4000-8000-000000000001","title":"DEMO Produto 1","productType":"PHYSICAL_BOOK","price":{"currency":"BRL","amountCents":12345},"previewAvailable":false,"description":"Texto fictício, sem conteúdo licenciado"},"list":{"items":[{"id":"00000000-0000-4000-8000-000000000001","title":"DEMO Produto 1","productType":"PHYSICAL_BOOK","price":{"currency":"BRL","amountCents":12345},"previewAvailable":false,"description":"Texto fictício, sem conteúdo licenciado"},{"id":"00000000-0000-4000-8000-000000000002","title":"DEMO Produto 2","productType":"EBOOK","price":{"currency":"BRL","amountCents":12345},"previewAvailable":false,"description":"Texto fictício, sem conteúdo licenciado"},{"id":"00000000-0000-4000-8000-000000000003","title":"DEMO Produto 3","productType":"DIGITAL_MAGAZINE","price":{"currency":"BRL","amountCents":12345},"previewAvailable":false,"description":"Texto fictício, sem conteúdo licenciado"},{"id":"00000000-0000-4000-8000-000000000004","title":"DEMO Kit 4","productType":"KIT","price":{"currency":"BRL","amountCents":12345},"previewAvailable":false,"description":""},{"id":"00000000-0000-4000-8000-000000000005","title":"DEMO Kit 5","productType":"KIT","price":{"currency":"BRL","amountCents":12345},"previewAvailable":false,"description":""},{"id":"00000000-0000-4000-8000-000000000006","title":"DEMO Kit 6","productType":"KIT","price":{"currency":"BRL","amountCents":12345},"previewAvailable":false,"description":""}],"nextCursor":null}}
+
+stdout | test/catalog/catalog.integration.ts > CAT-01 real PostgreSQL17 and Nest HTTP, no remote provider > CAT-030 local schema and query plan evidence; repository gates and remote CI separately reported
+CAT_QUERY_PLAN_LOCAL [{"QUERY PLAN":[{"Plan":{"Node Type":"Limit","Parallel Aware":false,"Async Capable":false,"Startup Cost":29.41,"Total Cost":29.41,"Plan Rows":1,"Plan Width":532,"Plans":[{"Node Type":"Sort","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Startup Cost":29.41,"Total Cost":29.41,"Plan Rows":1,"Plan Width":532,"Sort Key":["public_products.id"],"Plans":[{"Node Type":"Subquery Scan","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Alias":"public_products","Startup Cost":13.21,"Total Cost":29.4,"Plan Rows":1,"Plan Width":532,"Plans":[{"Node Type":"Hash Join","Parent Relationship":"Subquery","Parallel Aware":false,"Async Capable":false,"Join Type":"Left","Startup Cost":13.21,"Total Cost":29.39,"Plan Rows":1,"Plan Width":1114,"Inner Unique":true,"Hash Cond":"(e.work_id = w.id)","Filter":"((((p.product_type)::text <> 'KIT'::text) AND ((e.status)::text = 'PUBLISHED'::text) AND ((w.status)::text = 'PUBLISHED'::text)) OR (((p.product_type)::text = 'KIT'::text) AND p.sealed AND EXISTS(SubPlan 1) AND (NOT EXISTS(SubPlan 3))))","Plans":[{"Node Type":"Nested Loop","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Join Type":"Left","Startup Cost":0.28,"Total Cost":16.46,"Plan Rows":1,"Plan Width":665,"Inner Unique":true,"Plans":[{"Node Type":"Index Scan","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Scan Direction":"Forward","Index Name":"product_published_id","Relation Name":"product","Alias":"p","Startup Cost":0.14,"Total Cost":8.16,"Plan Rows":1,"Plan Width":615,"Index Cond":"(id > '00000000-0000-4000-8000-000000000000'::uuid)"},{"Node Type":"Index Scan","Parent Relationship":"Inner","Parallel Aware":false,"Async Capable":false,"Scan Direction":"Forward","Index Name":"edition_pkey","Relation Name":"edition","Alias":"e","Startup Cost":0.14,"Total Cost":8.16,"Plan Rows":1,"Plan Width":82,"Index Cond":"(id = p.edition_id)"}]},{"Node Type":"Hash","Parent Relationship":"Inner","Parallel Aware":false,"Async Capable":false,"Startup Cost":11.3,"Total Cost":11.3,"Plan Rows":130,"Plan Width":66,"Plans":[{"Node Type":"Seq Scan","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Relation Name":"work","Alias":"w","Startup Cost":0,"Total Cost":11.3,"Plan Rows":130,"Plan Width":66}]},{"Node Type":"Index Only Scan","Parent Relationship":"SubPlan","Subplan Name":"SubPlan 1","Parallel Aware":false,"Async Capable":false,"Scan Direction":"Forward","Index Name":"kit_composition_pkey","Relation Name":"kit_composition","Alias":"kit_composition","Startup Cost":0.15,"Total Cost":24.26,"Plan Rows":6,"Plan Width":0,"Index Cond":"(kit_id = p.id)"},{"Node Type":"Nested Loop","Parent Relationship":"SubPlan","Subplan Name":"SubPlan 3","Parallel Aware":false,"Async Capable":false,"Join Type":"Left","Startup Cost":0.44,"Total Cost":49.9,"Plan Rows":6,"Plan Width":0,"Inner Unique":true,"Filter":"(((c.status)::text <> 'PUBLISHED'::text) OR ((c.product_type)::text = 'KIT'::text) OR ((ce.status)::text IS DISTINCT FROM 'PUBLISHED'::text) OR ((cw.status)::text IS DISTINCT FROM 'PUBLISHED'::text))","Plans":[{"Node Type":"Nested Loop","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Join Type":"Left","Startup Cost":0.3,"Total Cost":46.18,"Plan Rows":6,"Plan Width":182,"Inner Unique":true,"Plans":[{"Node Type":"Nested Loop","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Join Type":"Inner","Startup Cost":0.15,"Total Cost":40.41,"Plan Rows":6,"Plan Width":132,"Inner Unique":true,"Join Filter":"(k.component_id = c.id)","Plans":[{"Node Type":"Index Only Scan","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Scan Direction":"Forward","Index Name":"kit_composition_pkey","Relation Name":"kit_composition","Alias":"k","Startup Cost":0.15,"Total Cost":24.26,"Plan Rows":6,"Plan Width":16,"Index Cond":"(kit_id = p.id)"},{"Node Type":"Materialize","Parent Relationship":"Inner","Parallel Aware":false,"Async Capable":false,"Startup Cost":0,"Total Cost":10.9,"Plan Rows":60,"Plan Width":148,"Plans":[{"Node Type":"Seq Scan","Parent Relationship":"Outer","Parallel Aware":false,"Async Capable":false,"Relation Name":"product","Alias":"c","Startup Cost":0,"Total Cost":10.6,"Plan Rows":60,"Plan Width":148}]}]},{"Node Type":"Index Scan","Parent Relationship":"Inner","Parallel Aware":false,"Async Capable":false,"Scan Direction":"Forward","Index Name":"edition_pkey","Relation Name":"edition","Alias":"ce","Startup Cost":0.14,"Total Cost":0.96,"Plan Rows":1,"Plan Width":82,"Index Cond":"(id = c.edition_id)"}]},{"Node Type":"Index Scan","Parent Relationship":"Inner","Parallel Aware":false,"Async Capable":false,"Scan Direction":"Forward","Index Name":"work_pkey","Relation Name":"work","Alias":"cw","Startup Cost":0.14,"Total Cost":0.6,"Plan Rows":1,"Plan Width":66,"Index Cond":"(id = ce.work_id)"}]}]}]}]}]}}]}]
+CAT_REMOTE_CI_NOT_EXECUTED_PRICING_REAL_BLOCKED_L1_PENDING
+
+ ✓ test/catalog/catalog.integration.ts (30 tests) 16131ms
+   ✓ CAT-01 real PostgreSQL17 and Nest HTTP, no remote provider (30)
+     ✓ CAT-001 default composition closed, no commercial socket 1031ms
+     ✓ CAT-003 migration reapply preserves history and data 4566ms
+     ✓ CAT-005 SKU uniqueness and FK enforced by PostgreSQL 610ms
+     ✓ CAT-006 composition quantity and completeness constraints 838ms
+     ✓ CAT-014 invalid, duplicate, cyclic and sealed compositions rejected; two connections serialize publication 712ms
+     ✓ CAT-015 published products listed with no cookie required 397ms
+     ✓ CAT-016 draft, withdrawn and editorial invalidation hidden across list and kits 311ms
+     ✓ CAT-020 strict limit, duplicates, unexpected and excessive query 325ms
+     ✓ CAT-021 public responses validated against actual OpenAPI in contract evidence gate 501ms
+     ✓ CAT-026 preview false and no download/media routes 572ms
+     ✓ CAT-027 PostgreSQL lock timeout sanitized and recoverable; pool closed 1669ms
+     ✓ CAT-028 SQL injection, mass assignment, malformed params and rate abuse rejected 823ms
+     ✓ CAT-029 protected modules, schemas, lockfile and normative contracts unchanged 469ms
+
+ Test Files  1 passed (1)
+      Tests  30 passed (30)
+   Start at  10:14:45
+   Duration  19.36s (tests 86%, import 13%, transform 1%)
+
+CATALOG_OWN_RESOURCES_CLEANED

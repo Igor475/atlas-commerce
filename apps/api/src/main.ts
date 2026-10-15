@@ -8,6 +8,7 @@ import { AppModule } from "./app.module.js";
 import { readPort } from "./config.js";
 import { configureIdentityHttp } from "./modules/identity/presentation/identity-http.js";
 import { readIdentityConfig } from "./modules/identity/infrastructure/identity-config.js";
+import { catalogEnabled } from "./modules/catalog/infrastructure/catalog-config.js";
 
 async function bootstrap(): Promise<void> {
   const port = readPort(process.env.PORT);
@@ -18,7 +19,10 @@ async function bootstrap(): Promise<void> {
   configureIdentityHttp(app);
 
   app.enableShutdownHooks();
-  await app.listen(port, identity.enabled ? "127.0.0.1" : "0.0.0.0");
+  await app.listen(
+    port,
+    identity.enabled || catalogEnabled(process.env) ? "127.0.0.1" : "0.0.0.0",
+  );
   Logger.log(`API técnica disponível na porta ${port}.`, "Bootstrap");
 }
 
