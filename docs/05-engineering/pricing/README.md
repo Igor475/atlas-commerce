@@ -8,7 +8,7 @@ integração remota ou homologação pública. L1_SQL_STRICT permanece PENDENTE.
 - [Escopo, diagnóstico e fronteiras](PRIC-01-escopo-e-fronteiras.md).
 - [Modelo, dinheiro, vigência e concorrência](PRIC-02-modelo-e-invariantes.md).
 - [Matriz PRIC-001–030](PRIC-03-matriz-de-testes.md).
-- [Handoff e proposta HTTP400 separada](PRIC-04-handoff-e-pendencias.md).
+- [Handoff e ratificação CT-CAT-400, com histórico da proposta](PRIC-04-handoff-e-pendencias.md).
 - [Testes reais](../../../apps/api/test/pricing/pricing.integration.ts) e
   [resultados/evidências](../../../apps/api/test/pricing/RESULTS.md).
 

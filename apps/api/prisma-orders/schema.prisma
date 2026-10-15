@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/atlas-orders-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["orders"]
+}
+
+// SQL migrations are authoritative for snapshots, constraints, FKs, ACLs and functions.
+// No ORM writes or db push. This client executes only the two narrow SQL operations.
+model Preparation {
+  id                   String    @id @db.Uuid
+  actorId              String    @map("actor_id") @db.Uuid
+  purpose              String
+  currency             String
+  baseSubtotal         BigInt    @map("base_subtotal_cents")
+  physicalUnits        BigInt    @map("physical_units")
+  reservationId        String?   @map("reservation_id") @db.Uuid
+  reservationExpiresAt DateTime? @map("reservation_expires_at") @db.Timestamptz(6)
+  createdAt            DateTime  @map("created_at") @db.Timestamptz(6)
+
+  @@map("preparation")
+  @@schema("orders")
+}

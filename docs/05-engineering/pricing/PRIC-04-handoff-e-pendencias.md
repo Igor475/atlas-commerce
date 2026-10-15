@@ -1,6 +1,16 @@
 # PRIC-04 — Handoff e pendências
 
-## HTTP400 — aprovação separada
+## HTTP400 — CT-CAT-400 ratificado em 15/10/2026
+
+O responsável aprovou expressamente `400 INVALID_REQUEST` nas duas operações GET
+Catalog. Respostas incorporadas ao [OpenAPI ativo](../contracts/openapi/atlas-commerce-api-v1.yaml),
+com `application/problem+json` e `ProblemDetails`, conforme [CT-03](../contracts/CT-03-erros-e-idempotencia-http.md).
+A aprovação desta alteração não está mais pendente. Baseline conferido:
+`bd3740719bc5b13c5fe1fe7d1eb4bd6904d55fca`. Somente as duas respostas foram
+acrescentadas; implementação, parâmetros, outras respostas e demais decisões
+permanecem intactos. CI remoto deste delta ainda não executado.
+
+### Histórico — proposta original anterior à ratificação
 
 [Diff documental proposto](openapi-http400.proposed.patch) acrescenta somente seis
 linhas em cada operação GET Catalog:400, application/problem+json e ProblemDetails,

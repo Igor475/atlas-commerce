@@ -2,6 +2,12 @@
 
 > **Decisão técnica proposta:** usar **RFC 9457 `application/problem+json`** em vez de envelope proprietário. Contrato a ratificar para o primeiro bootstrap. Segurança de resposta prevalece sobre ergonomia de debug.
 
+**CT-CAT-400 — ratificação do responsável em 15/10/2026:** aprovada e incorporada ao
+[OpenAPI v1](openapi/atlas-commerce-api-v1.yaml) somente a resposta `400 INVALID_REQUEST`
+nas duas operações GET Catalog, com `application/problem+json` e `ProblemDetails`.
+Sem mudança de implementação, rotas, parâmetros ou demais respostas. Esta decisão
+não ratifica os demais contratos propostos; [registro e histórico](../pricing/PRIC-04-handoff-e-pendencias.md).
+
 ## Shape de erro
 
 Campos públicos: `type` (URI/`about:blank`), `title`, `status` (HTTP correspondente), `detail` genérico opcional, `instance` sem dado sensível, extensão `code` (estável) e `requestId` (correlação aleatória). Não incluir secrets, stack trace, SQL, IP pessoal, URL privada assinada, CPF, e-mail completo, idempotency key inteira ou validação interna sensível.

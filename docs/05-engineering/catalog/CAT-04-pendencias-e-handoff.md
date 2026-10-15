@@ -16,7 +16,7 @@
 7. Gate global de formatação histórico deve ser relatado separado, sem editar
    os32 arquivos CRLF fora do escopo ou desativar controles.
 
-## Divergência contratual identificada — proposta, não aplicada
+## Histórico CAT-01 — divergência contratual anterior à CT-CAT-400
 
 CT-03 prevê400 INVALID_REQUEST para validação. OpenAPI lista200/429/503 em listagem
 e200/404/429/503 no detalhe, sem400, embora aceite parâmetros. Implementação rejeita
@@ -65,3 +65,13 @@ preço-base persistido e integração ao port mediante opt-in explícito na fixt
 A pendência de Pricing acima descreve o estado original CAT-01; default continua
 fechado e produção/provedores/checkout permanecem bloqueados. HTTP400 segue proposta
 separada, sem aprovação ou mudança automática do OpenAPI.
+
+## Adendo CT-CAT-400 — ratificação em 15/10/2026
+
+O responsável aprovou expressamente a resposta `400 INVALID_REQUEST` nas duas
+operações GET Catalog; incorporada ao [OpenAPI ativo](../contracts/openapi/atlas-commerce-api-v1.yaml)
+com `application/problem+json` e `ProblemDetails`. A pendência HTTP400 acima e no
+adendo PRIC-01 é histórica e foi encerrada somente para essa alteração.
+[Registro CT-03](../contracts/CT-03-erros-e-idempotencia-http.md) e
+[handoff atualizado](../pricing/PRIC-04-handoff-e-pendencias.md).
+Sem mudança de implementação ou outras decisões; CI remoto deste delta não executado.

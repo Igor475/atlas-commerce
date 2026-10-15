@@ -603,6 +603,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductList'
+        '400':
+          description: Solicitação inválida, sem dados sensíveis (CT-03 INVALID_REQUEST)
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '429':
           description: Erro público sem dados sensíveis
           content:
@@ -642,6 +648,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductSummary'
+        '400':
+          description: Solicitação inválida, sem dados sensíveis (CT-03 INVALID_REQUEST)
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '404':
           description: Erro público sem dados sensíveis
           content:
