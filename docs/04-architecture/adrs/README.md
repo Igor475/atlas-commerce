@@ -31,3 +31,11 @@
 [Consolidação final da Fase 03](../CONSOLIDACAO-FINAL-FASE-03-v0.5.md) · [status detalhado ADR](../STATUS-ADR-APROVACAO-2026-10-12.md) · [gates](../VALIDACOES-E-PARAMETROS-PENDENTES.md) · [handoff Fase 04](../HANDOFF-FASE-04.md).
 
 Cada ADR conserva seu contexto e alternativas históricas. Provas e casos seguem seus planos [CA/SA](../../03-business-processes/POLITICAS-CONSOLIDADAS.md), [AUTH](../09-cenarios-aceite-autenticacao.md), [DB](../database/DB-05-plano-de-validacao.md), [ST](../07-validacao-stripe.md) e [infraestrutura](../VALIDACAO-VERCEL-R2-JOBS.md). Nenhuma suite foi executada por este pacote.
+
+## Ratificação posterior — 15/10/2026 (ADR-QTE)
+
+- [ADR-012 — Cotação, entrega e endereços](ADR-012-politicas-cotacao-entrega-enderecos.md):
+  QTE-DEC-002/003/004/005/006/010 ratificados nos limites expressos; Estratégia A,
+  Customer Profile e TTL comercial de dez minutos. Parâmetros comerciais e
+  detalhes estruturais pendentes; QTE-DEC-008/009 BLOQUEADOS. Sem implementação
+  ou homologação de L1/Stripe/40/30/5; registros anteriores preservados.

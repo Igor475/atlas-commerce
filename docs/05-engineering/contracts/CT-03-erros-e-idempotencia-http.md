@@ -43,3 +43,17 @@ A API gera/normaliza request ID confiável, não aceita cabeçalho arbitrário c
 Bloquear `Content-Type` errado em endpoints sensíveis, limitar body, verificar `Origin`/CSRF em cookie state-changing, e validar corpo bruto Stripe **antes** de JSON/parsing de eventos; falhas de parser/sig não gravam captura. [CT-04](CT-04-sessoes-csrf-e-webhook.md) e [CT-05](CT-05-eventos-duraveis.md).
 
 **Referências:** [HTTP Semantics](https://httpwg.org/specs/rfc9110.html), [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457), [ADR-004](../../04-architecture/adrs/ADR-004-psp-sandbox.md), [ADR-006](../../04-architecture/adrs/ADR-006-acesso-dados.md).
+
+## Consumo comercial ratificado ADR-QTE — 15/10/2026
+
+[ADR-012 / QTE-DEC-005](../../04-architecture/adrs/ADR-012-politicas-cotacao-entrega-enderecos.md)
+ratifica uma única intenção comercial de checkout por quote, além da deduplicação
+ator/operação/chave e fingerprint canônico. Duas chaves distintas não produzem
+duas compras independentes dessa quote; retry da mesma intenção recupera o fato
+persistido, inclusive em timeout ambíguo, sem confundir quote com pedido.
+Essa guarda comercial ainda não está implementada na fundação TEST_ONLY.
+
+O 404 RESOURCE_NOT_FOUND para endereços/cotações alheios é mapeado no
+[delta candidato](../quotes/QTE-POL-06-delta-openapi-candidato.md), mas sua adição à
+operação quotes continua proposta. Nenhuma resposta HTTP ou código novo foi
+acrescentado ao YAML ativo; RFC9457, anti-enumeração e redaction preservados.

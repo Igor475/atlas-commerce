@@ -24,3 +24,12 @@ Stripe/Payments e política 40/30/5 NÃO HOMOLOGADOS.
 Lint, typecheck, unitários, build, smoke, auditoria e regressões passaram.
 Formatação direcionada PASS; gate global bloqueado por 32 arquivos CRLF
 históricos intactos. CI remoto QTE ainda não executado.
+
+## Ratificação documental posterior — 15/10/2026
+
+[ADR-012 / ADR-QTE](../../04-architecture/adrs/ADR-012-politicas-cotacao-entrega-enderecos.md)
+ratifica seis decisões QTE-02, incluindo Estratégia A; ver a
+[matriz atualizada](QTE-POL-05-fluxo-e-matriz-de-decisoes.md) e o
+[delta candidato não aplicado](QTE-POL-06-delta-openapi-candidato.md).
+Parâmetros e detalhes contratuais continuam pendentes. QTE-01 permanece TEST_ONLY;
+este registro não reescreve as evidências históricas acima nem homologa checkout.

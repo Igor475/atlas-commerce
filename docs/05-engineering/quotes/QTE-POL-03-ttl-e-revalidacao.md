@@ -1,10 +1,13 @@
 # QTE-POL-03 — TTL comercial e revalidação
 
-**15/10/2026 · PROPOSTO · nenhuma mudança de TTL em código.**
+**15/10/2026 · QTE-DEC-004/005 RATIFICADOS pelo responsável.**
+TTL comercial de 10 minutos e uma intenção comercial por quote aprovados em
+15/10/2026; ver [ADR-012 / ADR-QTE](../../04-architecture/adrs/ADR-012-politicas-cotacao-entrega-enderecos.md). Nenhuma mudança em código.
 
 [QTE-01](QTE-03-entrega-e-tempo.md) recebe TTL somente na fixture, sem default
 comercial; 1–3600 segundos é limite técnico. Os 600 segundos de alguns testes
-não ratificam dez minutos de validade comercial.
+não constituíam ratificação. A aprovação comercial decorre da decisão expressa
+posterior de 15/10/2026, não do valor da fixture.
 
 | Alternativa | Benefício                                                                | Risco e consequência UX                                                                 |
 | ----------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
@@ -12,7 +15,7 @@ não ratificam dez minutos de validade comercial.
 | 10 minutos  | Equilíbrio simples entre revisão e atualização; recomendação QTE-DEC-004 | Ainda exige revalidação integral; pode expirar em espera por lock                       |
 | 15 minutos  | Mais tempo para comparar/revisar                                         | Mais chance de preço/publicação/entrega mudarem antes da confirmação; não garante preço |
 
-**Recomendação PROPOSTA: 10 minutos**, medidos pelo PostgreSQL após aquisição dos
+**Decisão RATIFICADA em 15/10/2026: 10 minutos**, medidos pelo PostgreSQL após aquisição dos
 locks necessários à emissão, com validade exclusiva no limite: `agora >= expiresAt`
 recusa intenção nova. Esta escolha não estende reserva ou sessão financeira.
 Contador no browser é informativo; cliente não determina elegibilidade nem renova
@@ -38,7 +41,7 @@ a comparação a campos "materiais" requer decisão/teste específico, não alte
 implícita. A validade significa elegibilidade para revalidação, não congelamento
 irrevogável de preço nem garantia de estoque.
 
-Proposta QTE-DEC-005: uma cotação comercial deve vincular-se a **uma única intenção
+QTE-DEC-005 RATIFICADO em 15/10/2026: uma cotação comercial deve vincular-se a **uma única intenção
 de checkout** por titular. Retries usam a mesma intenção; nova compra pede nova
 cotação. Hoje QTE-01 não torna quote single-use: chaves diferentes podem criar
 preparações distintas quando há saldo. A unicidade comercial precisará de guarda
@@ -50,7 +53,7 @@ anterior antes de aceitar recotação como nova compra.
 
 | Prazo                              | Fonte/propósito                                                         | Status                                                                   |
 | ---------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Quote comercial: 10 min            | DB após locks da emissão; limita intenção nova                          | **PROPOSTO**, não configurado comercialmente                             |
+| Quote comercial: 10 min            | DB após locks da emissão; limita intenção nova                          | **RATIFICADO em 15/10/2026**, não configurado comercialmente             |
 | Reserva física: 40 min             | DB na criação da reserva; não começa ao entrar no carrinho nem ao cotar | Política existente, prova local Inventory; integração comercial pendente |
 | Checkout Session: 30 min propostos | Timestamps reais do PSP e versão API/SDK comprovada                     | **NÃO HOMOLOGADO**, não implementado                                     |
 | Segurança: pelo menos 5 min        | `sessionExpiresAt <= reservationExpiresAt - 5min` para físicos          | Política existente, compatibilidade PSP **NÃO HOMOLOGADA**               |

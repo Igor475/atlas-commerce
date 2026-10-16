@@ -1,7 +1,9 @@
 # QTE-POL-01 — Política de entrega proposta
 
-**15/10/2026 · QTE-02 · PROPOSTO · somente documentação.** Nenhuma tarifa,
-zona, promessa logística ou comportamento foi aprovado por este documento.
+**15/10/2026 · QTE-DEC-002 RATIFICADO · somente documentação.** Modelo fixo por zona,
+uma opção elegível por zona e cobrança por pedido físico/misto aprovados pelo
+responsável em 15/10/2026; ver [ADR-012 / ADR-QTE](../../04-architecture/adrs/ADR-012-politicas-cotacao-entrega-enderecos.md). Nenhuma tarifa,
+zona concreta, promessa logística ou implementação foi aprovada.
 O índice e a matriz do pacote estão em [QTE-POL-05](QTE-POL-05-fluxo-e-matriz-de-decisoes.md).
 
 ## Evidência e limites
@@ -20,7 +22,7 @@ do teste, seu prazo e seus pesos não são dados logísticos reais nem política
 aprovada. Digital puro não chama o port de entrega e usa entrega inaplicável,
 não um benefício de frete grátis. Nenhum desconto ou cupom passa a existir.
 
-## Comparação de modelos
+## Comparação de modelos — histórico da proposta QTE-02
 
 Notação exclusivamente simbólica: `z` é uma zona configurada a partir do destino;
 `o` é uma opção elegível; `v` é a versão da política; `W` é o peso físico total em
@@ -38,14 +40,14 @@ No quarto modelo, o determinismo limita-se à normalização da **mesma evidênc
 uma nova consulta pode mudar preço/prazo. A integração não é parte do MVP aprovado
 nem desta entrega. Não chamar transportador enquanto mantém locks PostgreSQL.
 
-## Recomendação — QTE-DEC-002
+## Decisão ratificada — QTE-DEC-002
 
-**PROPOSTO:** iniciar com tarifa fixa por faixa de destino, uma opção simulada
+**RATIFICADO pelo responsável em 15/10/2026:** iniciar com tarifa fixa por faixa de destino, uma opção simulada
 elegível por faixa e uma cobrança de entrega por pedido físico/misto. É verificável
 sem promover pesos artificiais a cadastro comercial. O port de condições mantém
 uma fronteira para evoluir para bandas/híbrido/provedor; não requer microsserviço.
 
-Essa recomendação muda a futura política, não a fórmula local existente. Não
+Essa decisão orienta a futura política, não a fórmula local existente. Não
 autoriza remover as guardas de atributos da fixture QTE-01. Para implementá-la,
 aprovar previamente tabela de zonas, tarifas, prazo, unidade do prazo, marco
 inicial, calendário e limites de transportabilidade/embalagem. Ausência de

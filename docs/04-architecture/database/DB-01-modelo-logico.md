@@ -41,3 +41,18 @@ Este modelo lógico é uma proposta, **não** indica que as colunas existam. O d
 ## Vistas
 
 [ER-01 catálogo/pedidos/estoque](ER-01-catalogo-pedidos-estoque.md) · [ER-02 pagamentos/reembolsos](ER-02-pagamentos-reembolsos.md) · [ER-03 identidade/biblioteca](ER-03-identidade-biblioteca.md).
+
+## Ratificação incremental ADR-QTE — 15/10/2026
+
+[ADR-012](../adrs/ADR-012-politicas-cotacao-entrega-enderecos.md) ratifica Customer
+Profile como autoridade de endereços no monólito modular, separado da persistência
+Identity de credenciais/sessões. Suporta múltiplos endereços/versionamento; Quotes
+e Orders usam ports autorizados com identidade/estado de conta confiáveis, e o
+pedido preserva snapshot imutável. Campos, fonte postal e retenção concreta
+continuam pendentes; nenhuma tabela/schema foi criada por essa decisão.
+
+Uma quote comercial vincula-se a uma única intenção de checkout: duas chaves
+distintas não autorizam duas compras independentes da mesma quote. A unicidade
+comercial futura complementa ator/operação/chave/fingerprint, com recuperação
+durável em timeout ambíguo. Não substitui as constraints e provas locais existentes
+nem transforma a fixture TEST_ONLY em agregado comercial implementado.

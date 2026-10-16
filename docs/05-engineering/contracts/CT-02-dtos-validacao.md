@@ -49,3 +49,19 @@
 Validação estrutural na borda com whitelist estrita nas requisições e `additionalProperties: false` (quando o caso não permitir extensão); comprimento, normalização Unicode quando aplicável, cardinalidade, limite de itens/campos, rate limit proporcional e antienumeração em autenticação. Nunca "sanitizar" entrada alterando silenciosamente o significado de nomes/códigos ou permitindo HTML malicioso ser exibido sem encoding contextual. Identificadores de ordenação e campos dinâmicos por allowlist; SQL bind params no backend.
 
 A forma exata em [OpenAPI](openapi/atlas-commerce-api-v1.yaml) será revisada antes de gerar DTOs. [CT-08 testes](CT-08-cenarios-validacao-api.md).
+
+## Ratificação limitada ADR-QTE — 15/10/2026
+
+[ADR-012](../../04-architecture/adrs/ADR-012-politicas-cotacao-entrega-enderecos.md)
+ratifica a Estratégia A: QuoteRequest mínimo preservado salvo incompatibilidade
+demonstrada; QuoteResult evoluirá com subtotal e delivery estruturado (null em
+digital, objeto em físico/misto), vinculando endereço/política versionados e uma
+única opção apresentada antes do aceite do quoteId. BRL/centavos e somas são
+autoridade do servidor. TTL comercial de dez minutos pelo PostgreSQL, sem reserva
+ao cotar e com revalidação após locks; expirou, emitir nova quote.
+
+O [delta candidato](../quotes/QTE-POL-06-delta-openapi-candidato.md) descreve campos
+e testes planejados. Estimate, enums, limites/versões e parâmetros de entrega
+não estão fechados: **OpenAPI ativo permanece inalterado**, sem campos/rotas novos
+aplicados. A descrição mínima histórica acima não significa que o shape evoluído
+já esteja implementado. UXD-16 e demais pendências CT-10/Stripe permanecem intactas.

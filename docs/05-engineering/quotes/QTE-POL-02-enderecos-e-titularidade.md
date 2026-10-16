@@ -1,6 +1,9 @@
 # QTE-POL-02 — Endereços e titularidade
 
-**15/10/2026 · PROPOSTO · sem persistência ou endpoints novos.**
+**15/10/2026 · QTE-DEC-003 e princípios QTE-DEC-010 RATIFICADOS.**
+Customer Profile, ports autorizados, múltiplos endereços/versionamento e snapshots
+históricos aprovados pelo responsável em 15/10/2026; ver [ADR-012 / ADR-QTE](../../04-architecture/adrs/ADR-012-politicas-cotacao-entrega-enderecos.md).
+Sem persistência ou endpoints novos. Campos, validação postal e retenção concreta pendentes.
 
 ## Estado atual e fronteira recomendada
 
@@ -12,15 +15,16 @@ completude/elegibilidade; seu snapshot não é um endereço postal completo.
 não um pedido comercial com endereço real. Identity Customer implementado
 localmente não significa vínculo comercial habilitado em Quotes/Orders.
 
-| Alternativa                                               | Benefício                                                                          | Custo/risco                                                                                       | Recomendação                                                                                                  |
-| --------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Endereços dentro de Identity junto de credenciais/sessões | Menor número de módulos                                                            | Mistura perfil mutável com autenticação sensível; consumidores podem obter privilégios excessivos | Não recomendar acesso direto a tabelas Identity                                                               |
-| Customer Profile no monólito, vinculado ao ID de conta    | Separa dados de entrega de segredos, suporta vários endereços e leitura autorizada | Precisa de política de ciclo de vida e consistência de conta/endereço                             | **PROPOSTO**, responsabilidade própria; pode compartilhar implantação sem compartilhar tabelas de credenciais |
-| Serviço independente de endereços                         | Escala e operação autônomas                                                        | I/O de rede, consistência distribuída e custo sem necessidade demonstrada                         | Adiar; não exigido pelo portfólio                                                                             |
+| Alternativa                                               | Benefício                                                                          | Custo/risco                                                                                       | Recomendação                                                                                                                  |
+| --------------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Endereços dentro de Identity junto de credenciais/sessões | Menor número de módulos                                                            | Mistura perfil mutável com autenticação sensível; consumidores podem obter privilégios excessivos | Não recomendar acesso direto a tabelas Identity                                                                               |
+| Customer Profile no monólito, vinculado ao ID de conta    | Separa dados de entrega de segredos, suporta vários endereços e leitura autorizada | Precisa de política de ciclo de vida e consistência de conta/endereço                             | **RATIFICADO em 15/10/2026**, responsabilidade própria; pode compartilhar implantação sem compartilhar tabelas de credenciais |
+| Serviço independente de endereços                         | Escala e operação autônomas                                                        | I/O de rede, consistência distribuída e custo sem necessidade demonstrada                         | Adiar; não exigido pelo portfólio                                                                                             |
 
-QTE-DEC-003 recomenda Customer Profile com endereços versionados por conta.
+QTE-DEC-003 ratifica Customer Profile com endereços versionados por conta.
 O inventário FD-03 atribui P30 a Identity: a separação de responsabilidade aqui
-é uma proposta a aprovar, não uma renomeação já aplicada ao inventário ou ao módulo.
+foi ratificada, mas não foi aplicada ao inventário ou ao módulo. FD-03/05 ficam
+preservados por escopo; sua sincronização futura exige autorização específica.
 O ator vem da sessão autenticada/verificada do servidor. `shippingAddressId`
 é somente referência, nunca autorização. Selecionar endereço de outro titular
 ou revogado resulta em negativa uniforme, sem revelar existência ou conteúdo.
@@ -81,12 +85,14 @@ novo com o preço mostrado para o antigo. RN-012 permanece intacta.
 
 ## Privacidade, retenção e provas pendentes
 
-Controles propostos: leitura por titular, acesso operacional escopado por finalidade,
+Princípios ratificados de QTE-DEC-010: minimização, finalidade, titularidade e
+retenção fundamentada, preservando rastreabilidade/snapshots. Mecanismos técnicos
+ainda por especificar incluem leitura por titular, acesso operacional escopado por finalidade,
 respostas autenticadas `no-store`, auditoria com ID/versão/ação/resultado e correlação
 sem endereço bruto; escaping no consumidor; nenhuma PII em URL, analytics ou
 ProblemDetails. Não copiar endereço completo para eventos públicos.
 
-**Pendente de aprovação:** finalidade e bases de tratamento, prazo de retenção por
+**Pendente de revisão específica:** detalhamento das finalidades e bases de tratamento, prazo de retenção por
 cadastro/cotação/pedido/auditoria, anonimização e fluxo de direitos. Não inventar
 prazo legal nem excluir histórico comercial indiscriminadamente. Limpeza de quote
 expirada precisa preservar evidência de checkout/replay por período aprovado.

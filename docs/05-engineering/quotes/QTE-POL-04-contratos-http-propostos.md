@@ -1,7 +1,10 @@
 # QTE-POL-04 — Contratos HTTP propostos
 
-**15/10/2026 · PROPOSTO · OpenAPI ativo preservado integralmente.** DTOs e estados
-abaixo são candidatos para ratificação; nenhum endpoint foi criado ou ativado.
+**15/10/2026 · Estratégia A / QTE-DEC-006 RATIFICADO pelo responsável.**
+Estrutura conceitual subtotal/delivery aprovada; detalhes de estimate, enumerações
+e versão contratual seguem pendentes. Ver [ADR-012 / ADR-QTE](../../04-architecture/adrs/ADR-012-politicas-cotacao-entrega-enderecos.md)
+e o [delta candidato separado](QTE-POL-06-delta-openapi-candidato.md).
+OpenAPI ativo preservado integralmente; nenhum endpoint criado ou ativado.
 
 ## Contrato inspecionado e lacunas
 
@@ -20,18 +23,19 @@ implementa a futura política de cupons. O contrato não permite informar opçã
 descobrir alternativas ou ler frete/prazo estruturados. `note` livre não substitui
 condições de entrega verificáveis. ID de endereço não prova titularidade.
 
-## Alternativas de fluxo e compatibilidade
+## Alternativas de fluxo e compatibilidade — histórico da proposta
 
-| Estratégia candidata                                             | DTOs e estados candidatos                                                                                                    | HTTP/erros e idempotência                                                                                                                                       | Consequência UX e compatibilidade                                                                                                                                                                                      |
-| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A — uma opção simulada por destino                               | Manter QuoteRequest; ampliar QuoteResult com `delivery` detalhado ou null e subtotal; quote emitida, desatualizada, expirada | 200 somente quote final válida; erros atuais; emissão sem chave obrigatória, limites contra abuso; checkout com chave existente                                 | Menor delta; UI mostra a única opção, preço/prazo e aceita a seleção ao confirmar quote. Não simula comparação quando só existe uma opção. Campos adicionais exigem revisão coordenada porque o schema atual é fechado |
-| B — consulta e seleção em duas fases na rota de quotes existente | Discriminador candidato `phase: DELIVERY_OPTIONS                                                                             | FINAL_QUOTE`; entrada final com referência de seleção; resultado de opções distinto de QuoteResult                                                              | 200 com union explícita, jamais quote sem total disfarçada de QuoteResult; erros atuais e candidatos 404/409; emissão final opcionalmente deduplicada, checkout sempre idempotente                                     | Permite comparar e selecionar; muda semântica/shape, precisa versionamento ou migração contratual aprovada. Não se pode enviar `phase` hoje |
-| C — recurso de consulta separado, seguido de quote final         | Request de opções com itens/endereço; resposta lista ofertas; QuoteRequest candidato ganha referência da opção               | Path, método e inventário **a definir por aprovação**, sem criar rota neste documento; 200 de opções não é pedido; falhas sem reserva, ownership nas duas fases | Separação mais clara para múltiplas opções, mas amplia superfície e testes. Nenhuma URL nova foi inferida; contratos de endereço também continuam separados                                                            |
+| Estratégia candidata                                             | DTOs e estados candidatos                                                                                                                              | HTTP/erros e idempotência                                                                                                                                                          | Consequência UX e compatibilidade                                                                                                                                                                                      |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| A — uma opção simulada por destino                               | Manter QuoteRequest; ampliar QuoteResult com `delivery` detalhado ou null e subtotal; quote emitida, desatualizada, expirada                           | 200 somente quote final válida; erros atuais; emissão sem chave obrigatória, limites contra abuso; checkout com chave existente                                                    | Menor delta; UI mostra a única opção, preço/prazo e aceita a seleção ao confirmar quote. Não simula comparação quando só existe uma opção. Campos adicionais exigem revisão coordenada porque o schema atual é fechado |
+| B — consulta e seleção em duas fases na rota de quotes existente | Discriminador candidato `phase: DELIVERY_OPTIONS ou FINAL_QUOTE`; entrada final com referência de seleção; resultado de opções distinto de QuoteResult | 200 com union explícita, jamais quote sem total disfarçada de QuoteResult; erros atuais e candidatos 404/409; emissão final opcionalmente deduplicada, checkout sempre idempotente | Permite comparar e selecionar; muda semântica/shape, precisa versionamento ou migração contratual aprovada. Não se pode enviar `phase` hoje                                                                            |
+| C — recurso de consulta separado, seguido de quote final         | Request de opções com itens/endereço; resposta lista ofertas; QuoteRequest candidato ganha referência da opção                                         | Path, método e inventário **a definir por aprovação**, sem criar rota neste documento; 200 de opções não é pedido; falhas sem reserva, ownership nas duas fases                    | Separação mais clara para múltiplas opções, mas amplia superfície e testes. Nenhuma URL nova foi inferida; contratos de endereço também continuam separados                                                            |
 
-**QTE-DEC-006, PROPOSTO:** A para o MVP de tarifa fixa e uma opção por zona.
-O responsável ainda precisa aceitar explicitamente essa simplificação de escolha.
-Para múltiplas opções, preferir C numa revisão própria, depois de definir contrato
-de descoberta e compatibilidade. B é viável, mas sobrecarrega a operação atual.
+**QTE-DEC-006, RATIFICADO em 15/10/2026:** Estratégia A para o MVP de tarifa
+fixa e uma opção por zona. Preservar QuoteRequest mínimo, salvo incompatibilidade
+demonstrada; não criar endpoint separado de descoberta. B/C permanecem histórico
+comparativo, sem autorização para o MVP. Múltiplas opções exigem nova aprovação
+contratual, sem preferência futura automaticamente ratificada.
 Nenhuma das alternativas autoriza o browser a enviar preço, prazo ou owner.
 
 ## DTO mínimo de A — delta candidato, não OpenAPI aplicado
@@ -71,7 +75,7 @@ clientes antigos/novos: `additionalProperties: false` pode rejeitar mesmo adiç�
 de campo. Nenhuma versão implantada é presumida; rollout/versionamento e testes
 de consumidor precisam preceder a implementação pública.
 
-## DTOs de descoberta B/C — alternativa futura
+## DTOs de descoberta B/C — histórico, não autorizados no MVP
 
 ```text
 DeliveryOptionsRequest candidato: { items, shippingAddressId }
