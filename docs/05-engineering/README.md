@@ -88,3 +88,7 @@ B2C de uma só empresa, conteúdo próprio/licenciado, demonstração sem cobran
 ## CP-02 — Integração transacional local
 
 [Profile, Quotes, Orders e Inventory](customer-profile-integration/README.md), somente TEST_ONLY em PostgreSQL descartável: endereço versionado, snapshot imutável e rollback conjunto. Sem habilitação comercial; resultados e pendências no handoff CPINT-05. CI do delta ainda não executado remotamente.
+
+## SHIP-01 — Motor local de entrega por zonas
+
+[Shipping TEST_ONLY](shipping/README.md): políticas versionadas, tarifa fixa por zona e evidência transacional com Profile/Quotes/Orders/Inventory. Sem configuração comercial, contrato HTTP ampliado ou checkout público; ver resultados e pendências no handoff SHIP-06.
