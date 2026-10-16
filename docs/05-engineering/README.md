@@ -80,3 +80,7 @@ O **frontend** mantém apenas placeholders técnicos neutros e acessíveis do bo
 ## Restrições invioláveis
 
 B2C de uma só empresa, conteúdo próprio/licenciado, demonstração sem cobrança real no Vercel Hobby; Stripe Test Mode e reserva 40/30/5 condicionada a ST; PostgreSQL como fonte de verdade; estoque e refunds consistentes e idempotentes; biblioteca privada só com entitlement; recuperação de jobs apesar de pausa no Render/Supabase Free; nenhum segredo em código/cliente. A [matriz de autorização](../04-architecture/security/authorization-matrix.md) e os requisitos [AC-SEC](../07-security/security-requirements.md) permanecem superiores aos esboços desta fase.
+
+## CP-01 — Fundação local de Customer Profile
+
+[Endereços versionados e ports autorizados](customer-profile/README.md), somente TEST_ONLY em PostgreSQL descartável; sem cadastro público, validação postal oficial ou integração comercial. Ver resultados locais e pendências no handoff CP-06; CI do novo delta ainda não executado remotamente.

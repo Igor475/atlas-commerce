@@ -1,0 +1,31 @@
+name: atlas-cp01-profile
+services:
+  postgres:
+    image: postgres:17.10-bookworm@sha256:9b18b78397054fce88a9552e9d5a3ad5bb7fd258c5b3cc1c5028e46373d6ea8f
+    command: [postgres, -c, atlas.profile_fixture=atlas-cp01-disposable]
+    environment:
+      POSTGRES_USER: atlas_profile_bootstrap
+      POSTGRES_DB: atlas_profile_cp01
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "127.0.0.1:55441:5432"
+    volumes:
+      - profile-data:/var/lib/postgresql/data
+      - ./test/customer-profile/runtime-roles.sql:/docker-entrypoint-initdb.d/01-profile-roles.sql:ro
+    healthcheck:
+      test:
+        [
+          CMD,
+          pg_isready,
+          -h,
+          127.0.0.1,
+          -U,
+          atlas_profile_bootstrap,
+          -d,
+          atlas_profile_cp01,
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  profile-data:

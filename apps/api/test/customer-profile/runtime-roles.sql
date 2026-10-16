@@ -1,0 +1,11 @@
+DO $$ BEGIN IF current_database()<>'atlas_profile_cp01' OR current_user<>'atlas_profile_bootstrap' OR current_setting('atlas.profile_fixture',true) IS DISTINCT FROM 'atlas-cp01-disposable' THEN RAISE EXCEPTION 'CP_FIXTURE_REQUIRED'; END IF; END $$;
+REVOKE CREATE,TEMP ON DATABASE atlas_profile_cp01 FROM PUBLIC;
+REVOKE CREATE ON SCHEMA public FROM PUBLIC;
+CREATE ROLE atlas_profile_migrator LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
+CREATE ROLE atlas_profile_executor NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;
+CREATE ROLE atlas_profile_actor_a LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS CONNECTION LIMIT 5;
+CREATE ROLE atlas_profile_actor_b LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS CONNECTION LIMIT 5;
+GRANT atlas_profile_executor TO atlas_profile_migrator;
+GRANT CREATE,CONNECT ON DATABASE atlas_profile_cp01 TO atlas_profile_migrator;
+ALTER ROLE atlas_profile_actor_a SET statement_timeout='4000ms';
+ALTER ROLE atlas_profile_actor_b SET statement_timeout='4000ms';

@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/atlas-profile-client"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["customer_profile"]
+}
+
+// SQL owns revisions, constraints, ACLs and operations; no ORM writes or db push.
+model Address {
+  id             String @id @db.Uuid
+  accountId      String @map("account_id") @db.Uuid
+  currentVersion Int    @map("current_version")
+
+  @@map("address")
+  @@schema("customer_profile")
+}
