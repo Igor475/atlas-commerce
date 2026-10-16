@@ -1,0 +1,56 @@
+name: atlas-quse01-consumption
+services:
+  postgres:
+    image: postgres:17.10-bookworm@sha256:9b18b78397054fce88a9552e9d5a3ad5bb7fd258c5b3cc1c5028e46373d6ea8f
+    command:
+      [
+        "postgres",
+        "-c",
+        "atlas.quote_consumption=atlas-quse01-disposable",
+        "-c",
+        "atlas.shipping_fixture=atlas-ship01-disposable",
+        "-c",
+        "atlas.profile_integration=atlas-cpint01-disposable",
+        "-c",
+        "atlas.catalog_fixture=atlas-cat01-disposable",
+        "-c",
+        "atlas.pricing_fixture=atlas-pric01-disposable",
+        "-c",
+        "atlas.inventory_fixture=atlas-inv01-disposable",
+        "-c",
+        "atlas.orders_fixture=atlas-ord01-disposable",
+        "-c",
+        "atlas.quotes_fixture=atlas-qte01-disposable",
+      ]
+    environment:
+      POSTGRES_USER: atlas_catalog_migrator
+      POSTGRES_DB: atlas_catalog_cat01
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "127.0.0.1:55439:5432"
+    volumes:
+      - quotes-data:/var/lib/postgresql/data
+      - ./test/catalog/runtime-role.sql:/docker-entrypoint-initdb.d/01-catalog-role.sql:ro
+      - ./test/pricing/runtime-roles.sql:/docker-entrypoint-initdb.d/02-pricing-roles.sql:ro
+      - ./test/inventory/runtime-roles.sql:/docker-entrypoint-initdb.d/03-inventory-roles.sql:ro
+      - ./test/orders/runtime-roles.sql:/docker-entrypoint-initdb.d/04-orders-roles.sql:ro
+      - ./test/quotes/runtime-roles.sql:/docker-entrypoint-initdb.d/05-quotes-roles.sql:ro
+      - ./test/profile-integration/runtime-roles.sql:/docker-entrypoint-initdb.d/06-profile-roles.sql:ro
+      - ./test/shipping/runtime-roles.sql:/docker-entrypoint-initdb.d/07-shipping-roles.sql:ro
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "pg_isready",
+          "-h",
+          "127.0.0.1",
+          "-U",
+          "atlas_catalog_migrator",
+          "-d",
+          "atlas_catalog_cat01",
+        ]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  quotes-data:

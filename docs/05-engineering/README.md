@@ -92,3 +92,7 @@ B2C de uma só empresa, conteúdo próprio/licenciado, demonstração sem cobran
 ## SHIP-01 — Motor local de entrega por zonas
 
 [Shipping TEST_ONLY](shipping/README.md): políticas versionadas, tarifa fixa por zona e evidência transacional com Profile/Quotes/Orders/Inventory. Sem configuração comercial, contrato HTTP ampliado ou checkout público; ver resultados e pendências no handoff SHIP-06.
+
+## QUSE-01 — Consumo único de cotação
+
+[Consumo único TEST_ONLY](quote-consumption/README.md): unicidade por cotação em Orders, replay autorizado e preparação atômica pelo fluxo Shipping/CP-02; sem checkout comercial. Resultados e pendências no handoff QUSE-06.
