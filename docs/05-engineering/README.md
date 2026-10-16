@@ -96,3 +96,7 @@ B2C de uma só empresa, conteúdo próprio/licenciado, demonstração sem cobran
 ## QUSE-01 — Consumo único de cotação
 
 [Consumo único TEST_ONLY](quote-consumption/README.md): unicidade por cotação em Orders, replay autorizado e preparação atômica pelo fluxo Shipping/CP-02; sem checkout comercial. Resultados e pendências no handoff QUSE-06.
+
+## COM-01 — Prontidão comercial para ratificação
+
+[Políticas, contratos candidatos e planejamento Payments/Stripe](commercial-readiness/README.md): pacote exclusivamente documental, com parâmetros DEMO e decisões pendentes de aprovação; não implementa checkout, altera o OpenAPI ativo ou homologa Stripe/L1.
