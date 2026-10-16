@@ -41,7 +41,8 @@
     "quotes:test": "pnpm build && node scripts/quotes-local.mjs",
     "profile:generate": "prisma generate --config profile.prisma.config.ts",
     "profile:validate": "prisma validate --config profile.prisma.config.ts",
-    "profile:test": "pnpm build && node scripts/profile-local.mjs"
+    "profile:test": "pnpm build && node scripts/profile-local.mjs",
+    "profile-orders:test": "pnpm build && node scripts/profile-orders-local.mjs"
   },
   "dependencies": {
     "@nestjs/common": "12.1.3",

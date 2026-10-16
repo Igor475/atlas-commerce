@@ -263,3 +263,27 @@ jobs:
         # Local UUID project only, dedicated Profile port lock, no provider secrets.
         # Own resources are cleaned and verified by the harness finally block.
         run: pnpm --filter @atlas/api profile:test
+
+  profile-orders-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24.21.0
+          package-manager-cache: false
+      - name: Enable pinned pnpm
+        run: |
+          corepack enable
+          corepack install
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Load pinned disposable PostgreSQL image
+        run: docker pull postgres:17.10-bookworm@sha256:9b18b78397054fce88a9552e9d5a3ad5bb7fd258c5b3cc1c5028e46373d6ea8f
+      - name: Run isolated Profile/Quotes/Orders single-transaction PostgreSQL gates
+        # Local UUID project only, shared Catalog port lock, no provider secrets.
+        # Own resources are cleaned and verified by the harness finally block.
+        run: pnpm --filter @atlas/api profile-orders:test

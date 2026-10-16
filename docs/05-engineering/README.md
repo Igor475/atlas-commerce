@@ -84,3 +84,7 @@ B2C de uma só empresa, conteúdo próprio/licenciado, demonstração sem cobran
 ## CP-01 — Fundação local de Customer Profile
 
 [Endereços versionados e ports autorizados](customer-profile/README.md), somente TEST_ONLY em PostgreSQL descartável; sem cadastro público, validação postal oficial ou integração comercial. Ver resultados locais e pendências no handoff CP-06; CI do novo delta ainda não executado remotamente.
+
+## CP-02 — Integração transacional local
+
+[Profile, Quotes, Orders e Inventory](customer-profile-integration/README.md), somente TEST_ONLY em PostgreSQL descartável: endereço versionado, snapshot imutável e rollback conjunto. Sem habilitação comercial; resultados e pendências no handoff CPINT-05. CI do delta ainda não executado remotamente.
